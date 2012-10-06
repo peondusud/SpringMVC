@@ -1,6 +1,7 @@
 package org.peon.core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,20 +46,38 @@ public final class Appz {
         }
         usr.setUserData(usrData);
 
-        dataBase.add(null);
+        dataBase.add(usr);
     }
 
     public Boolean isLoginPresent(String str) {
 
         //TODO chech si login existe
+        Iterator<User> itr = dataBase.iterator();
+        while (itr.hasNext()) {
+            User element = itr.next();
+            if (element.getId().equals(str)) {
+                return true;
+            }
+        }
         return false;
     }
 
     public void addUser(User usr) {
-
-        //TODO add user to database
-      dataBase.add(usr);
-        
-        
+        dataBase.add(usr);
     }
+    
+        public User indexPresentLogin(String str) {
+
+        //TODO chech si login existe
+        Iterator<User> itr = dataBase.iterator();
+        while (itr.hasNext()) {
+            User element = itr.next();
+            if (element.getId().equals(str)) {
+                return element;
+            }
+        }
+        return null;
+    }
+    
+    
 }

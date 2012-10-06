@@ -4,7 +4,6 @@
  */
 package org.peondusud.contact;
 
-import contact.Address;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -20,23 +19,32 @@ public class Contact {
     private String prenom;
     private ArrayList<String> emails;
     private ArrayList<String> phones;
-    private String brithday;    
+    private String brithday;
     private ArrayList<Address> addrs;
     private String img;
     private String uuid;
-
- 
 
     public Contact(String nom, String prenom, String email, String phone, String brithday) {
         this.nom = nom;
         this.prenom = prenom;
         addrs = new ArrayList<Address>();
-       // addrs.add(new Address(nom, prenom, "?", "?" ,"?" ,"?", "?"));
+        // addrs.add(new Address(nom, prenom, "?", "?" ,"?" ,"?", "?"));
         emails = new ArrayList<String>();
         emails.add(email);
         phones = new ArrayList<String>();
         phones.add(phone);
         this.brithday = brithday;
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+    public Contact() {
+        this.nom = "";
+        this.prenom = "";
+        addrs = new ArrayList<Address>();
+        emails = new ArrayList<String>();
+
+        phones = new ArrayList<String>();
+        this.brithday = "";
         this.uuid = UUID.randomUUID().toString();
     }
 
@@ -104,8 +112,6 @@ public class Contact {
         this.img = img;
     }
 
-
-
     public boolean addEmail(String email) {
 
         if (emails.contains(email)) {
@@ -140,8 +146,7 @@ public class Contact {
         Matcher m = p.matcher(str.toUpperCase());
         return m.matches();
     }
-    
-    
+
     public void modifyContact(String nom, String prenom, String email, String phone, String brithday) {
         this.nom = nom;
         this.prenom = prenom;
@@ -149,32 +154,28 @@ public class Contact {
         this.phones.add(phone);
         this.brithday = brithday;
     }
-    
 
-     
-    public void addAddress(Address addr){
-    
-            this.addrs.add(addr);
-    }
-    
-    public void addAddress( String number2, String rue2, String ville2, String cp2, String pays2){
-        
-        Address addr = new Address(this.nom, this.prenom, number2, rue2, ville2, cp2, pays2);        
+    public void addAddress(Address addr) {
+
         this.addrs.add(addr);
     }
-    
-        public void addEmailNoCheck(String mail){    
-            this.emails.add(mail);
+
+    public void addAddress(String number2, String rue2, String ville2, String cp2, String pays2) {
+
+        Address addr = new Address(this.nom, this.prenom, number2, rue2, ville2, cp2, pays2);
+        this.addrs.add(addr);
     }
-    
-        public void addPhoneNoCheck(String phon){    
-            this.phones.add(phon);
+
+    public void addEmailNoCheck(String mail) {
+        this.emails.add(mail);
+    }
+
+    public void addPhoneNoCheck(String phon) {
+        this.phones.add(phon);
     }
 
     @Override
     public String toString() {
         return "Contact{" + "nom=" + nom + ", prenom=" + prenom + ", emails=" + emails + ", phones=" + phones + ", brithday=" + brithday + ", addrs=" + addrs + ", img=" + img + ", uuid=" + uuid + '}';
     }
-    
-    
 }

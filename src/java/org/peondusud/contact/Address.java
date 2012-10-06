@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package contact;
+package org.peondusud.contact;
 
 /**
  *
@@ -28,6 +28,17 @@ public class Address {
         this.cp = cp;
         this.pays = pays;
         this.nickAddress="defaut";
+
+    }
+        public Address(String nick, String number, String rue, String ville, String cp, String pays) {
+        this.nom = "";
+        this.prenom = "";
+        this.number = number;
+        this.rue = rue;
+        this.ville = ville;
+        this.cp = cp;
+        this.pays = pays;
+        this.nickAddress=nick;
 
     }
 

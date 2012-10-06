@@ -8,11 +8,18 @@ package com.test.controller;
  *
  * @author Xnl
  */
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.peondusud.*;
 import org.peon.core.*;
+import org.peondusud.contact.ContactManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -51,13 +58,75 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
-    public ModelAndView get() {
+    public ModelAndView get(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        HttpSession session = hsr.getSession();
+        String userLoginCookie = (String) session.getAttribute("username");
+        String userPassCookie = (String) session.getAttribute("password");
 
+        if (userPassCookie == null || userLoginCookie == null) {
+            String str = "not logged";
+            return new ModelAndView("error", "str", str);
+        }
 
+        User usrLogin = Appz.getInstance().indexPresentLogin(userLoginCookie);
+        //usrLogin.getPassword() != userPassCookie.toString()
+        if (!usrLogin.getPassword().equals(userPassCookie.toString())) {
 
+            String str = "login & password no match same user";
+            return new ModelAndView("error", "str", str);
+        }
 
+        ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
+        org.peondusud.contact.ContactManager arrContactMan = new ContactManager();
+        ArrayList<org.peondusud.contact.Contact> arrCont= new ArrayList<org.peondusud.contact.Contact>();
+        Iterator<Contact> itr = arrContact.iterator();
+        while (itr.hasNext()) {
+            org.peondusud.contact.Contact tmpContact = new org.peondusud.contact.Contact();
+            Contact element = itr.next();
+            tmpContact.setNom(element.getNom());
+            tmpContact.setPrenom(element.getPrenom());
+            tmpContact.setBrithday(element.getBrithday());
 
-        return new ModelAndView("show_list", "contactMan", contactMan);
+            ArrayList<String> arrStr = new ArrayList<String>();
+            arrStr.add(element.getPhones());
+            tmpContact.setPhones(arrStr);
+
+            ArrayList<String> arrStr2 = new ArrayList<String>();
+            arrStr2.add(element.getEmails());
+            tmpContact.setEmails(arrStr2);
+
+            ArrayList<org.peondusud.contact.Address> tmpArrayAddr = new ArrayList<org.peondusud.contact.Address>();
+            Iterator<Address> itrAddr = usrLogin.getUserData().getAddressAssociatedToContact(element).iterator();
+            while (itrAddr.hasNext()) {
+                Address elementAddr = itrAddr.next();
+                tmpArrayAddr.add(new org.peondusud.contact.Address(elementAddr.getNickAddress(), elementAddr.getNumber(), elementAddr.getRue(), elementAddr.getCp(), elementAddr.getVille(), elementAddr.getPays()));
+
+            }
+            tmpContact.setAddrs(tmpArrayAddr);
+            arrCont.add(tmpContact);
+            //arrContactMan.arrContact.add(tmpContact);
+        }
+        arrContactMan.setArrContact(arrCont);
+        //return new ModelAndView("show_list_2", "arrContact", arrContact);
+        return new ModelAndView("show_list_1", "arrContactMan", arrContactMan);
+    }
+
+    @RequestMapping(value = "/list_add", method = RequestMethod.GET)
+    public ModelAndView list(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        HttpSession session = hsr.getSession();
+        String userLoginCookie = (String) session.getAttribute("username");
+        String userPassCookie = (String) session.getAttribute("password");
+
+        if (userPassCookie == null || userLoginCookie == null) {
+            String str = new String("not logged");
+            return new ModelAndView("error", "str", str);
+        }
+
+        User usrLogin = Appz.getInstance().indexPresentLogin(userLoginCookie);
+        ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
+        Contact ctct = arrContact.get(Integer.valueOf(hsr.getParameter("contactID")));
+        ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
+        return new ModelAndView("list_add", "addrs", addrs);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -83,6 +152,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/index")
     public ModelAndView home() {
+        Appz instance = Appz.getInstance();
         return new ModelAndView("index");
     }
 
@@ -106,24 +176,19 @@ public class CustomerController {
         //TODO : inscription
         //test si login existe sinon on cree un user
         //teste chanp vide javascript
-        
-        Object login = hsr.getParameter("login");        
-        Object pcw = hsr.getParameter("password");
-        Object firstname = hsr.getParameter("firstname");        
-        Object lastname = hsr.getParameter("lastname");       
-        Object email = hsr.getParameter("email");       
-        Object phone = hsr.getParameter("telephone");
-//        if(org.peon.core.Appz.getInstance().isLoginPresent(login.toString()) ){
-//            String str = new String(" already used login");
-//            return new ModelAndView("error","value",str);
-//        }
-        
-        Appz.getInstance().addUser( new User(login.toString(), pcw.toString()) );
-        System.out.println(firstname);
-        System.out.println(lastname);
-        System.out.println(email);
-        System.out.println(phone);
 
+        Object login = hsr.getParameter("login");
+        Object pcw = hsr.getParameter("password");
+        Object firstname = hsr.getParameter("firstname");
+        Object lastname = hsr.getParameter("lastname");
+        Object email = hsr.getParameter("email");
+        Object phone = hsr.getParameter("telephone");
+        if (org.peon.core.Appz.getInstance().isLoginPresent(login.toString())) {
+            String str = new String("login already used");
+            return new ModelAndView("error", "str", str);
+        }
+
+        Appz.getInstance().addUser(new User(login.toString(), pcw.toString()));
         return new ModelAndView("success");
     }
 
@@ -157,7 +222,6 @@ public class CustomerController {
     @RequestMapping(value = "/logout")
     public ModelAndView logout(HttpServletRequest hsr, HttpServletResponse hsr1) {
 
-        //TODO : destroy session
         HttpSession session = hsr.getSession();
         session.invalidate();
         return new ModelAndView("index");

@@ -113,9 +113,11 @@ public class UserData
     {
         boolean bool=false;
         boolean AddressAlReadyInDataBase = false;
+        boolean ContactAlReadyInDataBase = false;
         for(int i=0; i<tableAddressContact.size() &&!bool ;i++)
         {
             AddressAlReadyInDataBase = AddressAlReadyInDataBase || tableAddressContact.get(i).getAddress().equals(address);
+            ContactAlReadyInDataBase = ContactAlReadyInDataBase || tableAddressContact.get(i).getContact().equals(contact);
             boolean temp = tableAddressContact.get(i).getContact().equals(contact);
             temp = temp && tableAddressContact.get(i).getAddress().equals(address);
             bool =  temp || bool;
@@ -125,6 +127,10 @@ public class UserData
             if (!AddressAlReadyInDataBase)
             {
                 tableAddress.add(address);
+            }
+            if (!ContactAlReadyInDataBase)
+            {
+                tableContact.add(contact);
             }
             tableAddressContact.add(new AddressContact(contact, address));
         }

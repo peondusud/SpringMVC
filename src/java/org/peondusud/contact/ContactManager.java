@@ -128,7 +128,6 @@ public class ContactManager {
         cont.addEmailNoCheck("toto@ty.fr");
         cont.addPhoneNoCheck("65948");
         arr.add(cont2);
-     
         return arr;
     }
     
