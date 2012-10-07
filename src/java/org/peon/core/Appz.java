@@ -65,10 +65,9 @@ public final class Appz {
     public void addUser(User usr) {
         dataBase.add(usr);
     }
-    
-        public User indexPresentLogin(String str) {
 
-        //TODO chech si login existe
+    public User userPresentLogin(String str) {
+
         Iterator<User> itr = dataBase.iterator();
         while (itr.hasNext()) {
             User element = itr.next();
@@ -78,6 +77,53 @@ public final class Appz {
         }
         return null;
     }
+
+    public int indexPresentLogin(String str) {
+
+        Iterator<User> itr = dataBase.iterator();
+        int count = 0;
+        while (itr.hasNext()) {
+            User element = itr.next();
+            if (element.getId().equals(str)) {
+                return count;
+            }
+            count++;
+        }
+        return -1;
+    }
+
+    public void addContact(String str, Contact ctct, Address addr) throws Exception {
+
+        User usr = userPresentLogin(str);
+        usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
+    }
+
+    public void modifyContact(String str, Contact old_ctct, Contact modify_ctct) throws Exception {
+
+        User usr = userPresentLogin(str);
+        ArrayList<Address> addr = usr.getUserData().getAddressAssociatedToContact(old_ctct);
+        usr.getUserData().removeContact(old_ctct);
+        Iterator<Address> itr = addr.iterator();
+        while (itr.hasNext()) {
+            usr.getUserData().InsertAddressAssociatedToContact(modify_ctct, itr.next());
+        }
+    }
     
-    
+        public void modifyContact_v2(String str, Contact old_ctct, Contact modify_ctct) throws Exception {
+
+        User usr = userPresentLogin(str);
+       old_ctct.setBrithday(modify_ctct.getBrithday());
+       old_ctct.setEmails(modify_ctct.getEmails());
+       old_ctct.setNom(modify_ctct.getNom());
+       old_ctct.setPhones(modify_ctct.getPhones());
+       old_ctct.setPrenom(modify_ctct.getPrenom());
+        usr.getUserData().
+    }
+
+    public void modifyAddrr(String str, Contact ctct, Address addr) throws Exception {
+
+        User usr = userPresentLogin(str);
+        usr.getUserData().
+        usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
+    }
 }

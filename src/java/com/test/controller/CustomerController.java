@@ -9,11 +9,7 @@ package com.test.controller;
  * @author Xnl
  */
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,24 +32,7 @@ public class CustomerController {
 
     protected ModelAndView handleRequestInternal(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
         ModelAndView model = null;
-////        String pathInfo = hsr.getPathInfo();
-//        
-////        if("/show".equals(pathInfo)){
-////            model=this.get();
-////        }
-////        else if("/add".equals(pathInfo)){
-////            model=this.save(hsr.getAttribute("contactForm"));
-////        }
-////        else if("/modify".equals(pathInfo)){
-////            model=this.modifiyLink(hsr, hsr1);
-////        }
-////         else if("/index".equals(pathInfo)){
-////            model=this.home();
-////        }
-////          else if("/list".equals(pathInfo)){
-////            model=this.list();
-////        }
-//        
+    
         return model;
     }
 
@@ -68,7 +47,7 @@ public class CustomerController {
             return new ModelAndView("error", "str", str);
         }
 
-        User usrLogin = Appz.getInstance().indexPresentLogin(userLoginCookie);
+        User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
         //usrLogin.getPassword() != userPassCookie.toString()
         if (!usrLogin.getPassword().equals(userPassCookie.toString())) {
 
@@ -122,7 +101,7 @@ public class CustomerController {
             return new ModelAndView("error", "str", str);
         }
 
-        User usrLogin = Appz.getInstance().indexPresentLogin(userLoginCookie);
+        User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
         ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
         Contact ctct = arrContact.get(Integer.valueOf(hsr.getParameter("contactID")));
         ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
@@ -143,6 +122,46 @@ public class CustomerController {
         return new ModelAndView("add_contact", "contactMan", contactMan);
     }
 
+        @RequestMapping(value = "/add2", method = RequestMethod.GET)
+    public ModelAndView add_page2() {
+        return new ModelAndView("add_contact", "contactMan", contactMan);
+    }
+
+    @RequestMapping(value = "/addd", method = RequestMethod.POST)
+    public ModelAndView saved(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        Object prenom = hsr.getParameter("prenom");
+        Object nom = hsr.getParameter("nom");
+        Object phone = hsr.getParameter("phone");
+        Object mail = hsr.getParameter("mail");
+        Object addr_nick = hsr.getParameter("addr_nick");
+        Object addr_nb = hsr.getParameter("addr_nb");
+        Object addr_rue = hsr.getParameter("addr_rue");
+        Object addr_cp = hsr.getParameter("addr_cp");
+        Object addr_ville = hsr.getParameter("addr_ville");
+        Object addr_pays = hsr.getParameter("addr_pays");
+         Object birthday = hsr.getParameter("birthday");
+                HttpSession session = hsr.getSession();
+        String userLoginCookie = (String) session.getAttribute("username");
+        String userPassCookie = (String) session.getAttribute("password");
+
+        if (userPassCookie == null || userLoginCookie == null) {
+            String str = new String("not logged");
+            return new ModelAndView("error", "str", str);
+        }
+
+        User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+        ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
+         
+        Appz.getInstance().addContact(userLoginCookie) ;
+
+        
+         System.out.println(prenom);
+        System.out.println(nom);
+        
+        return new ModelAndView("show_list_1", "contactMan", contactMan);
+    }
+    
+    
     @RequestMapping(value = "/modify", method = RequestMethod.GET)
     public ModelAndView modifiyLink(HttpServletRequest hsr, HttpServletResponse hsr1) {
         //indice  modID arraylist pour choix contact
