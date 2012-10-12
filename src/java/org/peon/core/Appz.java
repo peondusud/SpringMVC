@@ -117,13 +117,13 @@ public final class Appz {
        old_ctct.setNom(modify_ctct.getNom());
        old_ctct.setPhones(modify_ctct.getPhones());
        old_ctct.setPrenom(modify_ctct.getPrenom());
-        usr.getUserData().
+      //  usr.getUserData().
     }
 
     public void modifyAddrr(String str, Contact ctct, Address addr) throws Exception {
 
         User usr = userPresentLogin(str);
-        usr.getUserData().
+       // usr.getUserData().
         usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
     }
 }

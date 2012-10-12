@@ -17,54 +17,36 @@
             <p>Inscription</p>
         </div>	
 
-        <script type="text/javascript"> <!-- 
-            function Blank_TextField_Validator()
-            {
-                // Check the value of the element named text_name from the form named text_form
-                if (text_form.login.value == "" && text_form.password.value == "" && text_form.firstname.value == "" && 
-                    text_form.lastname.value == "" && text_form.email.value == "" && text_form.telephone.value == "" )    {
-                  
-                    alert("Please fill in the text field.");
-                    // Place the cursor on the field for revision
-                    text_form.login.focus();
-                    // return false to stop further processing
-                    return (false);
-                }
-                // If text_name is not null continue processing
-                return (true);
-            }
-            --> </script>
-
         <form:form METHOD="POST" name="text_form" ACTION="signinc.html">
 
             <table>
                 <tr>
                     <td>Login</td>
-                    <td><input type="text" name="login" /></td>
+                    <td><input type="text" required="required" name="login" placeholder="LOGIN"/></td>
                 </tr>
                 <tr>
                     <td>Password</td>
-                    <td><input type="text" name="password" /></td>
+                    <td><input type="password" required="required" name="password" placeholder="PASSWORD"/></td>
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><input type="text" name="firstname" /></td>
+                    <td><input type="text" required="required" name="firstname" placeholder="FIRSTNAME"/></td>
                 </tr>
                 <tr>
                     <td>Last Name</td>
-                    <td><input type="text" name="lastname" /></td>
+                    <td><input type="text" required="required" name="lastname" placeholder="LAST_NAME"/></td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><input type="text" name="email" /></td>
+                    <td><input type="email" required="required" name="email" placeholder="EMAIL"/></td>
                 </tr>
                 <tr>
                     <td>Telephone</td>
-                    <td><input type="text" name="telephone" /></td>
+                    <td><input type="tel" required="required" name="telephone" placeholder="TELEPHONE"/></td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Sign In" onsubmit="return Blank_TextField_Validator()"/>
+                        <input type="submit" value="Sign In"/>
                     </td>
                 </tr>
             </table> 

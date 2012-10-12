@@ -152,7 +152,7 @@ public class CustomerController {
         User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
         ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
          
-        Appz.getInstance().addContact(userLoginCookie) ;
+        /*******///Appz.getInstance().addContact(userLoginCookie) ;
 
         
          System.out.println(prenom);
