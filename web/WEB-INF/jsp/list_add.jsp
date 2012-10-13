@@ -11,15 +11,26 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>List Address</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-                   <td><div class=addr>
-                    <c:forEach items="${addrs}" var="addrs" varStatus="status4">
-                   <li> Address_nickname:${addrs.nickAddress}</br> ${addrs.number} ${addrs.rue}</br> ${addrs.cp},${addrs.ville} </br> ${addrs.pays} </li>
-                    </c:forEach> 
-                    </div></td>
-     
+        <div class=header>	
+            <jsp:include page="header.jsp"/>
+        </div>	
+
+
+        <div class=addr>
+            <c:forEach items="${addrs}" var="addrs" varStatus="status4">
+                <li> Address_nickname:${addrs.nickAddress}</br> ${addrs.number} ${addrs.rue}</br> ${addrs.cp},${addrs.ville} </br> ${addrs.pays} </li>
+            </c:forEach> 
+        </div>
+        </br>
+
+
+
+        <div class=header>	
+            <jsp:include page="footer.jsp"/> 
+        </div>
+
     </body>
 </html>

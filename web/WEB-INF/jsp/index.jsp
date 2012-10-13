@@ -19,5 +19,15 @@
         <A HREF="signin.html">signin</a></br>
         <A HREF="list.html">LIST</a></br>
         <A HREF="add.html">Add contact</a></br>
+        </br>
+        </br>
+        </br>
+        <div class=header>	
+            <jsp:include page="header.jsp"/> 
+        </div>	
+        <div class=header>	
+            <jsp:include page="footer.jsp"/> 
+        </div>
+
     </body>
 </html>

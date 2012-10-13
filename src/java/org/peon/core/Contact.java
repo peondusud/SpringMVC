@@ -26,20 +26,20 @@ public class Contact {
         return uuid;
     }
 
-    public String getNom() {
+    public String getName() {
         return name;
     }
 
-    public void setNom(String nom) {
-        this.name = nom;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPrenom() {
+    public String getSurname() {
         return surname;
     }
 
-    public void setPrenom(String prenom) {
-        this.surname = prenom;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmails() {
@@ -65,6 +65,7 @@ public class Contact {
     public void setBrithday(String brithday) {
         this.brithday = brithday;
     }
+
 
     public boolean isValideEmail(String str) {
         Pattern p = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
