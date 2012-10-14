@@ -6,40 +6,51 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
- */
+*/
 
- .block {
-  text-align: center;
-  
+.block {
+    text-align: center;
+
 }
- 
+
 .block:before {
-  content: '';
-  display: inline-block;
-  height: 100%; 
-  vertical-align: middle;
-  margin-right: -0.25em; /* Adjusts for spacing */
-    
-  
- }
- 
+    content: '';
+    display: inline-block;
+    height: 100%; 
+    vertical-align: middle;
+    margin-right: -0.25em; /* Adjusts for spacing */
+
+
+}
+
 .centered {
-  display: inline-block;
-  vertical-align: middle;
-  padding: 10px 15px;
-  background: #000000;
-  -webkit-border-radius: 12px;
-     -moz-border-radius: 12px;
-          border-radius: 12px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px 15px;
+    
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
 }
 
 .footerPerso{
-     position: absolute;
-     bottom: 5%;
-     right: 5%;
-     font-style: oblique;
-     font-family: "Helvetica Neue"
- }
- body{
-     height: 100%;
- }
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    font-style: oblique;
+    font-family: "Helvetica Neue"
+}
+
+.navPerso{
+    position: absolute;
+    right: 5%;
+}
+
+.body{
+    height: 100%;
+}
+
+.span3Perso{
+    position: absolute;
+    right : 26%;
+}

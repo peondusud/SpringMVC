@@ -15,6 +15,10 @@
         <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
         <META HTTP-EQUIV="Expires" CONTENT="-1">    
         <title>Liste de Contact</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/css-perso.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/bootstrap.js"></script>
     </head>
 
     <body>
@@ -26,21 +30,27 @@
             <p>Liste de contact</p>
         </div>		
 
-        <div class=table>
-            <table>
-                <tr> <div class=titres>
-                    <td>Image</td>   
-                    <td>Nom</td>
-                    <td>Prenom</td>
-                    <td>emails</td>
-                    <td>phones</td>                    
-                    <td>birthday</td>
-                    <td>address</td>
-                    <td>Supprimer</td>
-                    <td>Modifier</td>
-                </div>
-                </tr>
-                <c:set var="count" value="0" scope="page" />
+
+
+
+
+
+        <%--
+    <div class=table>
+        <table>
+            <tr> <div class=titres>
+                <td>Image</td>   
+                <td>Nom</td>
+                <td>Prenom</td>
+                <td>emails</td>
+                <td>phones</td>                    
+                <td>birthday</td>
+                <td>address</td>
+                <td>Supprimer</td>
+                <td>Modifier</td>
+            </div>
+            </tr>
+            <c:set var="count" value="0" scope="page" />
 
                 <c:forEach items="${arrContact}" var="tableContact" varStatus="status">
                     <tr>
@@ -65,6 +75,7 @@
         <div class=header>	
             <jsp:include page="footer.jsp"/> 
         </div>
+        --%>
     </body>
 </html>
 
