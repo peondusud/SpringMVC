@@ -31,10 +31,15 @@
   -webkit-border-radius: 12px;
      -moz-border-radius: 12px;
           border-radius: 12px;
- }​
- 
- P.blocktext {
-    margin-left: auto;
-    margin-right: auto;
-    width: 6em
 }
+
+.footerPerso{
+     position: absolute;
+     bottom: 5%;
+     right: 5%;
+     font-style: oblique;
+     font-family: "Helvetica Neue"
+ }
+ body{
+     height: 100%;
+ }
