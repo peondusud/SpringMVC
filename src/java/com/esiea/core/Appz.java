@@ -1,30 +1,32 @@
-package org.peon.core;
+package com.esiea.core;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.springframework.web.servlet.ModelAndView;
 
-public final class Appz {
+public final class Appz 
+{
 
     private static volatile Appz instance = null;
     private ArrayList<User> dataBase;
 
-    private Appz() {
-        super();
+    private Appz() 
+    {
         dataBase = new ArrayList<User>();
         this.populate();
     }
 
-    public final static Appz getInstance() {
-        if (Appz.instance == null) {
-            synchronized (Appz.class) {
-                if (Appz.instance == null) {
+    public static Appz getInstance() 
+    {
+        if (Appz.instance == null) 
+        {
+            synchronized (Appz.class) 
+            {
+                if (Appz.instance == null) 
+                {
                     Appz.instance = new Appz();
                 }
             }
@@ -32,67 +34,79 @@ public final class Appz {
         return Appz.instance;
     }
 
-    public ArrayList<User> getDataBase() {
+    public ArrayList<User> getDataBase() 
+    {
         return dataBase;
     }
 
-    private void populate() {
-        //TODO : completer
+    private void populate() 
+    {
         User usr = new User("peon", "111");
         UserData usrData = new UserData();
         Contact ctct = new Contact("znom", "zprenom", "zmail", "zphone", "zbirthday");
         Contact ctct2 = new Contact("xnom", "xprenom", "xmail", "xphone", "xbirthday");
         Address addr = new Address("45", "xrue", "xville", "xCP", "xpays");
         Address addr2 = new Address("38", "zrue", "zville", "zCP", "zpays");
-        try {
+        try 
+        {
             usrData.InsertAddressAssociatedToContact(ctct, addr);
             usrData.InsertAddressAssociatedToContact(ctct, addr2);
             usrData.InsertAddressAssociatedToContact(ctct2, addr);
             usrData.InsertAddressAssociatedToContact(ctct2, addr2);
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             Logger.getLogger(Appz.class.getName()).log(Level.SEVERE, null, ex);
         }
         usr.setUserData(usrData);
-
         dataBase.add(usr);
     }
 
-    public Boolean isLoginPresent(String str) {
-
+    public Boolean isLoginPresent(String str) 
+    {
         //TODO chech si login existe
         Iterator<User> itr = dataBase.iterator();
-        while (itr.hasNext()) {
+        while (itr.hasNext()) 
+        {
             User element = itr.next();
-            if (element.getId().equals(str)) {
+            if (element.getId().equals(str)) 
+            {
                 return true;
             }
         }
         return false;
     }
 
-    public void addUser(User usr) {
+    public void addUser(User usr) 
+    {
         dataBase.add(usr);
     }
 
-    public User userPresentLogin(String str) {
+    public User userPresentLogin(String str) 
+    {
 
         Iterator<User> itr = dataBase.iterator();
-        while (itr.hasNext()) {
+        while (itr.hasNext()) 
+        {
             User element = itr.next();
-            if (element.getId().equals(str)) {
+            if (element.getId().equals(str)) 
+            {
                 return element;
             }
         }
         return null;
     }
 
-    public int indexPresentLogin(String str) {
+    public int indexPresentLogin(String str) 
+    {
 
         Iterator<User> itr = dataBase.iterator();
         int count = 0;
-        while (itr.hasNext()) {
+        while (itr.hasNext()) 
+        {
             User element = itr.next();
-            if (element.getId().equals(str)) {
+            if (element.getId().equals(str)) 
+            {
                 return count;
             }
             count++;
@@ -100,19 +114,22 @@ public final class Appz {
         return -1;
     }
 
-    public void addContact(String str, Contact ctct, Address addr) throws Exception {
+    public void addContact(String str, Contact ctct, Address addr) throws Exception 
+    {
 
         User usr = userPresentLogin(str);
         usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
     }
 
-    public void addContact(String str, Contact ctct) throws Exception {
+    public void addContact(String str, Contact ctct) throws Exception 
+    {
 
         User usr = userPresentLogin(str);
         usr.getUserData().InsertContact(ctct);
     }
 
-    public void modifyContact(String str, Contact old_ctct, Contact modify_ctct) throws Exception {
+    public void modifyContact(String str, Contact old_ctct, Contact modify_ctct) throws Exception 
+    {
 
         User usr = userPresentLogin(str);
         ArrayList<Address> addr = usr.getUserData().getAddressAssociatedToContact(old_ctct);
@@ -123,7 +140,8 @@ public final class Appz {
         }
     }
 
-    public void modifyContact_v2(String str, Contact old_ctct, Contact modify_ctct) throws Exception {
+    public void modifyContact_v2(String str, Contact old_ctct, Contact modify_ctct) throws Exception 
+    {
 
         User usr = userPresentLogin(str);
         old_ctct.setBrithday(modify_ctct.getBrithday());
@@ -134,14 +152,17 @@ public final class Appz {
         //  usr.getUserData().
     }
 
-    public boolean modifyAddrr(String str, Contact ctct, Address addr, Address newAddr) throws Exception {
+    public boolean modifyAddrr(String str, Contact ctct, Address addr, Address newAddr) throws Exception 
+    {
 
         User usr = userPresentLogin(str);
         ArrayList<Address> addressAssociatedToContact = usr.getUserData().getAddressAssociatedToContact(ctct);
         Iterator<Address> itr = addressAssociatedToContact.iterator();
-        while (itr.hasNext()) {
+        while (itr.hasNext()) 
+        {
             Address element = itr.next();
-            if (element.equals(addr)) {
+            if (element.equals(addr)) 
+            {
                 element.setNickAddress(newAddr.getNickAddress());
                 element.setCp(newAddr.getCp());
                 element.setNumber(newAddr.getNumber());
@@ -154,90 +175,111 @@ public final class Appz {
         return false;
     }
     
-        public void modifyAddrrV2( Address addr, Address newAddr) throws Exception {
-
-
+        public void modifyAddrrV2( Address addr, Address newAddr) throws Exception 
+        {
                 addr.setNickAddress(newAddr.getNickAddress());
                 addr.setCp(newAddr.getCp());
                 addr.setNumber(newAddr.getNumber());
                 addr.setPays(newAddr.getPays());
                 addr.setRue(newAddr.getRue());
                 addr.setVille(newAddr.getVille());
- 
-    }
-
-    public boolean checkLoginPass(String login, String pcw) {
-        User usr = null;
-        try {
-            usr = userPresentLogin(login);
-        } catch (Exception e) {
-            return false;
         }
 
-        if (usr == null) {
+    public boolean checkLoginPass(String login, String pcw) 
+    {
+        User usr = null;
+        try 
+        {
+            usr = userPresentLogin(login);
+        } 
+        catch (Exception e) 
+        {
             return false;
-        } else {
+        }
+        if (usr == null) 
+        {
+            return false;
+        }
+        else 
+        {
             return usr.getPassword().equals(pcw);
         }
     }
 
-    public boolean testPcwHash(String login, String hashpcw) throws Exception {
-
-        User usr = null;
-        try {
+    public boolean testPcwHash(String login, String hashpcw) {
+        User usr;
+        try 
+        {
             usr = userPresentLogin(login);
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             return false;
         }
-
-        if (usr == null) {
+        if (usr == null) 
+        {
             return false;
-        } else {
-            MessageDigest instance2 = MessageDigest.getInstance("MD5");
-            String password = usr.getPassword();
-            byte[] bytes = password.getBytes();
-            byte[] digest = instance2.digest(bytes);
-            String toString = new String(digest);
-            return toString.equals(hashpcw);
+        } else 
+        {
+            try 
+            {
+                MessageDigest instance2 = MessageDigest.getInstance("MD5");
+                String password = usr.getPassword();
+                byte[] bytes = password.getBytes();
+                byte[] digest = instance2.digest(bytes);
+                String toString = new String(digest);
+                return toString.equals(hashpcw);
+            } 
+            catch (NoSuchAlgorithmException ex) 
+            {
+                return false;
+            }
         }
     }
 
-    public ArrayList<Address> getArrAddress(String user, Contact ctct) {
+    public ArrayList<Address> getArrAddress(String user, Contact ctct) 
+    {
         return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getAddressAssociatedToContact(ctct);
     }
 
-    public ArrayList<Contact> getArrContact(String user) {
+    public ArrayList<Contact> getArrContact(String user) 
+    {
         return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getTableContact();
     }
 
-    public void removeContact(String user, int ctctIndice) {
+    public void removeContact(String user, int ctctIndice) 
+    {
         //TODO
         int userIndice = indexPresentLogin(user);
-
         int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) {
+        if (size != 0) 
+        {
             Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
-            if (ctct != null) {
+            if (ctct != null) 
+            {
                 Appz.getInstance().getDataBase().get(userIndice).getUserData().removeContact(ctct);
             }
         }
     }
 
-    public void removeAddr(String user, int ctctIndice, int addrIndice) {
+    public void removeAddr(String user, int ctctIndice, int addrIndice) 
+    {
         //TODO
         int userIndice = indexPresentLogin(user);
         int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) {
+        if (size != 0) 
+        {
             Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
             int size2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().size();
-            if (size2 != 0) {
+            if (size2 != 0) 
+            {
                 Address addrs = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().get(addrIndice);
-                if (addrs != null) {
+                if (addrs != null) 
+                {
                     Appz.getInstance().getDataBase().get(userIndice).getUserData().removeAddressAssociatedToContact(addrs, ctct);
                 }
             }
         }
     }
-    
 
 }

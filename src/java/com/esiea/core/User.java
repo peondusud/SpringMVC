@@ -1,4 +1,4 @@
-package org.peon.core;
+package com.esiea.core;
 
 public class User {
     private String userName;
