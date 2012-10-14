@@ -182,11 +182,11 @@ public class CustomerController {
         //TODO
         HttpSession session = hsr.getSession();
         int modAddrID = Integer.valueOf(hsr.getAttribute("modaddrID").toString());
-        
+
         String userLoginCookie = (String) session.getAttribute("username");
         String userPassCookie = (String) session.getAttribute("password");
         int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
-         session.setAttribute("modaddrID", modAddrID);
+        session.setAttribute("modaddrID", modAddrID);
         if (userPassCookie == null || userLoginCookie == null) {
             String str = "not logged";
             return new ModelAndView("error", "str", str);
@@ -203,7 +203,7 @@ public class CustomerController {
                 }
             }
         }
-            //TODO
+        //TODO
         return new ModelAndView("error");
     }
 
@@ -214,7 +214,7 @@ public class CustomerController {
         HttpSession session = hsr.getSession();
         String username = session.getAttribute("username").toString();
         String pcw = session.getAttribute("password").toString();
-       int modContactID = Integer.valueOf(session.getAttribute("modaddrID").toString());
+        int modContactID = Integer.valueOf(session.getAttribute("modaddrID").toString());
 
         if (Appz.getInstance().testPcwHash(username, pcw)) {
             Contact tmpContact = (Contact) session.getAttribute("contactOject");
@@ -239,10 +239,17 @@ public class CustomerController {
         Appz instance = Appz.getInstance();
         return new ModelAndView("index");
     }
-    
-        @RequestMapping(value = "/about_us")
+
+    @RequestMapping(value = "/logout")
+    public ModelAndView logout(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        HttpSession session = hsr.getSession();
+        session.invalidate();
+        return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping(value = "/about_us")
     public ModelAndView about_us_page() {
-        
+
         return new ModelAndView("about_us");
     }
 
@@ -269,7 +276,7 @@ public class CustomerController {
         HttpSession session = hsr.getSession();
         String username = session.getAttribute("username").toString();
         String pcw = session.getAttribute("password").toString();
-        if (Appz.getInstance().testPcwHash(username, pcw )) {
+        if (Appz.getInstance().testPcwHash(username, pcw)) {
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
 
