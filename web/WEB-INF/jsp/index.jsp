@@ -6,20 +6,26 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to Spring Web MVC project</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/bootstrap.js"></script>
     </head>
 
     <body>
-        <div class=header>	
-            <jsp:include page="header.jsp"/> 
-        </div>	
-        <p>Hello!</p>
-        <p><i> ahahhahhahahah.</i></p>
+        <jsp:include page="header.jsp"/> 
+        
+        <div class="container">
+        <div class="hero-unit">
+            <h1>Gestionnaire de contacts</h1>
+            <p>Tagline</p>
+            <p>
+                <a
+                    <button HREF="list.html" class="btn btn-large btn-primary" type="button">List</button>
 
-        </br>
-
-        <div class=header>	
-            <jsp:include page="footer.jsp"/> 
+                </a>
+            </p>
         </div>
-
+            </div>  
+            <jsp:include page="footer.jsp"/> 
     </body>
 </html>
