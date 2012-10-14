@@ -7,16 +7,13 @@
         </a>
         <ul class="nav pull-right">
             <li class="">
-                <A HREF="index.html">Index</A>
+                <A HREF="login.html">Se Connecter</A>
             </li>
             <li class="">
-                <A HREF="login.html">Log In</A>
+                <A HREF="signin.html">S'enregister</A>
             </li>
             <li class="">
-                <A HREF="signin.html">Register</A>
-            </li>
-            <li class="">
-                <A HREF="about_us.html">About Us</A>
+                <A HREF="about_us.html">A Propos</A>
             </li>
         </ul>
     </div>

@@ -1,20 +1,21 @@
-<%-- 
-    Document   : error
-    Created on : 5 oct. 2012, 23:32:28
-    Author     : Xnl
---%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<jsp:include page="doctype.jsp"/> 
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ERROR Page</title>
-    </head>
+    <jsp:include page="head.jsp"/> 
     <body>
-        <h1>ErroR</h1></br>
-         <h2>${str}</h2>
+        <jsp:include page="header.jsp"/> 
+        <div class="hero-unit">
+            <h1>ErroR</h1></br>
+            <h2>${str}</h2>
+            <br>
+            <p>
+                <a
+                    <button HREF="index.html" class="btn btn-large btn-primary" type="button">Back to Home !</button>
+                </a>
+            </p>
+        </div>
     </body>
 </html>

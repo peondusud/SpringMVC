@@ -31,7 +31,7 @@ public class ContactController {
             return new ModelAndView("error", "str", str);
         }
         if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
 
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
             if (!arrContact.isEmpty()) {
@@ -136,7 +136,7 @@ public class ContactController {
             Contact old = Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(username)).getUserData().getTableContact().get(modContactID);
             //TODO test unique contact
             Contact modifyCtct = new Contact(nom, prenom, mail, phone, birthday);
-            Appz.getInstance().modifyContact_v2(username, old, modifyCtct);
+            Appz.getInstance().modifyContact(username, old, modifyCtct);
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
         }
@@ -156,7 +156,7 @@ public class ContactController {
             return new ModelAndView("error", "str", str);
         }
         if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
 
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
             if (!arrContact.isEmpty()) {
@@ -187,7 +187,7 @@ public class ContactController {
             return new ModelAndView("error", "str", str);
         }
         if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
 
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
             if (!arrContact.isEmpty()) {
@@ -220,7 +220,7 @@ public class ContactController {
             String pays = hsr.getParameter("addr_pays").toString();
             Address tmpAddr = new Address(nb, rue, ville, cp, pays);
             Address oldAddr = Appz.getInstance().getDataBase().get(modContactID).getUserData().getTableAddress().get(modaddrID);
-            Appz.getInstance().modifyAddrrV2( oldAddr, tmpAddr);            
+            Appz.getInstance().modifyAddr( oldAddr, tmpAddr);            
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
         } 

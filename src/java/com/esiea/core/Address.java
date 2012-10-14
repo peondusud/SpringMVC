@@ -1,16 +1,12 @@
 package com.esiea.core;
 
-import java.util.UUID;
-
-public class Address {
-
+public class Address 
+{
     private String number;
     private String rue;
     private String ville;
     private String cp;
     private String pays;
-    private String nickAddress;
-    private String uuid;
 
     public Address( String number, String rue, String ville, String cp, String pays) {
         this.number = number;
@@ -18,17 +14,7 @@ public class Address {
         this.ville = ville;
         this.cp = cp;
         this.pays = pays;
-        this.nickAddress = "defaut";
-        this.uuid = UUID.randomUUID().toString();
 
-    }
-
-    public String getNickAddress() {
-        return nickAddress;
-    }
-
-    public void setNickAddress(String nickAddress) {
-        this.nickAddress = nickAddress;
     }
 
     public String getNumber() {
@@ -71,9 +57,6 @@ public class Address {
         this.pays = pays;
     }
 
-    public String getUuid() {
-        return uuid;
-    }
 
     @Override
     public String toString() {
@@ -97,10 +80,24 @@ public class Address {
             return false;
         }
         final Address other = (Address) obj;
-        if ((this.uuid == null) ? (other.uuid != null) : !this.uuid.equals(other.uuid)) {
-            return false;
-        }
-        return true;
+        boolean isSameAddress=true;
+        isSameAddress=isSameAddress && number.equals(other.getNumber());
+        isSameAddress=isSameAddress && rue.equals(other.getRue());
+        isSameAddress=isSameAddress && ville.equals(other.getVille());
+        isSameAddress=isSameAddress && cp.equals(other.getCp());
+        isSameAddress=isSameAddress && cp.equals(other.getPays());
+        return isSameAddress;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 73 * hash + (this.number != null ? this.number.hashCode() : 0);
+        hash = 73 * hash + (this.rue != null ? this.rue.hashCode() : 0);
+        hash = 73 * hash + (this.ville != null ? this.ville.hashCode() : 0);
+        hash = 73 * hash + (this.cp != null ? this.cp.hashCode() : 0);
+        hash = 73 * hash + (this.pays != null ? this.pays.hashCode() : 0);
+        return hash;
     }
 
 }

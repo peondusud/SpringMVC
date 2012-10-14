@@ -1,17 +1,16 @@
-<%-- 
-    Document   : Success
-    Created on : 5 oct. 2012, 22:25:14
-    Author     : Xnl
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<jsp:include page="doctype.jsp"/> 
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
+    <jsp:include page="head.jsp"/> 
     <body>
-        <h1>Sign in successful</h1>
+        <jsp:include page="header.jsp"/> 
+        <div class="hero-unit">
+            <h1>Sign in successful</h1>
+            <br>
+            <p>
+                <a
+                    <button HREF="index.html" class="btn btn-large btn-primary" type="button">Back to Home !</button>
+                </a>
+            </p>
+        </div>
     </body>
 </html>

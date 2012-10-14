@@ -62,14 +62,13 @@ public final class Appz
         dataBase.add(usr);
     }
 
-    public Boolean isLoginPresent(String str) 
+    public Boolean isLoginPresentInDataBase(String str) 
     {
-        //TODO chech si login existe
         Iterator<User> itr = dataBase.iterator();
         while (itr.hasNext()) 
         {
             User element = itr.next();
-            if (element.getId().equals(str)) 
+            if (element.getUsername().equals(str)) 
             {
                 return true;
             }
@@ -82,14 +81,14 @@ public final class Appz
         dataBase.add(usr);
     }
 
-    public User userPresentLogin(String str) 
+    public User getUserFromLogin(String str) 
     {
 
         Iterator<User> itr = dataBase.iterator();
         while (itr.hasNext()) 
         {
             User element = itr.next();
-            if (element.getId().equals(str)) 
+            if (element.getUsername().equals(str)) 
             {
                 return element;
             }
@@ -105,7 +104,7 @@ public final class Appz
         while (itr.hasNext()) 
         {
             User element = itr.next();
-            if (element.getId().equals(str)) 
+            if (element.getUsername().equals(str)) 
             {
                 return count;
             }
@@ -116,81 +115,41 @@ public final class Appz
 
     public void addContact(String str, Contact ctct, Address addr) throws Exception 
     {
-
-        User usr = userPresentLogin(str);
+        User usr = getUserFromLogin(str);
         usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
     }
 
     public void addContact(String str, Contact ctct) throws Exception 
     {
-
-        User usr = userPresentLogin(str);
+        User usr = getUserFromLogin(str);
         usr.getUserData().InsertContact(ctct);
     }
 
     public void modifyContact(String str, Contact old_ctct, Contact modify_ctct) throws Exception 
     {
 
-        User usr = userPresentLogin(str);
-        ArrayList<Address> addr = usr.getUserData().getAddressAssociatedToContact(old_ctct);
-        usr.getUserData().removeContact(old_ctct);
-        Iterator<Address> itr = addr.iterator();
-        while (itr.hasNext()) {
-            usr.getUserData().InsertAddressAssociatedToContact(modify_ctct, itr.next());
-        }
-    }
-
-    public void modifyContact_v2(String str, Contact old_ctct, Contact modify_ctct) throws Exception 
-    {
-
-        User usr = userPresentLogin(str);
-        old_ctct.setBrithday(modify_ctct.getBrithday());
+        old_ctct.setBirthday(modify_ctct.getBirthday());
         old_ctct.setEmails(modify_ctct.getEmails());
         old_ctct.setName(modify_ctct.getName());
         old_ctct.setPhones(modify_ctct.getPhones());
         old_ctct.setSurname(modify_ctct.getSurname());
-        //  usr.getUserData().
     }
 
-    public boolean modifyAddrr(String str, Contact ctct, Address addr, Address newAddr) throws Exception 
+    public void modifyAddr(Address addr, Address newAddr) throws Exception 
     {
-
-        User usr = userPresentLogin(str);
-        ArrayList<Address> addressAssociatedToContact = usr.getUserData().getAddressAssociatedToContact(ctct);
-        Iterator<Address> itr = addressAssociatedToContact.iterator();
-        while (itr.hasNext()) 
-        {
-            Address element = itr.next();
-            if (element.equals(addr)) 
-            {
-                element.setNickAddress(newAddr.getNickAddress());
-                element.setCp(newAddr.getCp());
-                element.setNumber(newAddr.getNumber());
-                element.setPays(newAddr.getPays());
-                element.setRue(newAddr.getRue());
-                element.setVille(newAddr.getVille());
-                return true;
-            }
-        }
-        return false;
+        addr.setCp(newAddr.getCp());
+        addr.setNumber(newAddr.getNumber());
+        addr.setPays(newAddr.getPays());
+        addr.setRue(newAddr.getRue());
+        addr.setVille(newAddr.getVille());
     }
-    
-        public void modifyAddrrV2( Address addr, Address newAddr) throws Exception 
-        {
-                addr.setNickAddress(newAddr.getNickAddress());
-                addr.setCp(newAddr.getCp());
-                addr.setNumber(newAddr.getNumber());
-                addr.setPays(newAddr.getPays());
-                addr.setRue(newAddr.getRue());
-                addr.setVille(newAddr.getVille());
-        }
 
     public boolean checkLoginPass(String login, String pcw) 
     {
         User usr = null;
         try 
         {
-            usr = userPresentLogin(login);
+            usr = getUserFromLogin(login);
         } 
         catch (Exception e) 
         {
@@ -206,11 +165,12 @@ public final class Appz
         }
     }
 
-    public boolean testPcwHash(String login, String hashpcw) {
+    public boolean testPcwHash(String login, String hashpcw) 
+    {
         User usr;
         try 
         {
-            usr = userPresentLogin(login);
+            usr = getUserFromLogin(login);
         } 
         catch (Exception e) 
         {

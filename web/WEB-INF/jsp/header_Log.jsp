@@ -16,13 +16,10 @@
         </ul>
         <ul class="nav pull-right">
             <li class="">
-                <A HREF="index.html">Index</A>
+                <A HREF="logout.html">Se Deconnecter</A>
             </li>
             <li class="">
-                <A HREF="logout.html">Logout</A>
-            </li>
-            <li class="">
-                <A HREF="about_us.html">About Us</A>
+                <A HREF="about_us.html">A propos</A>
             </li>
         </ul>
     </div>

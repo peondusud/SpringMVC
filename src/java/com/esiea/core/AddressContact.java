@@ -5,10 +5,10 @@ public class AddressContact
     private Address Address;
     private Contact Contact;
     
-    public AddressContact(Contact UUIDCon, Address UUIDAdd)
+    public AddressContact(Contact Con, Address Add)
     {
-        this.Address=UUIDAdd;
-        this.Contact=UUIDCon;
+        this.Address=Add;
+        this.Contact=Con;
     }
 
     public Address getAddress() 

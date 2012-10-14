@@ -1,22 +1,12 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<jsp:include page="doctype.jsp"/> 
 <html>
-
-    <head>
-        <meta charset="utf-8" />
-        <title>Inscription</title>
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/css-perso.css" rel="stylesheet">
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src="js/bootstrap.js"></script>
-    </head>
-
+<jsp:include page="head.jsp"/> 
     <body>
         <jsp:include page="header.jsp"/> 
-
         <div class="block">
             <div class="centered">
                 <form:form METHOD="POST" name="text_form" ACTION="signinc.html">

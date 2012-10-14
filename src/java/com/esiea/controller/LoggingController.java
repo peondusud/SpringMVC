@@ -56,17 +56,23 @@ public class LoggingController {
         Object lastname = hsr.getParameter("lastname");
         Object email = hsr.getParameter("email");
         Object phone = hsr.getParameter("telephone");
-        if (login != null && pcw != null && firstname != null && lastname != null && email != null && phone != null) {
-            if (com.esiea.core.Appz.getInstance().isLoginPresent(login.toString())) {
+        
+        if (login != null && pcw != null && firstname != null && lastname != null && email != null && phone != null) 
+        {
+            if (com.esiea.core.Appz.getInstance().isLoginPresentInDataBase(login.toString())) 
+            {
+                CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"error");
                 String str = "login already used";
-                return new ModelAndView("error", "str", str);
+                customModelAndView.addObject("str", str);
+                return customModelAndView;
             }
-
             Appz.getInstance().addUser(new User(login.toString(), pcw.toString()));
-            return new ModelAndView("success");
+            return new CustomModelAndView(hsr,hsr1,"success");
         }
+        CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"error");
         String str = "missed signin field";
-        return new ModelAndView("error", "str", str);
+        customModelAndView.addObject("str", str);
+        return customModelAndView;
     }
     
     @RequestMapping(value = "/login_v", method = RequestMethod.POST)
@@ -77,34 +83,47 @@ public class LoggingController {
         String userPass = hsr.getParameter("password");
         String userPassCookie = (String) session.getAttribute("password");
 
-        if (userPassCookie == null && userPass == null) {
-            return new ModelAndView("login");
-        } else if (userPassCookie != null && userPass == null) {
-            return new ModelAndView("redirect:/list_show.html");
-        } else if (userPass != null && userPassCookie == null) {
-
-            if (Appz.getInstance().checkLoginPass(userName, userPass)) {
-                try {
+        if (userPassCookie == null && userPass == null) 
+        {
+            return new CustomModelAndView(hsr,hsr1,"login");
+        } 
+        else if (userPassCookie != null && userPass == null) 
+        {
+            return new CustomModelAndView(hsr,hsr1,"redirect:/list_show.html");
+        } 
+        else if (userPass != null && userPassCookie == null) 
+        {
+            if (Appz.getInstance().checkLoginPass(userName, userPass)) 
+            {
+                try 
+                {
                     session.setAttribute("username", userName);
                     MessageDigest instance = MessageDigest.getInstance("MD5");
                     byte[] bytes = userPass.getBytes();
                     byte[] digest = instance.digest(bytes);
                     String toString = new String(digest);
                     session.setAttribute("password", toString);
-                    return new ModelAndView("redirect:/index.html");
-                } catch (NoSuchAlgorithmException ex) {
-                    return new ModelAndView("redirect:/");
+                    return new CustomModelAndView(hsr,hsr1,"redirect:/index.html");
+                } 
+                catch (NoSuchAlgorithmException ex) 
+                {
+                    return new CustomModelAndView(hsr,hsr1,"redirect:/");
                 }
-            } else {
+            } 
+            else 
+            {
                 String str = "login  password error";
-                return new ModelAndView("error", "str", str);
+                CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "error");
+                customModelAndView.addObject("str", str);
+                return customModelAndView;
             }
 
-        } else {
+        } 
+        else 
+        {
             session.invalidate();
-            return new ModelAndView("redirect:/");
+            return new CustomModelAndView(hsr,hsr1,"redirect:/");
         }
-
     }
     
 }

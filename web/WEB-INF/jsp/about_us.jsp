@@ -1,15 +1,11 @@
-<jsp:include page="doctype.jsp"/> 
-<html>
-<jsp:include page="head.jsp"/> 
-    <body>
-        <div class=header>	
-            <jsp:include page="header.jsp"/>
-        </div>	
-        <h1>About Us !</h1>
+<jsp:include page="PageTop.jsp"/> 
 
+<div class="container">
+    <div class="hero-unit">
+        <h1>About Us ! 
+            <br>
+            Not Much To Tell :P</h1>
+    </div>
+</div>
 
-        <div class=footer>	
-            <jsp:include page="footer.jsp"/> 
-        </div>
-    </body>
-</html>
+<jsp:include page="PageBottom.jsp"/> 
