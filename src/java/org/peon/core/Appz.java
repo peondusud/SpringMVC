@@ -239,21 +239,5 @@ public final class Appz {
         }
     }
     
-    public boolean isCorreclyLogged(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        try {
-            HttpSession session = hsr.getSession();
-            String username = session.getAttribute("username").toString();
-            String pcw = session.getAttribute("password").toString();
-            return Appz.getInstance().testPcwHash(username, pcw);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-    
-    public String getUsername(HttpServletRequest hsr)
-    {
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        return username;
-    }
+
 }
