@@ -13,7 +13,7 @@
             <jsp:include page="header.jsp"/> 
         </div>	
         <p>Hello!</p>
-        <p><i> This is the default welcome page for a Spring Web MVC project.</i></p>
+        <p><i> ahahhahhahahah.</i></p>
 
         </br>
 
