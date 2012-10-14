@@ -86,9 +86,9 @@ public class CustomerController {
     public ModelAndView add_addr_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
 
         HttpSession session = hsr.getSession();
-        String toString = session.getAttribute("username").toString();
-        String toString1 = session.getAttribute("password").toString();
-        boolean test = Appz.getInstance().testPcwHash(toString, toString1);
+        String username = session.getAttribute("username").toString();
+        String pcw = session.getAttribute("password").toString();
+        boolean test = Appz.getInstance().testPcwHash(username, pcw);
 
         if (test) {
             Contact tmpContact = (Contact) session.getAttribute("contactOject");
@@ -101,7 +101,7 @@ public class CustomerController {
             String pays = hsr.getParameter("addr_pays").toString();
 
             Address tmpAddr = new Address(nb, rue, ville, cp, pays);
-            Appz.getInstance().addContact(session.getAttribute("username").toString(), tmpContact, tmpAddr);
+            Appz.getInstance().addContact(username, tmpContact, tmpAddr);
             return new ModelAndView("new_add_addr");
 
         } else {
@@ -181,7 +181,7 @@ public class CustomerController {
 
         //TODO
         HttpSession session = hsr.getSession();
-        int modAddrID = Integer.valueOf(hsr.getAttribute("modaddrID").toString());
+         int modAddrID = Integer.valueOf(hsr.getParameter("modaddrID"));
 
         String userLoginCookie = (String) session.getAttribute("username");
         String userPassCookie = (String) session.getAttribute("password");
@@ -207,15 +207,15 @@ public class CustomerController {
         return new ModelAndView("error");
     }
 
-    @RequestMapping(value = "/modify_addr_v")
+    @RequestMapping(value = "/modify_addr_v",  method = RequestMethod.POST)
     public ModelAndView modify_adrr_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
 
         //TODO
         HttpSession session = hsr.getSession();
         String username = session.getAttribute("username").toString();
         String pcw = session.getAttribute("password").toString();
-        int modContactID = Integer.valueOf(session.getAttribute("modaddrID").toString());
-
+        int modaddrID = Integer.valueOf(session.getAttribute("modaddrID").toString());
+        int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
         if (Appz.getInstance().testPcwHash(username, pcw)) {
             Contact tmpContact = (Contact) session.getAttribute("contactOject");
 
@@ -225,7 +225,9 @@ public class CustomerController {
             String ville = hsr.getParameter("addr_ville").toString();
             String cp = hsr.getParameter("addr_cp").toString();
             String pays = hsr.getParameter("addr_pays").toString();
-
+            Address tmpAddr = new Address(nb, rue, ville, cp, pays);
+            Address oldAddr = Appz.getInstance().getDataBase().get(modContactID).getUserData().getTableAddress().get(modaddrID);
+            Appz.getInstance().modifyAddrrV2( oldAddr, tmpAddr);            
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
         } else {
