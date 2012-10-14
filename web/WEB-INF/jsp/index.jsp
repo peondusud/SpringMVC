@@ -9,13 +9,14 @@
     </head>
 
     <body>
+        <div class=header>	
+            <jsp:include page="header.jsp"/> 
+        </div>	
         <p>Hello!</p>
         <p><i> This is the default welcome page for a Spring Web MVC project.</i></p>
 
         </br>
-        <div class=header>	
-            <jsp:include page="header.jsp"/> 
-        </div>	
+
         <div class=header>	
             <jsp:include page="footer.jsp"/> 
         </div>
