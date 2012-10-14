@@ -19,7 +19,7 @@
                 <A HREF="logout.html">Se Deconnecter</A>
             </li>
             <li class="">
-                <A HREF="about_us.html">A propos</A>
+                <A HREF="about_us.html">A Propos</A>
             </li>
         </ul>
     </div>

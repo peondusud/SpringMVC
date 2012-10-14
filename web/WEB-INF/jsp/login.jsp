@@ -9,7 +9,7 @@
         <div class="hero-unit">
             <div class="centered">
                 <form:form method="post" action="login_v.html">
-                    <h1>Formulaire d'Intenfication</h1>
+                    <h1>Formulaire d'identification</h1>
                     <div class="centered">
                         <form class="form-horizontal">
 

@@ -3,10 +3,10 @@
 <div class="container">
     <div class="hero-unit">
         <h1>Gestionnaire de contacts</h1>
-        <p>Tagline</p>
+        <br> 
         <p>
             <a
-                <button HREF="list.html" class="btn btn-large btn-primary" type="button">List</button>
+                <button HREF="list_show.html" class="btn btn-large btn-primary" type="button"> Voir ma liste de contacts!</button>
             </a>
         </p>
     </div>

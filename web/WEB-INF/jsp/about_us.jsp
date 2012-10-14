@@ -2,9 +2,9 @@
 
 <div class="container">
     <div class="hero-unit">
-        <h1>About Us ! 
+        <h1>A Propos ! 
             <br>
-            Not Much To Tell :P</h1>
+            Pas grand chose a dire :P</h1>
     </div>
 </div>
 

@@ -9,6 +9,8 @@ import com.esiea.core.Appz;
 import com.esiea.core.Contact;
 import com.esiea.core.User;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,37 +20,44 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class ContactController {
+public class ContactController 
+{
     
-        @RequestMapping(value = "/list_add", method = RequestMethod.GET)
-    public ModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        HttpSession session = hsr.getSession();
-        String userLoginCookie = (String) session.getAttribute("username");
-        String userPassCookie = (String) session.getAttribute("password");
-
-        if (userPassCookie == null || userLoginCookie == null) {
-            String str = "not logged";
-            return new ModelAndView("error", "str", str);
-        }
-        if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
-
+    
+    @RequestMapping(value = "/add_contact")
+    public ModelAndView add_contact_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        return new CustomModelAndView(hsr,hsr1,"new_add_contact");
+    }
+        
+        
+    @RequestMapping(value = "/list_add", method = RequestMethod.GET)
+    public ModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        try {
+            User usrLogin = ServerUtils.getUser(hsr, hsr1);
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
             if (!arrContact.isEmpty()) {
                 Contact ctct = arrContact.get(Integer.valueOf(hsr.getParameter("contactID")));
                 ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
                 if (!addrs.isEmpty()) {
-                    return new ModelAndView("list_add", "addrs", addrs);
+                    CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "list_add");
+                    customModelAndView.addObject("addrs", addrs);
+                    return customModelAndView;
+                } else {
+                    return new CustomModelAndView(hsr, hsr1, "index");
                 }
+
+            } else {
+                return new CustomModelAndView(hsr, hsr1, "index");
             }
+
+        } catch (Exception e) {
+            hsr.getSession().invalidate();
+            return new CustomModelAndView(hsr, hsr1, "index");
         }
-        return null;
     }
 
-    @RequestMapping(value = "/add_contact")
-    public ModelAndView add_contact_page() {
-        return new ModelAndView("new_add_contact");
-    }
+
 
     @RequestMapping(value = "/add_contact_v", method = RequestMethod.POST)
     public ModelAndView add_contact_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
@@ -255,19 +264,17 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/list_show", method = RequestMethod.GET)
-    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1)
-    {
-        if (ServerUtils.isCorreclyLogged(hsr, hsr1)) 
-        {
-            String username = ServerUtils.getUsername(hsr);
+    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        try {
+            User user = ServerUtils.getUser(hsr, hsr1);
+            String username = user.getUsername();
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
-            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1,"list_show");
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "list_show");
             modelAndView.addObject("arrContact", arrContact);
             return modelAndView;
-        } 
-        else 
-        {
-            return new ModelAndView("login");
+        } catch (Exception ex) {
+            return new CustomModelAndView(hsr, hsr1, "index");
         }
     }
+    
 }

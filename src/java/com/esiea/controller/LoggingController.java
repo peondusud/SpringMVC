@@ -62,7 +62,7 @@ public class LoggingController {
             if (com.esiea.core.Appz.getInstance().isLoginPresentInDataBase(login.toString())) 
             {
                 CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"error");
-                String str = "login already used";
+                String str = "Le nom d'utilisateur est deja utilise!";
                 customModelAndView.addObject("str", str);
                 return customModelAndView;
             }
@@ -70,7 +70,7 @@ public class LoggingController {
             return new CustomModelAndView(hsr,hsr1,"success");
         }
         CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"error");
-        String str = "missed signin field";
+        String str = "Le serveur a rencontre un probleme!";
         customModelAndView.addObject("str", str);
         return customModelAndView;
     }
@@ -112,7 +112,7 @@ public class LoggingController {
             } 
             else 
             {
-                String str = "login  password error";
+                String str = "Nom d'utilisateur ou mot de passe incorrect!";
                 CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "error");
                 customModelAndView.addObject("str", str);
                 return customModelAndView;
