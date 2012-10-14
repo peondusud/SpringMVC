@@ -22,7 +22,7 @@
             <jsp:include page="header.jsp"/> 
         </div>	
         <div class=status>		
-            <p>Liste de contact</p>
+            <p>Modify Contact</p>
         </div>		
         <form:form METHOD="POST" ACTION="modify_contact_v.html">
             <div class=table>

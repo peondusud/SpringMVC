@@ -26,7 +26,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/list_add", method = RequestMethod.GET)
-    public ModelAndView list(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
+    public ModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
         HttpSession session = hsr.getSession();
         String userLoginCookie = (String) session.getAttribute("username");
         String userPassCookie = (String) session.getAttribute("password");
@@ -39,10 +39,10 @@ public class CustomerController {
             User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
 
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
-            if (arrContact.size() != 0) {
+            if (!arrContact.isEmpty()) {
                 Contact ctct = arrContact.get(Integer.valueOf(hsr.getParameter("contactID")));
                 ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
-                if (addrs.size() != 0) {
+                if (!addrs.isEmpty()) {
                     return new ModelAndView("list_add", "addrs", addrs);
                 }
             }
@@ -152,15 +152,59 @@ public class CustomerController {
     @RequestMapping(value = "/modify_addrs")
     public ModelAndView modify_adrrs_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
 
+        HttpSession session = hsr.getSession();
+        String userLoginCookie = (String) session.getAttribute("username");
+        String userPassCookie = (String) session.getAttribute("password");
+        int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
+        if (userPassCookie == null || userLoginCookie == null) {
+            String str = "not logged";
+            return new ModelAndView("error", "str", str);
+        }
+        if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
+            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+
+            ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
+            if (!arrContact.isEmpty()) {
+                Contact ctct = arrContact.get(modContactID);
+                ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
+                if (!addrs.isEmpty()) {
+                    return new ModelAndView("new_modify_addrs", "addrs", addrs);
+                }
+            }
+        }
         //TODO
-        return new ModelAndView("new_modify_addrs");
+        return new ModelAndView("error");
     }
 
-    @RequestMapping(value = "/modify_addr")
+    @RequestMapping(value = "/modify_addr", method = RequestMethod.GET)
     public ModelAndView modify_adrr_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
 
         //TODO
-        return new ModelAndView("list_show");
+        HttpSession session = hsr.getSession();
+        int modAddrID = Integer.valueOf(hsr.getAttribute("modaddrID").toString());
+        
+        String userLoginCookie = (String) session.getAttribute("username");
+        String userPassCookie = (String) session.getAttribute("password");
+        int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
+         session.setAttribute("modaddrID", modAddrID);
+        if (userPassCookie == null || userLoginCookie == null) {
+            String str = "not logged";
+            return new ModelAndView("error", "str", str);
+        }
+        if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
+            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+
+            ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
+            if (!arrContact.isEmpty()) {
+                Contact ctct = arrContact.get(modContactID);
+                Address addr = usrLogin.getUserData().getAddressAssociatedToContact(ctct).get(modAddrID);
+                if (addr != null) {
+                    return new ModelAndView("new_modify_addr", "addr", addr);
+                }
+            }
+        }
+            //TODO
+        return new ModelAndView("error");
     }
 
     @RequestMapping(value = "/modify_addr_v")
@@ -170,7 +214,7 @@ public class CustomerController {
         HttpSession session = hsr.getSession();
         String username = session.getAttribute("username").toString();
         String pcw = session.getAttribute("password").toString();
-
+       int modContactID = Integer.valueOf(session.getAttribute("modaddrID").toString());
 
         if (Appz.getInstance().testPcwHash(username, pcw)) {
             Contact tmpContact = (Contact) session.getAttribute("contactOject");
@@ -195,6 +239,12 @@ public class CustomerController {
         Appz instance = Appz.getInstance();
         return new ModelAndView("index");
     }
+    
+        @RequestMapping(value = "/about_us")
+    public ModelAndView about_us_page() {
+        
+        return new ModelAndView("about_us");
+    }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public ModelAndView delete(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
@@ -215,10 +265,11 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/list_show", method = RequestMethod.GET)
-    public ModelAndView list_show(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
+    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
         HttpSession session = hsr.getSession();
         String username = session.getAttribute("username").toString();
-        if (Appz.getInstance().testPcwHash(username, session.getAttribute("password").toString())) {
+        String pcw = session.getAttribute("password").toString();
+        if (Appz.getInstance().testPcwHash(username, pcw )) {
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
 
