@@ -19,11 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CustomerController {
 
-    protected ModelAndView handleRequestInternal(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        ModelAndView model = null;
-
-        return model;
-    }
 
     @RequestMapping(value = "/list_add", method = RequestMethod.GET)
     public ModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
@@ -237,9 +232,11 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/index")
-    public ModelAndView home() {
-        Appz instance = Appz.getInstance();
-        return new ModelAndView("index");
+    public ModelAndView home(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
+        
+        ModelAndView modelAndView = createModelAndView(hsr, hsr1);
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/logout")
@@ -274,17 +271,18 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/list_show", method = RequestMethod.GET)
-    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        String pcw = session.getAttribute("password").toString();
-        if (Appz.getInstance().testPcwHash(username, pcw)) {
-            ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
-            return new ModelAndView("list_show", "arrContact", arrContact);
+    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1)
+            throws Exception {
 
+        if (isCorreclyLogged(hsr, hsr1)) {
+            String username = getUsername(hsr);
+            ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
+            ModelAndView modelAndView = createModelAndView(hsr, hsr1);
+            modelAndView.setViewName("list_show");
+            modelAndView.addObject("arrContact", arrContact);
+            return modelAndView;
         } else {
-            String str = "please Log in ";
-            return new ModelAndView("error", "str", str);
+            return new ModelAndView("login");
         }
     }
 
@@ -352,5 +350,31 @@ public class CustomerController {
             return new ModelAndView("redirect:/");
         }
 
+    }
+    
+        public boolean isCorreclyLogged(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        try {
+            HttpSession session = hsr.getSession();
+            String username = session.getAttribute("username").toString();
+            String pcw = session.getAttribute("password").toString();
+            return Appz.getInstance().testPcwHash(username, pcw);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    public String getUsername(HttpServletRequest hsr)
+    {
+        HttpSession session = hsr.getSession();
+        String username = session.getAttribute("username").toString();
+        return username;
+    }
+
+    private ModelAndView createModelAndView(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        
+        boolean test = isCorreclyLogged(hsr, hsr1);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("isLogged",test );
+        return modelAndView;
     }
 }
