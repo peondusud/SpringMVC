@@ -130,11 +130,36 @@ public final class Appz {
         //  usr.getUserData().
     }
 
-    public void modifyAddrr(String str, Contact ctct, Address addr) throws Exception {
+    public boolean modifyAddrr(String str, Contact ctct, Address addr, Address newAddr) throws Exception {
 
         User usr = userPresentLogin(str);
-        // usr.getUserData().
-        usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
+        ArrayList<Address> addressAssociatedToContact = usr.getUserData().getAddressAssociatedToContact(ctct);
+        Iterator<Address> itr = addressAssociatedToContact.iterator();
+        while (itr.hasNext()) {
+            Address element = itr.next();
+            if (element.equals(addr)) {
+                element.setNickAddress(newAddr.getNickAddress());
+                element.setCp(newAddr.getCp());
+                element.setNumber(newAddr.getNumber());
+                element.setPays(newAddr.getPays());
+                element.setRue(newAddr.getRue());
+                element.setVille(newAddr.getVille());
+                return true;
+            }
+        }
+        return false;
+    }
+    
+        public void modifyAddrrV2( Address addr, Address newAddr) throws Exception {
+
+
+                addr.setNickAddress(newAddr.getNickAddress());
+                addr.setCp(newAddr.getCp());
+                addr.setNumber(newAddr.getNumber());
+                addr.setPays(newAddr.getPays());
+                addr.setRue(newAddr.getRue());
+                addr.setVille(newAddr.getVille());
+ 
     }
 
     public boolean checkLoginPass(String login, String pcw) {
@@ -202,10 +227,10 @@ public final class Appz {
             Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
             int size2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().size();
             if (size2 != 0) {
-            Address addrs = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().get(addrIndice);
-            if (addrs != null) {
-                Appz.getInstance().getDataBase().get(userIndice).getUserData().removeAddressAssociatedToContact(addrs, ctct);
-            }
+                Address addrs = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().get(addrIndice);
+                if (addrs != null) {
+                    Appz.getInstance().getDataBase().get(userIndice).getUserData().removeAddressAssociatedToContact(addrs, ctct);
+                }
             }
         }
     }
