@@ -274,11 +274,12 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/list_show", method = RequestMethod.GET)
-    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
+    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1)
+            throws Exception {
         HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        String pcw = session.getAttribute("password").toString();
-        if (Appz.getInstance().testPcwHash(username, pcw)) {
+
+        if (Appz.getInstance().isCorreclyLogged(hsr, hsr1)) {
+            String username = session.getAttribute("username").toString();
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
 
