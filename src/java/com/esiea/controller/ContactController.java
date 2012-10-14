@@ -1,54 +1,63 @@
-package com.test.controller;
-
-/**
- *
- * @author Xnl
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+package com.esiea.controller;
+
+import com.esiea.core.Address;
+import com.esiea.core.Appz;
+import com.esiea.core.Contact;
+import com.esiea.core.User;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.peon.core.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class CustomerController {
-
-
+public class ContactController 
+{
+    
+    
+    @RequestMapping(value = "/add_contact")
+    public ModelAndView add_contact_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        return new CustomModelAndView(hsr,hsr1,"new_add_contact");
+    }
+        
+        
     @RequestMapping(value = "/list_add", method = RequestMethod.GET)
-    public ModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        HttpSession session = hsr.getSession();
-        String userLoginCookie = (String) session.getAttribute("username");
-        String userPassCookie = (String) session.getAttribute("password");
-
-        if (userPassCookie == null || userLoginCookie == null) {
-            String str = "not logged";
-            return new ModelAndView("error", "str", str);
-        }
-        if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
-
+    public ModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        try {
+            User usrLogin = ServerUtils.getUser(hsr, hsr1);
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
             if (!arrContact.isEmpty()) {
                 Contact ctct = arrContact.get(Integer.valueOf(hsr.getParameter("contactID")));
                 ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
                 if (!addrs.isEmpty()) {
-                    return new ModelAndView("list_add", "addrs", addrs);
+                    CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "list_add");
+                    customModelAndView.addObject("addrs", addrs);
+                    return customModelAndView;
+                } else {
+                    return new CustomModelAndView(hsr, hsr1, "index");
                 }
+
+            } else {
+                return new CustomModelAndView(hsr, hsr1, "index");
             }
+
+        } catch (Exception e) {
+            hsr.getSession().invalidate();
+            return new CustomModelAndView(hsr, hsr1, "index");
         }
-        return null;
     }
 
-    @RequestMapping(value = "/add_contact")
-    public ModelAndView add_contact_page() {
-        return new ModelAndView("new_add_contact");
-    }
+
 
     @RequestMapping(value = "/add_contact_v", method = RequestMethod.POST)
     public ModelAndView add_contact_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
@@ -136,7 +145,7 @@ public class CustomerController {
             Contact old = Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(username)).getUserData().getTableContact().get(modContactID);
             //TODO test unique contact
             Contact modifyCtct = new Contact(nom, prenom, mail, phone, birthday);
-            Appz.getInstance().modifyContact_v2(username, old, modifyCtct);
+            Appz.getInstance().modifyContact(username, old, modifyCtct);
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
         }
@@ -156,7 +165,7 @@ public class CustomerController {
             return new ModelAndView("error", "str", str);
         }
         if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
 
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
             if (!arrContact.isEmpty()) {
@@ -187,7 +196,7 @@ public class CustomerController {
             return new ModelAndView("error", "str", str);
         }
         if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().userPresentLogin(userLoginCookie);
+            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
 
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
             if (!arrContact.isEmpty()) {
@@ -211,10 +220,8 @@ public class CustomerController {
         String pcw = session.getAttribute("password").toString();
         int modaddrID = Integer.valueOf(session.getAttribute("modaddrID").toString());
         int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
-        if (Appz.getInstance().testPcwHash(username, pcw)) {
-            Contact tmpContact = (Contact) session.getAttribute("contactOject");
-
-            String nick = hsr.getParameter("addr_nick").toString();
+        if (Appz.getInstance().testPcwHash(username, pcw)) 
+        {
             String nb = hsr.getParameter("addr_nb").toString();
             String rue = hsr.getParameter("addr_rue").toString();
             String ville = hsr.getParameter("addr_ville").toString();
@@ -222,35 +229,18 @@ public class CustomerController {
             String pays = hsr.getParameter("addr_pays").toString();
             Address tmpAddr = new Address(nb, rue, ville, cp, pays);
             Address oldAddr = Appz.getInstance().getDataBase().get(modContactID).getUserData().getTableAddress().get(modaddrID);
-            Appz.getInstance().modifyAddrrV2( oldAddr, tmpAddr);            
+            Appz.getInstance().modifyAddr( oldAddr, tmpAddr);            
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
-        } else {
+        } 
+        else 
+        {
             String str = "please Log in ";
             return new ModelAndView("error", "str", str);
         }
     }
 
-    @RequestMapping(value = "/index")
-    public ModelAndView home(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        
-        ModelAndView modelAndView = createModelAndView(hsr, hsr1);
-        modelAndView.setViewName("index");
-        return modelAndView;
-    }
 
-    @RequestMapping(value = "/logout")
-    public ModelAndView logout(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        HttpSession session = hsr.getSession();
-        session.invalidate();
-        return new ModelAndView("redirect:/");
-    }
-
-    @RequestMapping(value = "/about_us")
-    public ModelAndView about_us_page() {
-
-        return new ModelAndView("about_us");
-    }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public ModelAndView delete(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
@@ -258,12 +248,15 @@ public class CustomerController {
         int index = Integer.valueOf(hsr.getParameter("deleteID"));
         HttpSession session = hsr.getSession();
         String username = session.getAttribute("username").toString();
-        if (Appz.getInstance().testPcwHash(username, session.getAttribute("password").toString())) {
+        if (Appz.getInstance().testPcwHash(username, session.getAttribute("password").toString())) 
+        {
             Appz.getInstance().removeContact(username, index);
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
             return new ModelAndView("list_show", "arrContact", arrContact);
 
-        } else {
+        } 
+        else 
+        {
             String str = "please Log in ";
             return new ModelAndView("error", "str", str);
         }
@@ -271,110 +264,17 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/list_show", method = RequestMethod.GET)
-    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1)
-            throws Exception {
-
-        if (isCorreclyLogged(hsr, hsr1)) {
-            String username = getUsername(hsr);
+    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        try {
+            User user = ServerUtils.getUser(hsr, hsr1);
+            String username = user.getUsername();
             ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
-            ModelAndView modelAndView = createModelAndView(hsr, hsr1);
-            modelAndView.setViewName("list_show");
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "list_show");
             modelAndView.addObject("arrContact", arrContact);
             return modelAndView;
-        } else {
-            return new ModelAndView("login");
-        }
-    }
-
-    @RequestMapping(value = "/signinc", method = RequestMethod.POST)
-    public ModelAndView signinc(HttpServletRequest hsr, HttpServletResponse hsr1) {
-
-        Object login = hsr.getParameter("login");
-        Object pcw = hsr.getParameter("password");
-        Object firstname = hsr.getParameter("firstname");
-        Object lastname = hsr.getParameter("lastname");
-        Object email = hsr.getParameter("email");
-        Object phone = hsr.getParameter("telephone");
-        if (login != null && pcw != null && firstname != null && lastname != null && email != null && phone != null) {
-            if (org.peon.core.Appz.getInstance().isLoginPresent(login.toString())) {
-                String str = "login already used";
-                return new ModelAndView("error", "str", str);
-            }
-
-            Appz.getInstance().addUser(new User(login.toString(), pcw.toString()));
-            return new ModelAndView("success");
-        }
-        String str = "missed signin field";
-        return new ModelAndView("error", "str", str);
-    }
-
-    @RequestMapping(value = "/signin")
-    public ModelAndView signin(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        return new ModelAndView("signin");
-    }
-
-    @RequestMapping(value = "/login")
-    public ModelAndView loggin() {
-        return new ModelAndView("login");
-    }
-
-    @RequestMapping(value = "/login_v", method = RequestMethod.POST)
-    public ModelAndView loggin_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws NoSuchAlgorithmException, Exception {
-        HttpSession session = hsr.getSession();
-        String userName = hsr.getParameter("username");
-        String userPass = hsr.getParameter("password");
-        String userPassCookie = (String) session.getAttribute("password");
-
-        if (userPassCookie == null && userPass == null) {
-            return new ModelAndView("login");
-        } else if (userPassCookie != null && userPass == null) {
-            return new ModelAndView("redirect:/list_show.html");
-        } else if (userPass != null && userPassCookie == null) {
-
-            if (Appz.getInstance().checkLoginPass(userName, userPass)) {
-
-                session.setAttribute("username", userName);
-                MessageDigest instance = MessageDigest.getInstance("MD5");
-                byte[] bytes = userPass.getBytes();
-                byte[] digest = instance.digest(bytes);
-                String toString = new String(digest);
-                session.setAttribute("password", toString);
-                return new ModelAndView("redirect:/list_show.html");
-            } else {
-                String str = "login  password error";
-                return new ModelAndView("error", "str", str);
-            }
-
-        } else {
-            session.invalidate();
-            return new ModelAndView("redirect:/");
-        }
-
-    }
-    
-        public boolean isCorreclyLogged(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        try {
-            HttpSession session = hsr.getSession();
-            String username = session.getAttribute("username").toString();
-            String pcw = session.getAttribute("password").toString();
-            return Appz.getInstance().testPcwHash(username, pcw);
-        } catch (Exception e) {
-            return false;
+        } catch (Exception ex) {
+            return new CustomModelAndView(hsr, hsr1, "index");
         }
     }
     
-    public String getUsername(HttpServletRequest hsr)
-    {
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        return username;
-    }
-
-    private ModelAndView createModelAndView(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        
-        boolean test = isCorreclyLogged(hsr, hsr1);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("isLogged",test );
-        return modelAndView;
-    }
 }

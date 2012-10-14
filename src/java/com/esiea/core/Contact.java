@@ -1,4 +1,4 @@
-package org.peon.core;
+package com.esiea.core;
 
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -10,20 +10,14 @@ public class Contact {
     private String surname;
     private String emails;
     private String phones;
-    private String brithday;
-    private String uuid;
+    private String birthday;
 
     public Contact(String nom, String prenom, String email, String phone, String brithday) {
         this.name = nom;
         this.surname = prenom;
         this.emails = email;
         this.phones = phone;
-        this.brithday = brithday;
-        this.uuid = UUID.randomUUID().toString();
-    }
-
-    public String getUuid() {
-        return uuid;
+        this.birthday = brithday;
     }
 
     public String getName() {
@@ -58,12 +52,12 @@ public class Contact {
         this.phones = phones;
     }
 
-    public String getBrithday() {
-        return brithday;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setBrithday(String brithday) {
-        this.brithday = brithday;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
 
@@ -79,12 +73,12 @@ public class Contact {
         return m.matches();
     }
 
-    public void modifyContact(String nom, String prenom, String email, String phone, String brithday) {
+    public void modifyContact(String nom, String prenom, String email, String phone, String birthday) {
         this.name = nom;
         this.surname = prenom;
         this.emails = email;
         this.phones = phone;
-        this.brithday = brithday;
+        this.birthday = birthday;
     }
 
     @Override
@@ -96,9 +90,23 @@ public class Contact {
             return false;
         }
         final Contact other = (Contact) obj;
-        if ((this.uuid == null) ? (other.uuid != null) : !this.uuid.equals(other.uuid)) {
-            return false;
-        }
-        return true;
+        boolean isSameContact=true;
+        isSameContact=isSameContact && name.equals(other.getName());
+        isSameContact=isSameContact && surname.equals(other.getSurname());
+        isSameContact=isSameContact && emails.equals(other.getEmails());
+        isSameContact=isSameContact && birthday.equals(other.getBirthday());
+        isSameContact=isSameContact && phones.equals(other.getPhones());
+        return isSameContact;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 89 * hash + (this.surname != null ? this.surname.hashCode() : 0);
+        hash = 89 * hash + (this.emails != null ? this.emails.hashCode() : 0);
+        hash = 89 * hash + (this.phones != null ? this.phones.hashCode() : 0);
+        hash = 89 * hash + (this.birthday != null ? this.birthday.hashCode() : 0);
+        return hash;
     }
 }

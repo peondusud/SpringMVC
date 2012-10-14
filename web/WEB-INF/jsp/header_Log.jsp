@@ -7,33 +7,19 @@
         </a>
         <ul class="nav">
             <li class="">
-                <A HREF="list_show.html">Liste de Contact</A></li>
+                <A HREF="list_show.html">Liste de Contact</A>
             </li>
             <li class="">
-                <A HREF="add_contact.html">Ajouter Contact</A></li>
+                <A HREF="add_contact.html">Ajouter Contact</A>
             </li>
-            <li class="">
-                <A HREF="list_show.html">Modifier Contact</A></li>
-            </li>
-            <li class="">
-                <A HREF="list_show.html">Supprimer Contact</A></li>
-            </li>
-            <li class="">
-                <A HREF="about_us.html">About Us</A></li>
-            </li>
+
         </ul>
         <ul class="nav pull-right">
             <li class="">
-                <A HREF="index.html">Index</A>
+                <A HREF="logout.html">Se Deconnecter</A>
             </li>
             <li class="">
-                <A HREF="login.html">Login</A>
-            </li>
-            <li class="">
-                <A HREF="signin.html">Signin</A> </li>
-            </li>
-            <li class="">
-                <A HREF="logout.html">Logout</A></li>
+                <A HREF="about_us.html">A Propos</A>
             </li>
         </ul>
     </div>
