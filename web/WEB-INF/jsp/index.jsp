@@ -7,6 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to Spring Web MVC project</title>
         <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/css-perso.css" rel="stylesheet">
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="js/bootstrap.js"></script>
     </head>
@@ -26,6 +27,10 @@
             </p>
         </div>
             </div>  
-            <jsp:include page="footer.jsp"/> 
+        <%--<jsp:include page="footer.jsp"/> --%>
+            
+            <div class="footerPerso">
+    <p> Dev By petiois, peondusud, camille </p>
+</div>
     </body>
 </html>
