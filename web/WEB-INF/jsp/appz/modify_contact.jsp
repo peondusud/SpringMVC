@@ -28,7 +28,7 @@
                             <td><div class=prenom><input type="text" name="prenom" size="10" value="<c:out value="${contact.surname}"/>" required="required" placeholder="Prenom"></div></td>
                             <td><div class=list_mail><input type="email" name="mail" size="10" value="<c:out value="${contact.emails}"/>" required="mail" placeholder="Email"></div></td>
                             <td><div class=list_mail><input type="tel" name="phone" size="10" value="<c:out value="${contact.phones}"/>" required="tel" placeholder="Telephone"></div></td>
-                            <td><div class=birthday><input type="int" name="birthday" size="10" value="<c:out value="${contact.brithday}"/>" required="required" placeholder="Age"></div></td>
+                            <td><div class=birthday><input type="int" name="birthday" size="10" value="<c:out value="${contact.birthday}"/>" required="required" placeholder="Age"></div></td>
                         </tr>
 
                 </table>
