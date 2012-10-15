@@ -288,6 +288,14 @@ public final class Appz
         return arrAddr;
     }
     
+    public boolean partialMatching(String testString, String pattern) {
+        String[] split = testString.split(pattern);
+        if (split.toString().equals(testString)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 
 }
