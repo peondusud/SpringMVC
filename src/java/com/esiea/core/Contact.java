@@ -1,6 +1,5 @@
 package com.esiea.core;
 
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -8,13 +8,27 @@ public class CustomModelAndView extends ModelAndView
 {
     public CustomModelAndView(HttpServletRequest hsr, HttpServletResponse hsr1) 
     {
-        boolean test = ServerUtils.isCorreclyLogged(hsr, hsr1);
+        boolean test;
+        try 
+        {
+            test = ServerUtils.isCorreclyLogged(hsr, hsr1);
+        } catch (Exception ex) 
+        {
+            test=false;
+        }
         this.addObject("isLogged", test);
     }
     
     public CustomModelAndView(HttpServletRequest hsr, HttpServletResponse hsr1, String view) 
     {
-        boolean test = ServerUtils.isCorreclyLogged(hsr, hsr1);
+        boolean test;
+        try 
+        {
+            test = ServerUtils.isCorreclyLogged(hsr, hsr1);
+        } catch (Exception ex) 
+        {
+            test=false;
+        }
         this.setViewName(view);
         this.addObject("isLogged", test);
     }

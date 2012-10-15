@@ -1,12 +1,20 @@
 package com.esiea.core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class UserData 
 {  
     private ArrayList<Contact> tableContact = new ArrayList<Contact>();
     private ArrayList<Address> tableAddress = new ArrayList<Address>();   
     private ArrayList<AddressContact> tableAddressContact = new ArrayList<AddressContact>();
+
+    public UserData() 
+    {
+        tableContact = new ArrayList<Contact>();
+        tableAddress = new ArrayList<Address>();
+        tableAddressContact = new ArrayList<AddressContact>();
+    }
 
     public ArrayList<Contact> getTableContact() {
         return tableContact;
@@ -139,5 +147,58 @@ public class UserData
             throw new Exception("Contact already presents in Database");
         }
     }
-     
+    
+    public void modifyContact(Contact contactToUpdate, Contact newUpdate) 
+    {
+        contactToUpdate.setBirthday(newUpdate.getBirthday());
+        contactToUpdate.setEmails(newUpdate.getEmails());
+        contactToUpdate.setName(newUpdate.getName());
+        contactToUpdate.setPhones(newUpdate.getPhones());
+        contactToUpdate.setSurname(newUpdate.getSurname());
+    }
+
+    
+    ////////////////////////
+    // Warning
+    ///////////////////////
+    // TODO check
+
+    public ArrayList<Contact> searchContact(String user, String str, Appz appz) {
+        ArrayList<Contact> arrCct = null;
+        int userIndice = appz.indexPresentLogin(user);
+        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
+        if (size != 0) {
+            ArrayList<Contact> tableContact = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact();
+            Iterator<Contact> itr = tableContact.iterator();
+            while (itr.hasNext()) {
+                Contact element = itr.next();
+                if (appz.partialMatching(element.getName(), str) || appz.partialMatching(element.getSurname(), str) || appz.partialMatching(element.getEmails(), str)) {
+                    arrCct.add(element);
+                }
+            }
+        }
+        return arrCct;
+    }
+
+    public ArrayList<Address> searchAddr(String user, String str, Appz appz) {
+        ArrayList<Address> arrAddr = null;
+        int userIndice = appz.indexPresentLogin(user);
+        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
+        if (size != 0) {
+            ArrayList<Contact> tableContact = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact();
+            Iterator<Contact> itr = tableContact.iterator();
+            while (itr.hasNext()) {
+                Contact element = itr.next();
+                Iterator<Address> itr2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getAddressAssociatedToContact(element).iterator();
+                while (itr2.hasNext()) {
+                    Address addr = itr2.next();
+                    if (appz.partialMatching(addr.getRue(), str) || appz.partialMatching(addr.getNumber(), str) || appz.partialMatching(addr.getVille(), str) || appz.partialMatching(addr.getCp(), str) || appz.partialMatching(addr.getPays(), str)) {
+                        arrAddr.add(addr);
+                    }
+                }
+            }
+        }
+        return arrAddr;
+    }
+  
 }

@@ -42,32 +42,28 @@ public final class Appz
     private void populate() 
     {
         User usr = new User("peon", "111");
-        User usr2 = new User("codec", "111");
         UserData usrData = new UserData();
-        UserData usrData2 = new UserData();
-        Contact ctct = new Contact("znom", "zprenom", "zmail@gmail.com", "zphone", "zbirthday");
-        Contact ctct2 = new Contact("xnom", "xprenom", "xmail@gmail.com", "xphone", "xbirthday");
-        Address addr = new Address("45", "xrue", "xville", "xCP", "xpays");
-        Address addr2 = new Address("38", "zrue", "zville", "zCP", "zpays");
+        Contact ctct = new Contact("nomContact1", "prenomContact1", "EmailContact1", "TelephoneContact1", "DateDeNaissanceContact1");
+        Contact ctct2 = new Contact("nomContact2", "prenomContact2", "EmailContact2", "TelephoneContact2", "DateDeNaissanceContact2");
+
+        Address addr11 = new Address("11", "rue du quai (joke inside)", "marseille", "-1", "Maroc");
+        Address addr12 = new Address("12", "rue de la paie (again)", "lille", "1/0", "HP");
+        
+        Address addr21 = new Address("21", "rue", "ssie", "0!", "Urss");
+        Address addr22 = new Address("22", "rue", "meurt", "+-0", "?");
         try 
         {
-            usrData.InsertAddressAssociatedToContact(ctct, addr);
-            usrData.InsertAddressAssociatedToContact(ctct, addr2);
-            usrData.InsertAddressAssociatedToContact(ctct2, addr);
-            usrData.InsertAddressAssociatedToContact(ctct2, addr2);
-            usrData2.InsertAddressAssociatedToContact(ctct, addr);
-            usrData2.InsertAddressAssociatedToContact(ctct, addr2);
-            usrData2.InsertAddressAssociatedToContact(ctct2, addr);
-            usrData2.InsertAddressAssociatedToContact(ctct2, addr2);
+            usrData.InsertAddressAssociatedToContact(ctct, addr11);
+            usrData.InsertAddressAssociatedToContact(ctct, addr12);
+            usrData.InsertAddressAssociatedToContact(ctct2, addr21);
+            usrData.InsertAddressAssociatedToContact(ctct2, addr22);
         } 
         catch (Exception ex) 
         {
             Logger.getLogger(Appz.class.getName()).log(Level.SEVERE, null, ex);
         }
         usr.setUserData(usrData);
-        usr2.setUserData(usrData2);
         dataBase.add(usr);
-        dataBase.add(usr2);
     }
 
     public Boolean isLoginPresentInDataBase(String str) 
@@ -120,41 +116,10 @@ public final class Appz
         }
         return -1;
     }
-
-    public void addContact(String str, Contact ctct, Address addr) throws Exception 
+    
+        public boolean UsernameAndPasswordAreCorrect(String login, String pcw) 
     {
-        User usr = getUserFromLogin(str);
-        usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
-    }
-
-    public void addContact(String str, Contact ctct) throws Exception 
-    {
-        User usr = getUserFromLogin(str);
-        usr.getUserData().InsertContact(ctct);
-    }
-
-    public void modifyContact(String str, Contact old_ctct, Contact modify_ctct) throws Exception 
-    {
-
-        old_ctct.setBirthday(modify_ctct.getBirthday());
-        old_ctct.setEmails(modify_ctct.getEmails());
-        old_ctct.setName(modify_ctct.getName());
-        old_ctct.setPhones(modify_ctct.getPhones());
-        old_ctct.setSurname(modify_ctct.getSurname());
-    }
-
-    public void modifyAddr(Address addr, Address newAddr) throws Exception 
-    {
-        addr.setCp(newAddr.getCp());
-        addr.setNumber(newAddr.getNumber());
-        addr.setPays(newAddr.getPays());
-        addr.setRue(newAddr.getRue());
-        addr.setVille(newAddr.getVille());
-    }
-
-    public boolean checkLoginPass(String login, String pcw) 
-    {
-        User usr = null;
+        User usr;
         try 
         {
             usr = getUserFromLogin(login);
@@ -172,7 +137,7 @@ public final class Appz
             return usr.getPassword().equals(pcw);
         }
     }
-
+    
     public boolean testPcwHash(String login, String hashpcw) 
     {
         User usr;
@@ -187,7 +152,8 @@ public final class Appz
         if (usr == null) 
         {
             return false;
-        } else 
+        } 
+        else 
         {
             try 
             {
@@ -205,91 +171,7 @@ public final class Appz
         }
     }
 
-    public ArrayList<Address> getArrAddress(String user, Contact ctct) 
-    {
-        return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getAddressAssociatedToContact(ctct);
-    }
-
-    public ArrayList<Contact> getArrContact(String user) 
-    {
-        return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getTableContact();
-    }
-
-    public void removeContact(String user, int ctctIndice) 
-    {
-        //TODO
-        int userIndice = indexPresentLogin(user);
-        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) 
-        {
-            Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
-            if (ctct != null) 
-            {
-                Appz.getInstance().getDataBase().get(userIndice).getUserData().removeContact(ctct);
-            }
-        }
-    }
-
-    public void removeAddr(String user, int ctctIndice, int addrIndice) 
-    {
-        //TODO
-        int userIndice = indexPresentLogin(user);
-        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) 
-        {
-            Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
-            int size2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().size();
-            if (size2 != 0) 
-            {
-                Address addrs = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().get(addrIndice);
-                if (addrs != null) 
-                {
-                    Appz.getInstance().getDataBase().get(userIndice).getUserData().removeAddressAssociatedToContact(addrs, ctct);
-                }
-            }
-        }
-    }
-
-        public ArrayList<Contact> searchContact(String user, String str) {
-
-        ArrayList<Contact> arrCct = null;
-        int userIndice = indexPresentLogin(user);
-        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) {
-            ArrayList<Contact> tableContact = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact();
-            Iterator<Contact> itr = tableContact.iterator();
-            while (itr.hasNext()) {
-                Contact element = itr.next();
-                if (partialMatching(element.getName() ,str) || partialMatching(element.getSurname() ,str) || partialMatching(element.getEmails() ,str) ) {
-                    arrCct.add(element);
-                }
-            }
-        }
-        return arrCct;
-    }
-
-    public ArrayList<Address> searchAddr(String user, String str) {
-        ArrayList<Address> arrAddr = null;
-        int userIndice = indexPresentLogin(user);
-        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) {
-            ArrayList<Contact> tableContact = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact();
-            Iterator<Contact> itr = tableContact.iterator();
-            while (itr.hasNext()) {
-                Contact element = itr.next();
-                Iterator<Address> itr2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getAddressAssociatedToContact(element).iterator();
-                while (itr2.hasNext()) {
-                    Address addr = itr2.next();
-                    if ( partialMatching(addr.getRue(),str) ||  partialMatching(addr.getNumber(),str) ||  partialMatching(addr.getVille(),str) ||  partialMatching(addr.getCp(),str) ||  partialMatching(addr.getPays(),str)) {
-                        arrAddr.add(addr);
-                    }
-                }
-            }
-        }
-        return arrAddr;
-    }
-
-    public boolean partialMatching(String testString, String pattern) {
+    public static boolean partialMatching(String testString, String pattern) {
         String[] split = testString.split(pattern);
         if (split.toString().equals(testString)) {
             return false;
