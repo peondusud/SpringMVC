@@ -9,6 +9,13 @@ public class UserData
     private ArrayList<Address> tableAddress = new ArrayList<Address>();   
     private ArrayList<AddressContact> tableAddressContact = new ArrayList<AddressContact>();
 
+    public UserData() 
+    {
+        tableContact = new ArrayList<Contact>();
+        tableAddress = new ArrayList<Address>();
+        tableAddressContact = new ArrayList<AddressContact>();
+    }
+
     public ArrayList<Contact> getTableContact() {
         return tableContact;
     }
