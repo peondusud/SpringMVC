@@ -42,9 +42,11 @@ public final class Appz
     private void populate() 
     {
         User usr = new User("peon", "111");
+        User usr2 = new User("codec", "111");
         UserData usrData = new UserData();
-        Contact ctct = new Contact("znom", "zprenom", "zmail", "zphone", "zbirthday");
-        Contact ctct2 = new Contact("xnom", "xprenom", "xmail", "xphone", "xbirthday");
+        UserData usrData2 = new UserData();
+        Contact ctct = new Contact("znom", "zprenom", "zmail@gmail.com", "zphone", "zbirthday");
+        Contact ctct2 = new Contact("xnom", "xprenom", "xmail@gmail.com", "xphone", "xbirthday");
         Address addr = new Address("45", "xrue", "xville", "xCP", "xpays");
         Address addr2 = new Address("38", "zrue", "zville", "zCP", "zpays");
         try 
@@ -53,13 +55,19 @@ public final class Appz
             usrData.InsertAddressAssociatedToContact(ctct, addr2);
             usrData.InsertAddressAssociatedToContact(ctct2, addr);
             usrData.InsertAddressAssociatedToContact(ctct2, addr2);
+            usrData2.InsertAddressAssociatedToContact(ctct, addr);
+            usrData2.InsertAddressAssociatedToContact(ctct, addr2);
+            usrData2.InsertAddressAssociatedToContact(ctct2, addr);
+            usrData2.InsertAddressAssociatedToContact(ctct2, addr2);
         } 
         catch (Exception ex) 
         {
             Logger.getLogger(Appz.class.getName()).log(Level.SEVERE, null, ex);
         }
         usr.setUserData(usrData);
+        usr2.setUserData(usrData2);
         dataBase.add(usr);
+        dataBase.add(usr2);
     }
 
     public Boolean isLoginPresentInDataBase(String str) 
