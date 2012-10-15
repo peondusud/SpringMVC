@@ -249,5 +249,45 @@ public final class Appz
             }
         }
     }
+    public ArrayList<Contact> searchContact(String user, String str) {
+
+        ArrayList<Contact> arrCct = null;
+        int userIndice = indexPresentLogin(user);
+        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
+        if (size != 0) {
+            ArrayList<Contact> tableContact = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact();
+            Iterator<Contact> itr = tableContact.iterator();
+            while (itr.hasNext()) {
+                Contact element = itr.next();
+                if (element.getName().equals(str) || element.getSurname().equals(str) || element.getEmails().equals(str) || element.getPhones().equals(str)) {
+                    arrCct.add(element);
+                }
+            }
+        }
+        return arrCct;
+    }
+
+    public ArrayList<Address> searchAddr(String user, String str) {
+        ArrayList<Address> arrAddr = null;
+        int userIndice = indexPresentLogin(user);
+        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
+        if (size != 0) {
+            ArrayList<Contact> tableContact = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact();
+            Iterator<Contact> itr = tableContact.iterator();
+            while (itr.hasNext()) {
+                Contact element = itr.next();
+                Iterator<Address> itr2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getAddressAssociatedToContact(element).iterator();
+                while (itr2.hasNext()) {
+                    Address addr = itr2.next();
+                    if (addr.getRue().equals(str)) {
+                        arrAddr.add(addr);
+                    }
+                }
+            }
+        }
+        return arrAddr;
+    }
+    
+
 
 }
