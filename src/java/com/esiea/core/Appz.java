@@ -43,20 +43,22 @@ public final class Appz
     {
         User usr = new User("peon", "111");
         UserData usrData = new UserData();
-        Contact ctct = new Contact("nomContact1", "prenomContact1", "EmailContact1", "TelephoneContact1", "DateDeNaissanceContact1");
-        Contact ctct2 = new Contact("nomContact2", "prenomContact2", "EmailContact2", "TelephoneContact2", "DateDeNaissanceContact2");
-
-        Address addr11 = new Address("11", "rue du quai (joke inside)", "marseille", "-1", "Maroc");
-        Address addr12 = new Address("12", "rue de la paie (again)", "lille", "1/0", "HP");
+        Contact ctct = new Contact("nomContact1", "prenomContact1", "EmailContact1@gmail.com", "TelephoneContact1", "DateDeNaissanceContact1");
+        Contact ctct2 = new Contact("nomContact2", "prenomContact2", "EmailContact2@gmail.com", "TelephoneContact2", "DateDeNaissanceContact2");
+		Contact ctct3 = new Contact("nomContact3", "prenomContact3", "EmailContact3@gmail.com", "TelephoneContact3", "DateDeNaissanceContact3");
+        Address addr11 = new Address("11", "rue du quai ", "Marseille", "13000", "MAROC" );
+        Address addr12 = new Address("12", "rue de la paie", "lille", "80", "LENORD");
         
-        Address addr21 = new Address("21", "rue", "ssie", "0!", "Urss");
-        Address addr22 = new Address("22", "rue", "meurt", "+-0", "?");
+        Address addr21 = new Address("21", "rue de Stalin", "Saint-Petersbourg", "+7 812", "URSS");
+        Address addr22 = new Address("22", "rue Vesale", "PARIS", "75000", "FRANCE");
         try 
         {
             usrData.InsertAddressAssociatedToContact(ctct, addr11);
             usrData.InsertAddressAssociatedToContact(ctct, addr12);
             usrData.InsertAddressAssociatedToContact(ctct2, addr21);
             usrData.InsertAddressAssociatedToContact(ctct2, addr22);
+			usrData.InsertAddressAssociatedToContact(ctct3, addr21);
+            usrData.InsertAddressAssociatedToContact(ctct3, addr22);
         } 
         catch (Exception ex) 
         {
