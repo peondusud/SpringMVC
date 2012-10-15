@@ -1,17 +1,16 @@
-<%-- 
-    Document   : Success
-    Created on : 5 oct. 2012, 22:25:14
-    Author     : Xnl
---%>
+<jsp:include page="PageTop.jsp"/> 
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Sign in successful</h1>
-    </body>
-</html>
+<div class="container">
+    <div class="hero-unit">
+        <h1>Votre compte a ete cree avec succes!</h1>
+        <br>
+        <p>
+            <a
+                <button HREF="index.html" class="btn btn-large btn-primary" type="button"> Retour a l'acceuil !</button>
+            </a>
+        </p>
+    </div>
+</div>
+
+<jsp:include page="PageBottom.jsp"/> 
+
