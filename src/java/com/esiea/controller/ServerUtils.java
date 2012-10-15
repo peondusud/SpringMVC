@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class ServerUtils 
 {
 
-    public static boolean isCorreclyLogged(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    public static boolean isCorreclyLogged(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception
     {
         try 
         {
@@ -28,12 +28,17 @@ public class ServerUtils
                 hsr.removeAttribute("password");
                 hsr.removeAttribute("username");
                 hsr.getSession().invalidate();
+                throw new Exception("Le cookie est invalide");
             }
             return test;
-        } 
-        catch (Exception e) 
+        }
+        catch(NullPointerException e)
         {
             return false;
+        }
+        catch (Exception e) 
+        {
+           throw e;
         }
     }
 
@@ -41,7 +46,6 @@ public class ServerUtils
     {
         try 
         {
-            
             HttpSession session = hsr.getSession();
             String username = session.getAttribute("username").toString();
             return username;
@@ -71,7 +75,7 @@ public class ServerUtils
     {
         if(!ServerUtils.isCorreclyLogged(hsr, hsr1))
         {
-            throw new Exception();
+            throw new Exception("Vous n'etes pas correctement identifie");
         }
         else
         {
@@ -84,7 +88,7 @@ public class ServerUtils
                 }
                 else
                 {
-                    throw new Exception();
+                    throw new Exception("Vous n'etes pas correctement identifie");
                 }
             }
             catch (Exception e) 

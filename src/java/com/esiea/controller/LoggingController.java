@@ -1,6 +1,7 @@
 package com.esiea.controller;
 
 import com.esiea.core.Appz;
+import com.esiea.core.User;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,29 +14,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LoggingController {
     
-    @RequestMapping(value = "/index")
-    public CustomModelAndView home(HttpServletRequest hsr, HttpServletResponse hsr1)
-    {
-        return new CustomModelAndView(hsr, hsr1,"index");
-    }
-
-    @RequestMapping(value = "/logout")
-    public CustomModelAndView logout(HttpServletRequest hsr, HttpServletResponse hsr1) 
-    {
-        hsr.getSession().invalidate();
-        return new CustomModelAndView(hsr, hsr1,"redirect:/");
-    }
-
+    // note pour faciliter la lecture les request mapping sont dans l'ordre alphabetique
+    
     @RequestMapping(value = "/about_us")
     public CustomModelAndView about_us_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
     {
         return new CustomModelAndView(hsr, hsr1,"/account/about_us");
     }
-    
-    @RequestMapping(value = "/signin")
-    public CustomModelAndView signin(HttpServletRequest hsr, HttpServletResponse hsr1) 
+        
+    @RequestMapping(value = "/index")
+    public CustomModelAndView home(HttpServletRequest hsr, HttpServletResponse hsr1)
     {
-        return new CustomModelAndView(hsr, hsr1,"/account/signin");
+        return new CustomModelAndView(hsr, hsr1,"index");
     }
 
     @RequestMapping(value = "/login")
@@ -96,4 +86,44 @@ public class LoggingController {
         }
     }
     
+    @RequestMapping(value = "/logout")
+    public CustomModelAndView logout(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        hsr.getSession().invalidate();
+        return new CustomModelAndView(hsr, hsr1,"redirect:/");
+    }
+    
+    @RequestMapping(value = "/signin")
+    public CustomModelAndView signin(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        return new CustomModelAndView(hsr, hsr1,"/account/signin");
+    }
+    
+    @RequestMapping(value = "/signinc", method = RequestMethod.POST)
+    public CustomModelAndView signinc(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        Object login = hsr.getParameter("login");
+        Object pcw = hsr.getParameter("password");
+        Object firstname = hsr.getParameter("firstname");
+        Object lastname = hsr.getParameter("lastname");
+        Object email = hsr.getParameter("email");
+        Object phone = hsr.getParameter("telephone");
+        
+        if (login != null && pcw != null && firstname != null && lastname != null && email != null && phone != null) 
+        {
+            if (com.esiea.core.Appz.getInstance().isLoginPresentInDataBase(login.toString())) 
+            {
+                CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"error");
+                String str = "Le nom d'utilisateur est deja utilise!";
+                customModelAndView.addObject("str", str);
+                return customModelAndView;
+            }
+            Appz.getInstance().addUser(new User(login.toString(), pcw.toString()));
+            return new CustomModelAndView(hsr,hsr1,"/account/success");
+        }
+        CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+        String str = "Le serveur a rencontre un probleme!";
+        customModelAndView.addObject("str", str);
+        return customModelAndView;
+    }
 }

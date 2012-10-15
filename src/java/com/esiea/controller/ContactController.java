@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ContactController 
 {
+    // note pour faciliter la lecture les request mapping sont dans l'ordre alphabetique
     
     @RequestMapping(value = "/add_addr")
     public CustomModelAndView add_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1)
@@ -36,7 +37,7 @@ public class ContactController
 
             Address tmpAddr = new Address(nb, rue, ville, cp, pays);
             user.getUserData().InsertAddressAssociatedToContact(tmpContact, tmpAddr);
-            return new CustomModelAndView(hsr,hsr1,"/appz/add_addr");
+            return new CustomModelAndView(hsr,hsr1,"redirect:/list_show.html");
 
         } 
         catch (Exception e) 
@@ -329,33 +330,4 @@ public class ContactController
         }
     }
     
-//    @RequestMapping(value = "/signinc", method = RequestMethod.POST)
-//    public CustomModelAndView signinc(HttpServletRequest hsr, HttpServletResponse hsr1) 
-//    {
-//        Object login = hsr.getParameter("login");
-//        Object pcw = hsr.getParameter("password");
-//        Object firstname = hsr.getParameter("firstname");
-//        Object lastname = hsr.getParameter("lastname");
-//        Object email = hsr.getParameter("email");
-//        Object phone = hsr.getParameter("telephone");
-//        
-//        if (login != null && pcw != null && firstname != null && lastname != null && email != null && phone != null) 
-//        {
-//            if (com.esiea.core.Appz.getInstance().isLoginPresentInDataBase(login.toString())) 
-//            {
-//                CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"error");
-//                String str = "Le nom d'utilisateur est deja utilise!";
-//                customModelAndView.addObject("str", str);
-//                return customModelAndView;
-//            }
-//            Appz.getInstance().addUser(new User(login.toString(), pcw.toString()));
-//            return new CustomModelAndView(hsr,hsr1,"/account/success");
-//        }
-//        CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
-//        String str = "Le serveur a rencontre un probleme!";
-//        customModelAndView.addObject("str", str);
-//        return customModelAndView;
-//    }
-
-  
 }

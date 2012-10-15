@@ -43,16 +43,20 @@ public final class Appz
     {
         User usr = new User("peon", "111");
         UserData usrData = new UserData();
-        Contact ctct = new Contact("znom", "zprenom", "zmail", "zphone", "zbirthday");
-        Contact ctct2 = new Contact("xnom", "xprenom", "xmail", "xphone", "xbirthday");
-        Address addr = new Address("45", "xrue", "xville", "xCP", "xpays");
-        Address addr2 = new Address("38", "zrue", "zville", "zCP", "zpays");
+        Contact ctct = new Contact("nomContact1", "prenomContact1", "EmailContact1", "TelephoneContact1", "DateDeNaissanceContact1");
+        Contact ctct2 = new Contact("nomContact2", "prenomContact2", "EmailContact2", "TelephoneContact2", "DateDeNaissanceContact2");
+
+        Address addr11 = new Address("11", "rue du quai (joke inside)", "marseille", "-1", "Maroc");
+        Address addr12 = new Address("12", "rue de la paie (again)", "lille", "1/0", "HP");
+        
+        Address addr21 = new Address("21", "rue", "ssie", "0!", "Urss");
+        Address addr22 = new Address("22", "rue", "meurt", "+-0", "?");
         try 
         {
-            usrData.InsertAddressAssociatedToContact(ctct, addr);
-            usrData.InsertAddressAssociatedToContact(ctct, addr2);
-            usrData.InsertAddressAssociatedToContact(ctct2, addr);
-            usrData.InsertAddressAssociatedToContact(ctct2, addr2);
+            usrData.InsertAddressAssociatedToContact(ctct, addr11);
+            usrData.InsertAddressAssociatedToContact(ctct, addr12);
+            usrData.InsertAddressAssociatedToContact(ctct2, addr21);
+            usrData.InsertAddressAssociatedToContact(ctct2, addr22);
         } 
         catch (Exception ex) 
         {
@@ -148,7 +152,8 @@ public final class Appz
         if (usr == null) 
         {
             return false;
-        } else 
+        } 
+        else 
         {
             try 
             {

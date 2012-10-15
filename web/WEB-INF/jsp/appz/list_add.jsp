@@ -10,7 +10,7 @@
 
         <div class=addr>
             <c:forEach items="${addrs}" var="addrs" varStatus="status4">
-                <li> Address_nickname:${addrs.nickAddress}</br> ${addrs.number} ${addrs.rue}</br> ${addrs.cp},${addrs.ville} </br> ${addrs.pays} </li>
+                <li> <br> ${addrs.number} ${addrs.rue}</br> ${addrs.cp},${addrs.ville} </br> ${addrs.pays} </li>
             </c:forEach> 
         </div>
         <br>
