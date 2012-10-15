@@ -249,7 +249,8 @@ public final class Appz
             }
         }
     }
-    public ArrayList<Contact> searchContact(String user, String str) {
+
+        public ArrayList<Contact> searchContact(String user, String str) {
 
         ArrayList<Contact> arrCct = null;
         int userIndice = indexPresentLogin(user);
@@ -259,7 +260,7 @@ public final class Appz
             Iterator<Contact> itr = tableContact.iterator();
             while (itr.hasNext()) {
                 Contact element = itr.next();
-                if (element.getName().equals(str) || element.getSurname().equals(str) || element.getEmails().equals(str) || element.getPhones().equals(str)) {
+                if (partialMatching(element.getName() ,str) || partialMatching(element.getSurname() ,str) || partialMatching(element.getEmails() ,str) ) {
                     arrCct.add(element);
                 }
             }
@@ -279,7 +280,7 @@ public final class Appz
                 Iterator<Address> itr2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getAddressAssociatedToContact(element).iterator();
                 while (itr2.hasNext()) {
                     Address addr = itr2.next();
-                    if (addr.getRue().equals(str)) {
+                    if ( partialMatching(addr.getRue(),str) ||  partialMatching(addr.getNumber(),str) ||  partialMatching(addr.getVille(),str) ||  partialMatching(addr.getCp(),str) ||  partialMatching(addr.getPays(),str)) {
                         arrAddr.add(addr);
                     }
                 }
@@ -287,7 +288,7 @@ public final class Appz
         }
         return arrAddr;
     }
-    
+
     public boolean partialMatching(String testString, String pattern) {
         String[] split = testString.split(pattern);
         if (split.toString().equals(testString)) {
@@ -296,6 +297,5 @@ public final class Appz
             return true;
         }
     }
-
 
 }
