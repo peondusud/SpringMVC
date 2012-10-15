@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<jsp:include page="PageTop.jsp"/> 
+<jsp:include page="../include/PageTop.jsp"/> 
 
 <div class="container">
     <div class="hero-unit">
@@ -11,7 +11,7 @@
             <p>Ajouter un Contact</p>
         </div>
 
-        <form:form METHOD="POST" ACTION="add_contact_v.html">
+        <form:form METHOD="POST" ACTION="add_contact_validator.html">
 
             Nom : <div class=nom><input type="text" name="nom" size="10" value="" required="required" ></div>
             Prenom: <div class=prenom><input type="text" name="prenom" size="10" value="" required="required" ></div>
@@ -27,7 +27,8 @@
 
             </div>
         </form:form>
+            
     </div>
 </div>
 
-<jsp:include page="PageBottom.jsp"/> 
+<jsp:include page="../include/PageBottom.jsp"/> 

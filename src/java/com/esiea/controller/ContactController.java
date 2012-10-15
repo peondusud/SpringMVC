@@ -1,280 +1,361 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.esiea.controller;
 
 import com.esiea.core.Address;
-import com.esiea.core.Appz;
 import com.esiea.core.Contact;
 import com.esiea.core.User;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ContactController 
 {
     
+    @RequestMapping(value = "/add_addr")
+    public CustomModelAndView add_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1)
+    {
+        return new CustomModelAndView(hsr,hsr1,"/appz/add_addr");
+    }
+
+    @RequestMapping(value = "/add_addr_validator")
+    public CustomModelAndView add_addr_validator(HttpServletRequest hsr, HttpServletResponse hsr1)
+    {
+        try 
+        {
+            User user = ServerUtils.getUser(hsr, hsr1);
+            Contact tmpContact = (Contact) hsr.getSession().getAttribute("contactOject");
+            
+            String nb = hsr.getParameter("addr_nb").toString();
+            String rue = hsr.getParameter("addr_rue").toString();
+            String ville = hsr.getParameter("addr_ville").toString();
+            String cp = hsr.getParameter("addr_cp").toString();
+            String pays = hsr.getParameter("addr_pays").toString();
+
+            Address tmpAddr = new Address(nb, rue, ville, cp, pays);
+            user.getUserData().InsertAddressAssociatedToContact(tmpContact, tmpAddr);
+            return new CustomModelAndView(hsr,hsr1,"/appz/add_addr");
+
+        } 
+        catch (Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+    
     
     @RequestMapping(value = "/add_contact")
-    public ModelAndView add_contact_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    public CustomModelAndView add_contact_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
     {
-        return new CustomModelAndView(hsr,hsr1,"new_add_contact");
+        return new CustomModelAndView(hsr,hsr1,"/appz/add_contact");
+    }
+    
+    @RequestMapping(value = "/add_contact_validator", method = RequestMethod.POST)
+    public CustomModelAndView add_contact_validator(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {
+            ServerUtils.getUser(hsr, hsr1);
+            String prenom = hsr.getParameter("prenom").toString();
+            String nom = hsr.getParameter("nom").toString();
+            String phone = hsr.getParameter("phone").toString();
+            String mail = hsr.getParameter("mail").toString();
+            String birthday = hsr.getParameter("birthday").toString();
+            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
+            hsr.getSession().setAttribute("contactOject", tmpCont);
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/appz/add_contact_display");
+            customModelAndView.addObject("tmpCont", tmpCont);
+            return customModelAndView;
+        }
+        catch (Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+                    
+        }       
+    }
+    
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public CustomModelAndView delete(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {  
+        try 
+        {
+            int index = Integer.valueOf(hsr.getParameter("deleteID"));
+            User user = ServerUtils.getUser(hsr, hsr1);
+            Contact contactToRemove = user.getUserData().getTableContact().get(index);
+            user.getUserData().removeContact(contactToRemove);
+            ArrayList<Contact> arrContact = user.getUserData().getTableContact();
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/appz/list_show");
+            customModelAndView.addObject("arrContact", arrContact);
+            return customModelAndView;
+        } 
+        catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
     }
         
         
     @RequestMapping(value = "/list_add", method = RequestMethod.GET)
-    public ModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        try {
+    public CustomModelAndView list_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {
             User usrLogin = ServerUtils.getUser(hsr, hsr1);
             ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
-            if (!arrContact.isEmpty()) {
+            // on test si pour le contact selectionner il y a des addresses a afficher (et aussi si le contact existe)
+            // sinon retour acceuil
+            if (!arrContact.isEmpty()) 
+            {
                 Contact ctct = arrContact.get(Integer.valueOf(hsr.getParameter("contactID")));
                 ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
-                if (!addrs.isEmpty()) {
-                    CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "list_add");
+                if (!addrs.isEmpty()) 
+                {
+                    CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/list_add");
                     customModelAndView.addObject("addrs", addrs);
                     return customModelAndView;
-                } else {
-                    return new CustomModelAndView(hsr, hsr1, "index");
+                } else 
+                {
+                    return new CustomModelAndView(hsr, hsr1, "/index");
                 }
 
-            } else {
-                return new CustomModelAndView(hsr, hsr1, "index");
+            } 
+            else 
+            {
+                return new CustomModelAndView(hsr, hsr1, "/index");
             }
 
-        } catch (Exception e) {
+        } catch (Exception e) 
+        {
             hsr.getSession().invalidate();
-            return new CustomModelAndView(hsr, hsr1, "index");
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
         }
-    }
-
-
-
-    @RequestMapping(value = "/add_contact_v", method = RequestMethod.POST)
-    public ModelAndView add_contact_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        String prenom = hsr.getParameter("prenom").toString();
-        String nom = hsr.getParameter("nom").toString();
-        String phone = hsr.getParameter("phone").toString();
-        String mail = hsr.getParameter("mail").toString();
-        String birthday = hsr.getParameter("birthday").toString();
-        HttpSession session = hsr.getSession();
-        String userLoginCookie = (String) session.getAttribute("username");
-        String userPassCookie = (String) session.getAttribute("password");
-        if (userPassCookie == null || userLoginCookie == null) {
-            String str = "not logged";
-            return new ModelAndView("error", "str", str);
-        }
-        //TODO check good login
-        Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
-        Appz.getInstance().addContact(userLoginCookie, tmpCont);
-        session.setAttribute("contactOject", tmpCont);
-
-        return new ModelAndView("new_add_contact_display", "tmpCont", tmpCont);
-    }
-
-    @RequestMapping(value = "/add_addr")
-    public ModelAndView add_addr_page() {
-        return new ModelAndView("new_add_addr");
-    }
-
-    @RequestMapping(value = "/add_addr_v")
-    public ModelAndView add_addr_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        String pcw = session.getAttribute("password").toString();
-        boolean test = Appz.getInstance().testPcwHash(username, pcw);
-
-        if (test) {
-            Contact tmpContact = (Contact) session.getAttribute("contactOject");
-
-            String nick = hsr.getParameter("addr_nick").toString();
-            String nb = hsr.getParameter("addr_nb").toString();
-            String rue = hsr.getParameter("addr_rue").toString();
-            String ville = hsr.getParameter("addr_ville").toString();
-            String cp = hsr.getParameter("addr_cp").toString();
-            String pays = hsr.getParameter("addr_pays").toString();
-
-            Address tmpAddr = new Address(nb, rue, ville, cp, pays);
-            Appz.getInstance().addContact(username, tmpContact, tmpAddr);
-            return new ModelAndView("new_add_addr");
-
-        } else {
-            String str = "please Log in ";
-            return new ModelAndView("error", "str", str);
-        }
-    }
-
-    @RequestMapping(value = "/modify_contact", method = RequestMethod.GET)
-    public ModelAndView modify_contact_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        //indice  modID arraylist pour choix contact
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        Integer indice = Integer.valueOf(hsr.getParameter("modID"));
-        if (Appz.getInstance().testPcwHash(username, session.getAttribute("password").toString())) {
-            Contact contact = Appz.getInstance().getArrContact(username).get(indice);
-            session.setAttribute("MODcontactID", indice);
-            return new ModelAndView("new_modify_contact", "contact", contact);
-
-        } else {
-            String str = "please Log in ";
-            return new ModelAndView("error", "str", str);
-        }
-    }
-
-    @RequestMapping(value = "/modify_contact_v")
-    public ModelAndView modify_contact_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        String prenom = hsr.getParameter("prenom").toString();
-        String nom = hsr.getParameter("nom").toString();
-        String phone = hsr.getParameter("phone").toString();
-        String mail = hsr.getParameter("mail").toString();
-        String birthday = hsr.getParameter("birthday").toString();
-        if (Appz.getInstance().testPcwHash(username, session.getAttribute("password").toString())) {
-            int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
-            Contact old = Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(username)).getUserData().getTableContact().get(modContactID);
-            //TODO test unique contact
-            Contact modifyCtct = new Contact(nom, prenom, mail, phone, birthday);
-            Appz.getInstance().modifyContact(username, old, modifyCtct);
-            ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
-            return new ModelAndView("list_show", "arrContact", arrContact);
-        }
-        //TODO
-        return null;
-    }
-
-    @RequestMapping(value = "/modify_addrs")
-    public ModelAndView modify_adrrs_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-
-        HttpSession session = hsr.getSession();
-        String userLoginCookie = (String) session.getAttribute("username");
-        String userPassCookie = (String) session.getAttribute("password");
-        int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
-        if (userPassCookie == null || userLoginCookie == null) {
-            String str = "not logged";
-            return new ModelAndView("error", "str", str);
-        }
-        if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
-
-            ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
-            if (!arrContact.isEmpty()) {
-                Contact ctct = arrContact.get(modContactID);
-                ArrayList<Address> addrs = usrLogin.getUserData().getAddressAssociatedToContact(ctct);
-                if (!addrs.isEmpty()) {
-                    return new ModelAndView("new_modify_addrs", "addrs", addrs);
-                }
-            }
-        }
-        //TODO
-        return new ModelAndView("error");
-    }
-
-    @RequestMapping(value = "/modify_addr", method = RequestMethod.GET)
-    public ModelAndView modify_adrr_page(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-
-        //TODO
-        HttpSession session = hsr.getSession();
-         int modAddrID = Integer.valueOf(hsr.getParameter("modaddrID"));
-
-        String userLoginCookie = (String) session.getAttribute("username");
-        String userPassCookie = (String) session.getAttribute("password");
-        int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
-        session.setAttribute("modaddrID", modAddrID);
-        if (userPassCookie == null || userLoginCookie == null) {
-            String str = "not logged";
-            return new ModelAndView("error", "str", str);
-        }
-        if (Appz.getInstance().testPcwHash(userLoginCookie, userPassCookie)) {
-            User usrLogin = Appz.getInstance().getUserFromLogin(userLoginCookie);
-
-            ArrayList<Contact> arrContact = usrLogin.getUserData().getTableContact();
-            if (!arrContact.isEmpty()) {
-                Contact ctct = arrContact.get(modContactID);
-                Address addr = usrLogin.getUserData().getAddressAssociatedToContact(ctct).get(modAddrID);
-                if (addr != null) {
-                    return new ModelAndView("new_modify_addr", "addr", addr);
-                }
-            }
-        }
-        //TODO
-        return new ModelAndView("error");
-    }
-
-    @RequestMapping(value = "/modify_addr_v",  method = RequestMethod.POST)
-    public ModelAndView modify_adrr_validator(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-
-        //TODO
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        String pcw = session.getAttribute("password").toString();
-        int modaddrID = Integer.valueOf(session.getAttribute("modaddrID").toString());
-        int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
-        if (Appz.getInstance().testPcwHash(username, pcw)) 
-        {
-            String nb = hsr.getParameter("addr_nb").toString();
-            String rue = hsr.getParameter("addr_rue").toString();
-            String ville = hsr.getParameter("addr_ville").toString();
-            String cp = hsr.getParameter("addr_cp").toString();
-            String pays = hsr.getParameter("addr_pays").toString();
-            Address tmpAddr = new Address(nb, rue, ville, cp, pays);
-            Address oldAddr = Appz.getInstance().getDataBase().get(modContactID).getUserData().getTableAddress().get(modaddrID);
-            Appz.getInstance().modifyAddr( oldAddr, tmpAddr);            
-            ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
-            return new ModelAndView("list_show", "arrContact", arrContact);
-        } 
-        else 
-        {
-            String str = "please Log in ";
-            return new ModelAndView("error", "str", str);
-        }
-    }
-
-
-
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public ModelAndView delete(HttpServletRequest hsr, HttpServletResponse hsr1) throws Exception {
-
-        int index = Integer.valueOf(hsr.getParameter("deleteID"));
-        HttpSession session = hsr.getSession();
-        String username = session.getAttribute("username").toString();
-        if (Appz.getInstance().testPcwHash(username, session.getAttribute("password").toString())) 
-        {
-            Appz.getInstance().removeContact(username, index);
-            ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
-            return new ModelAndView("list_show", "arrContact", arrContact);
-
-        } 
-        else 
-        {
-            String str = "please Log in ";
-            return new ModelAndView("error", "str", str);
-        }
-
     }
 
     @RequestMapping(value = "/list_show", method = RequestMethod.GET)
-    public ModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        try {
+    public CustomModelAndView list_show_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {
             User user = ServerUtils.getUser(hsr, hsr1);
-            String username = user.getUsername();
-            ArrayList<Contact> arrContact = Appz.getInstance().getArrContact(username);
-            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "list_show");
+            ArrayList<Contact> arrContact = user.getUserData().getTableContact();
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/list_show");
             modelAndView.addObject("arrContact", arrContact);
             return modelAndView;
-        } catch (Exception ex) {
-            return new CustomModelAndView(hsr, hsr1, "index");
+        } 
+        catch (Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+        
+    @RequestMapping(value = "/modify_contact", method = RequestMethod.GET)
+    public CustomModelAndView modify_contact_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {   
+        try 
+        {
+            //indice  modID arraylist pour choix contact  
+            Integer indice = Integer.valueOf(hsr.getParameter("modID"));
+            User user = ServerUtils.getUser(hsr, hsr1);
+            Contact contact = user.getUserData().getTableContact().get(indice);
+            hsr.getSession().setAttribute("MODcontactID", indice);
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/list_show");
+            modelAndView.addObject("contact", contact);
+            return modelAndView;
+        } 
+        catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+
+    @RequestMapping(value = "/modify_contact_validator")
+    public CustomModelAndView modify_contact_validator(HttpServletRequest hsr, HttpServletResponse hsr1)  
+    {      
+        try
+        {
+            User user = ServerUtils.getUser(hsr, hsr1);
+
+            String prenom = hsr.getParameter("prenom").toString();
+            String nom = hsr.getParameter("nom").toString();
+            String phone = hsr.getParameter("phone").toString();
+            String mail = hsr.getParameter("mail").toString();
+            String birthday = hsr.getParameter("birthday").toString();
+
+            int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
+            Contact old = user.getUserData().getTableContact().get(modContactID);
+            //TODO test unique contact
+            Contact modifyCtct = new Contact(nom, prenom, mail, phone, birthday);
+            user.getUserData().modifyContact(old, modifyCtct);
+            ArrayList<Contact> arrContact = user.getUserData().getTableContact();          
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/list_show");
+            modelAndView.addObject("arrContact", arrContact);
+            return modelAndView;
+        } 
+        catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+
+    @RequestMapping(value = "/modify_addrs")
+    public CustomModelAndView modify_adrrs_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {
+            User user = ServerUtils.getUser(hsr, hsr1);
+            int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());          
+            ArrayList<Contact> arrContact = user.getUserData().getTableContact();
+            // on teste si l'adresse existe pour le contact selectionner 
+            // sinon retour page acceuil
+            if (!arrContact.isEmpty()) 
+            {
+                Contact ctct = arrContact.get(modContactID);
+                ArrayList<Address> addrs = user.getUserData().getAddressAssociatedToContact(ctct);
+                if (!addrs.isEmpty()) 
+                {
+                    CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modify_addrs");
+                    modelAndView.addObject("addrs", addrs);
+                    return modelAndView;
+                }
+                else
+                {
+                    return new CustomModelAndView(hsr, hsr1, "/index");
+                }
+            }
+            else
+            {
+                return new CustomModelAndView(hsr, hsr1, "/index");
+            }
+        }
+        catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+
+    @RequestMapping(value = "/modify_addr", method = RequestMethod.GET)
+    public CustomModelAndView modify_adrr_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try  
+        {
+            int modAddrID = Integer.valueOf(hsr.getParameter("modaddrID"));
+            int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
+            User user = ServerUtils.getUser(hsr, hsr1);
+
+            ArrayList<Contact> arrContact = user.getUserData().getTableContact();
+            // on teste si l'adresse existe pour le contact selectionner 
+            // sinon retour page acceuil
+            if (!arrContact.isEmpty()) 
+            {
+                Contact ctct = arrContact.get(modContactID);
+                Address addr = user.getUserData().getAddressAssociatedToContact(ctct).get(modAddrID);
+                if (addr != null) 
+                {
+                    CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modify_addr");
+                    modelAndView.addObject("addr", addr);
+                    return modelAndView;
+                } 
+                else 
+                {
+                    return new CustomModelAndView(hsr, hsr1, "/index");
+                }
+            } 
+            else 
+            {
+                return new CustomModelAndView(hsr, hsr1, "/index");
+            }        
+        }
+        catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
         }
     }
     
+
+    @RequestMapping(value = "/modify_addr_validator",  method = RequestMethod.POST)
+    public CustomModelAndView modify_adrr_validator(HttpServletRequest hsr, HttpServletResponse hsr1)
+    {
+        //TODO ?
+       try  
+        {
+            User user = ServerUtils.getUser(hsr, hsr1);
+            
+            int modaddrID = Integer.valueOf(hsr.getSession().getAttribute("modaddrID").toString());
+            int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
+
+            String nb = hsr.getParameter("addr_nb").toString();
+            String rue = hsr.getParameter("addr_rue").toString();
+            String ville = hsr.getParameter("addr_ville").toString();
+            String cp = hsr.getParameter("addr_cp").toString();
+            String pays = hsr.getParameter("addr_pays").toString();
+
+            Address tmpAddr = new Address(nb, rue, ville, cp, pays);
+            Address oldAddr = user.getUserData().getTableAddress().get(modaddrID);
+
+            oldAddr.update(tmpAddr);
+
+            ArrayList<Contact> arrContact = user.getUserData().getTableContact();
+            
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/list_show");
+            modelAndView.addObject("arrContact", arrContact);
+            return modelAndView;
+                    
+        } 
+        catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+    
+//    @RequestMapping(value = "/signinc", method = RequestMethod.POST)
+//    public CustomModelAndView signinc(HttpServletRequest hsr, HttpServletResponse hsr1) 
+//    {
+//        Object login = hsr.getParameter("login");
+//        Object pcw = hsr.getParameter("password");
+//        Object firstname = hsr.getParameter("firstname");
+//        Object lastname = hsr.getParameter("lastname");
+//        Object email = hsr.getParameter("email");
+//        Object phone = hsr.getParameter("telephone");
+//        
+//        if (login != null && pcw != null && firstname != null && lastname != null && email != null && phone != null) 
+//        {
+//            if (com.esiea.core.Appz.getInstance().isLoginPresentInDataBase(login.toString())) 
+//            {
+//                CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"error");
+//                String str = "Le nom d'utilisateur est deja utilise!";
+//                customModelAndView.addObject("str", str);
+//                return customModelAndView;
+//            }
+//            Appz.getInstance().addUser(new User(login.toString(), pcw.toString()));
+//            return new CustomModelAndView(hsr,hsr1,"/account/success");
+//        }
+//        CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+//        String str = "Le serveur a rencontre un probleme!";
+//        customModelAndView.addObject("str", str);
+//        return customModelAndView;
+//    }
+
+  
 }

@@ -27,6 +27,7 @@ public class ServerUtils
             {
                 hsr.removeAttribute("password");
                 hsr.removeAttribute("username");
+                hsr.getSession().invalidate();
             }
             return test;
         } 
@@ -76,7 +77,15 @@ public class ServerUtils
         {
             try
             {
-                return ServerUtils.getUserFromLogin(ServerUtils.getUsername(hsr));
+                User userFromLogin = ServerUtils.getUserFromLogin(ServerUtils.getUsername(hsr));
+                if(ServerUtils.isCorreclyLogged(hsr, hsr1))
+                {
+                    return userFromLogin;
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception e) 
             {

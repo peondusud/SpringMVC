@@ -1,4 +1,4 @@
-<jsp:include page="PageTop.jsp"/> 
+<jsp:include page="../include/PageTop.jsp"/> 
 
 <div class="container">
     <div class="hero-unit">
@@ -8,4 +8,4 @@
     </div>
 </div>
 
-<jsp:include page="PageBottom.jsp"/> 
+<jsp:include page="../include/PageBottom.jsp"/> 

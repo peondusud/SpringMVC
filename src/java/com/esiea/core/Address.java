@@ -85,7 +85,7 @@ public class Address
         isSameAddress=isSameAddress && rue.equals(other.getRue());
         isSameAddress=isSameAddress && ville.equals(other.getVille());
         isSameAddress=isSameAddress && cp.equals(other.getCp());
-        isSameAddress=isSameAddress && cp.equals(other.getPays());
+        isSameAddress=isSameAddress && pays.equals(other.getPays());
         return isSameAddress;
     }
 
@@ -98,6 +98,15 @@ public class Address
         hash = 73 * hash + (this.cp != null ? this.cp.hashCode() : 0);
         hash = 73 * hash + (this.pays != null ? this.pays.hashCode() : 0);
         return hash;
+    }
+
+    public void update(Address tmpAddr) 
+    {
+        this.number=tmpAddr.number;
+        this.rue=tmpAddr.rue;
+        this.pays=tmpAddr.pays;
+        this.ville=tmpAddr.ville;
+        this.cp=tmpAddr.cp;
     }
 
 }

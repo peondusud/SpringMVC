@@ -2,11 +2,12 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<jsp:include page="PageTop.jsp"/>
+<jsp:include page="../include/PageTop.jsp"/>
 
 <div class="block">
     <div class="centered">
         <div class="hero-unit">
+            
             <form:form METHOD="POST" name="text_form" ACTION="signinc.html">
                 <h1>Inscription</h1>
                 <br>
@@ -46,9 +47,10 @@
                     </div>
                 </form>
             </form:form>
+                
         </div>
     </div>
 </div>
 
-<jsp:include page="PageBottom.jsp"/> 
+<jsp:include page="../include/PageBottom.jsp"/> 
 

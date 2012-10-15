@@ -112,41 +112,10 @@ public final class Appz
         }
         return -1;
     }
-
-    public void addContact(String str, Contact ctct, Address addr) throws Exception 
+    
+        public boolean UsernameAndPasswordAreCorrect(String login, String pcw) 
     {
-        User usr = getUserFromLogin(str);
-        usr.getUserData().InsertAddressAssociatedToContact(ctct, addr);
-    }
-
-    public void addContact(String str, Contact ctct) throws Exception 
-    {
-        User usr = getUserFromLogin(str);
-        usr.getUserData().InsertContact(ctct);
-    }
-
-    public void modifyContact(String str, Contact old_ctct, Contact modify_ctct) throws Exception 
-    {
-
-        old_ctct.setBirthday(modify_ctct.getBirthday());
-        old_ctct.setEmails(modify_ctct.getEmails());
-        old_ctct.setName(modify_ctct.getName());
-        old_ctct.setPhones(modify_ctct.getPhones());
-        old_ctct.setSurname(modify_ctct.getSurname());
-    }
-
-    public void modifyAddr(Address addr, Address newAddr) throws Exception 
-    {
-        addr.setCp(newAddr.getCp());
-        addr.setNumber(newAddr.getNumber());
-        addr.setPays(newAddr.getPays());
-        addr.setRue(newAddr.getRue());
-        addr.setVille(newAddr.getVille());
-    }
-
-    public boolean checkLoginPass(String login, String pcw) 
-    {
-        User usr = null;
+        User usr;
         try 
         {
             usr = getUserFromLogin(login);
@@ -164,7 +133,7 @@ public final class Appz
             return usr.getPassword().equals(pcw);
         }
     }
-
+    
     public boolean testPcwHash(String login, String hashpcw) 
     {
         User usr;
@@ -197,48 +166,12 @@ public final class Appz
         }
     }
 
-    public ArrayList<Address> getArrAddress(String user, Contact ctct) 
-    {
-        return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getAddressAssociatedToContact(ctct);
-    }
-
-    public ArrayList<Contact> getArrContact(String user) 
-    {
-        return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getTableContact();
-    }
-
-    public void removeContact(String user, int ctctIndice) 
-    {
-        //TODO
-        int userIndice = indexPresentLogin(user);
-        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) 
-        {
-            Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
-            if (ctct != null) 
-            {
-                Appz.getInstance().getDataBase().get(userIndice).getUserData().removeContact(ctct);
-            }
-        }
-    }
-
-    public void removeAddr(String user, int ctctIndice, int addrIndice) 
-    {
-        //TODO
-        int userIndice = indexPresentLogin(user);
-        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
-        if (size != 0) 
-        {
-            Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
-            int size2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().size();
-            if (size2 != 0) 
-            {
-                Address addrs = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().get(addrIndice);
-                if (addrs != null) 
-                {
-                    Appz.getInstance().getDataBase().get(userIndice).getUserData().removeAddressAssociatedToContact(addrs, ctct);
-                }
-            }
+    public static boolean partialMatching(String testString, String pattern) {
+        String[] split = testString.split(pattern);
+        if (split.toString().equals(testString)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
