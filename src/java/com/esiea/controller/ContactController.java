@@ -171,7 +171,7 @@ public class ContactController
             User user = ServerUtils.getUser(hsr, hsr1);
             Contact contact = user.getUserData().getTableContact().get(indice);
             hsr.getSession().setAttribute("MODcontactID", indice);
-            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modiify_contact");
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modify_contact");
             modelAndView.addObject("contact", contact);
             return modelAndView;
         } 
