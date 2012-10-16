@@ -40,7 +40,6 @@ public final class Appz {
         Contact ctct3 = new Contact("nomContact3", "prenomContact3", "EmailContact3@gmail.com", "TelephoneContact3", "DateDeNaissanceContact3");
         Address addr11 = new Address("11", "rue du quai ", "Marseille", "13000", "MAROC");
         Address addr12 = new Address("12", "rue de la paie", "lille", "80", "LENORD");
-
         Address addr21 = new Address("21", "rue de Stalin", "Saint-Petersbourg", "+7 812", "URSS");
         Address addr22 = new Address("22", "rue Vesale", "PARIS", "75000", "FRANCE");
         try {
@@ -98,6 +97,19 @@ public final class Appz {
         return -1;
     }
 
+//        public static boolean partialMatching(String testString, String pattern) {
+//        String[] split = testString.split(pattern);
+//        if (split.toString().equals(testString)) {
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
+    public static boolean partialMatching(String testString, String pattern) {
+        boolean matches = testString.toUpperCase().matches(".*"+pattern.toUpperCase()+".*");
+                 return matches;
+    }
+
     public boolean UsernameAndPasswordAreCorrect(String login, String pcw) {
         User usr;
         try {
@@ -132,15 +144,6 @@ public final class Appz {
             } catch (NoSuchAlgorithmException ex) {
                 return false;
             }
-        }
-    }
-
-    public static boolean partialMatching(String testString, String pattern) {
-        String[] split = testString.split(pattern);
-        if (split.toString().equals(testString)) {
-            return false;
-        } else {
-            return true;
         }
     }
 }

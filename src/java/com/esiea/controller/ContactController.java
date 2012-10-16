@@ -1,6 +1,7 @@
 package com.esiea.controller;
 
 import com.esiea.core.Address;
+import com.esiea.core.Appz;
 import com.esiea.core.Contact;
 import com.esiea.core.User;
 import java.util.ArrayList;
@@ -323,6 +324,44 @@ public class ContactController
                     
         } 
         catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+    
+        @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public CustomModelAndView search_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {
+            User user = ServerUtils.getUser(hsr, hsr1);         
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/search");
+            return modelAndView;
+        } 
+        catch (Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+            @RequestMapping(value = "/search_find", method = RequestMethod.POST)
+    public CustomModelAndView search_results(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {   
+            User user = ServerUtils.getUser(hsr, hsr1);
+            String stringPattern = hsr.getParameter("stringPattern").toString();
+            ArrayList<Contact> arrContact = user.getUserData().searchContact(user.getUsername(), stringPattern, Appz.getInstance());
+            ArrayList<Address> addrs = user.getUserData().searchAddr(user.getUsername(),  stringPattern, Appz.getInstance());
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/search_found");
+            modelAndView.addObject("arrContact", arrContact);
+            modelAndView.addObject("addrs", addrs);
+            return modelAndView;
+        } 
+        catch (Exception e) 
         {
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
             customModelAndView.addObject("str",e.getMessage());

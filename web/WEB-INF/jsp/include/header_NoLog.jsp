@@ -13,6 +13,9 @@
                 <A HREF="signin.html">S'enregister</A>
             </li>
             <li class="">
+                <A HREF="index.html">Acceuil</A>
+            </li>
+            <li class="">
                 <A HREF="about_us.html">A Propos</A>
             </li>
         </ul>

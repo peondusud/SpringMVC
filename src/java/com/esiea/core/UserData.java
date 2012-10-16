@@ -164,7 +164,7 @@ public class UserData
     // TODO check
 
     public ArrayList<Contact> searchContact(String user, String str, Appz appz) {
-        ArrayList<Contact> arrCct = null;
+        ArrayList<Contact> arrCct = new ArrayList<Contact>();
         int userIndice = appz.indexPresentLogin(user);
         int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
         if (size != 0) {
@@ -181,7 +181,7 @@ public class UserData
     }
 
     public ArrayList<Address> searchAddr(String user, String str, Appz appz) {
-        ArrayList<Address> arrAddr = null;
+        ArrayList<Address> arrAddr = new ArrayList<Address>();
         int userIndice = appz.indexPresentLogin(user);
         int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
         if (size != 0) {
