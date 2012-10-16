@@ -29,14 +29,14 @@ public class ContactController
         {
             User user = ServerUtils.getUser(hsr, hsr1);
             Contact tmpContact = (Contact) hsr.getSession().getAttribute("contactOject");
-            
+            String nickaddress = hsr.getParameter("nickaddress").toString();
             String nb = hsr.getParameter("addr_nb").toString();
             String rue = hsr.getParameter("addr_rue").toString();
             String ville = hsr.getParameter("addr_ville").toString();
             String cp = hsr.getParameter("addr_cp").toString();
             String pays = hsr.getParameter("addr_pays").toString();
 
-            Address tmpAddr = new Address(nb, rue, ville, cp, pays);
+            Address tmpAddr = new Address(nickaddress, nb, rue, ville, cp, pays);
             user.getUserData().InsertAddressAssociatedToContact(tmpContact, tmpAddr);
             return new CustomModelAndView(hsr,hsr1,"redirect:/list_show.html");
 

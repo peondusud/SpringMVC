@@ -15,18 +15,17 @@
 
             Nom : <div class=nom><input type="text" name="nom" size="10" value="" required="required" ></div>
             Prenom: <div class=prenom><input type="text" name="prenom" size="10" value="" required="required" ></div>
-            Email: <div class=list_mail><input type="email" name="mail" size="10" value="" required="mail" ></div>
-            Telephone: <div class=list_mail><input type="tel" name="phone" size="10" value="" required="tel" ></div>
-            Date de Naissance :<div class=birthday><input type="int" name="birthday" size="10" value="" required="required" ></div>
-            Actif : 
-            <div class="well">
-                <div id="dpYears" class="input-append date" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="12-02-2012">
-                    <input class="span2" type="text" readonly="" value="12-02-2012" size="16">
+            Email: <div class=list_mail><input type="email" name="mail" size="10" value="" required="mail"></div>
+            Telephone: <div class=list_mail><input type="tel" name="phone" size="10" value="" required="tel"></div>
+            Date de Naissance :    
+
+                <div id="dpYears" class="input-append date" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="12-02-1998">
+                    <input class="span2" type="text" name="birthday" readonly="" value="12-02-2012" size="16">
                     <span class="add-on">
                         <i class="icon-calendar"></i>
                     </span>
                 </div>
-            </div>
+      Actif : 
 
             <div class=tab_button>
                 <br>
