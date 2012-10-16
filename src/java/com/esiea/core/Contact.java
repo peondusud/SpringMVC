@@ -1,5 +1,10 @@
 package com.esiea.core;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +14,7 @@ public class Contact {
     private String surname;
     private String emails;
     private String phones;
-    private String birthday;
+    private Date birthday;
     private boolean actif;
 
     public Contact(String nom, String prenom, String email, String phone, String brithday) {
@@ -17,7 +22,11 @@ public class Contact {
         this.surname = prenom;
         this.emails = email;
         this.phones = phone;
-        this.birthday = brithday;
+        try {
+            this.birthday = new SimpleDateFormat("dd-MM-YYYY").parse(brithday);
+        } catch (ParseException ex) {
+            Logger.getLogger(Contact.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Contact(String nom, String prenom, String email, String phone, String brithday, boolean actif) {
@@ -25,8 +34,13 @@ public class Contact {
         this.surname = prenom;
         this.emails = email;
         this.phones = phone;
-        this.birthday = brithday;
         this.actif = actif;
+        try {
+            this.birthday = new SimpleDateFormat("dd-MM-YYYY").parse(brithday);
+        } catch (ParseException ex) {
+            Logger.getLogger(Contact.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public String getName() {
@@ -62,11 +76,21 @@ public class Contact {
     }
 
     public String getBirthday() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY");
+        String formattedDate = formatter.format(birthday);
+        return formattedDate;
+    }
+        public Date getBirthdayDate() {
         return birthday;
     }
 
     public void setBirthday(String birthday) {
-        this.birthday = birthday;
+        try {
+            Date date = new SimpleDateFormat("dd-MM-YYYY").parse(birthday);
+            this.birthday = date;
+        } catch (ParseException ex) {
+            Logger.getLogger(Contact.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public boolean isActif() {
@@ -94,7 +118,7 @@ public class Contact {
         this.surname = prenom;
         this.emails = email;
         this.phones = phone;
-        this.birthday = birthday;
+        setBirthday(birthday);
     }
 
     @Override
@@ -110,7 +134,7 @@ public class Contact {
         isSameContact = isSameContact && name.equals(other.getName());
         isSameContact = isSameContact && surname.equals(other.getSurname());
         isSameContact = isSameContact && emails.equals(other.getEmails());
-        isSameContact = isSameContact && birthday.equals(other.getBirthday());
+        isSameContact = isSameContact && birthday.equals(other.getBirthdayDate());
         isSameContact = isSameContact && phones.equals(other.getPhones());
         return isSameContact;
     }

@@ -26,7 +26,7 @@
                 </span>
             </div>
             <div class="btn-group" data-toggle="buttons-radio">
-                <button type="button" class="btn" onclick="JavaScript:setActif()">Actif</button>
+                <button type="button" class="btn active"  onclick="JavaScript:setActif()">Actif</button>
                 <button type="button" class="btn" onclick="JavaScript:setPassif()">Passif</button>
             </div>
             <input type='hidden' id='actif' name='actif'  value='1'>

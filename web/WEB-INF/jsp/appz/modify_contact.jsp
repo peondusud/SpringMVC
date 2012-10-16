@@ -26,14 +26,20 @@
                             <td><div class=Image><img src="http://www.nouvelles-persos.fr/auteurs/inconnu.gif" height="70" width="70"></div></td>
                             <td><div class=nom><input type="text" name="nom" size="10" value="<c:out value="${contact.name}"/>" required="required" placeholder="Nom"></div></td>
                             <td><div class=prenom><input type="text" name="prenom" size="10" value="<c:out value="${contact.surname}"/>" required="required" placeholder="Prenom"></div></td>
-                            <td><div class=list_mail><input type="email" name="mail" size="10" value="<c:out value="${contact.emails}"/>" required="mail" placeholder="Email"></div></td>
-                            <td><div class=list_mail><input type="tel" name="phone" size="10" value="<c:out value="${contact.phones}"/>" required="tel" placeholder="Telephone"></div></td>
+                            <td><div class=list_mail><input type="email" name="mail" size="10" value="<c:out value="${contact.emails}"/>" required="required" placeholder="Email"></div></td>
+                            <td><div class=list_mail><input type="tel" name="phone" size="10" value="<c:out value="${contact.phones}"/>" required="required" placeholder="Telephone"></div></td>
                             <td> 
                                 <div id="dpYears" class="input-append date" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="${contact.birthday}">
                                     <input class="span2" type="text" name="birthday" readonly="" value="${contact.birthday}" size="16">
                                     <span class="add-on">
                                         <i class="icon-calendar"></i>
                                     </span>
+                                </div>
+
+                                <div class="btn-group" data-toggle="buttons-radio">
+                                    <button type="button" class="btn active"  onclick="JavaScript:setActif()">Actif</button>
+                                    <button type="button" class="btn" onclick="JavaScript:setPassif()">Passif</button>
+                                    <input type='hidden' id='actif' name='actif'  value='1'>
                                 </div>
 
 
@@ -46,14 +52,22 @@
             <div class=tab_button>
                 <table>
                     <tr> 
-                        <td> <input type="submit" value="Valider Modification"></td>
+                        <td>
+                            <input type="submit" value="Valider Modification" name="valid">
                         </form:form>
+                        </td>
+                    <td> 
                         <form:form METHOD="POST" ACTION="modify_addrs.html">
-                        <td> <input type="submit" value="Modify address"></td>
+                            <input type="submit" value="Modify address">
                         </form:form>
+                    </td>
+                    <td>
                         <form:form METHOD="POST" ACTION="add_addr_from_modify.html">
-                        <td> <input type="submit" value="Ajouter address"></td>
+                            <input type="hidden"  name="MODcontactID" value="<%request.getParameter( "MODcontactID" );%>">
+                            <%request.getParameter( "MODcontactID" );%>
+                            <input type="submit" value="Ajouter address">
                         </form:form>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -65,6 +79,15 @@
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script>
+        
+    function setActif(){ 
+        document.getElementsByName("actif").value = '1';
+    }
+    function setPassif(){ 
+        document.getElementsByName("actif").value = '0';
+    }
+    
+    
     $(function(){
         window.prettyPrint && prettyPrint();
         $('#dp1').datepicker({
