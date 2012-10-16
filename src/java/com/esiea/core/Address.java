@@ -2,16 +2,16 @@ package com.esiea.core;
 
 public class Address {
 
-    private String nickAddress;
+    private enum enums { Facturation, Livraison };
     private String number;
     private String rue;
     private String ville;
     private String cp;
     private String pays;
-
+    private enums nickAddress;
 
     public Address(String number, String rue, String ville, String cp, String pays) {
-        this.nickAddress = "default";
+        this.nickAddress = enums.Facturation;
         this.number = number;
         this.rue = rue;
         this.ville = ville;
@@ -20,7 +20,7 @@ public class Address {
     }
 
     public Address(String nickaddress, String number, String rue, String ville, String cp, String pays) {
-        this.nickAddress = nickaddress;
+        this.nickAddress = enums.Facturation;
         this.number = number;
         this.rue = rue;
         this.ville = ville;
@@ -29,11 +29,24 @@ public class Address {
     }
 
     public String getNickAddress() {
+        return nickAddress.toString();
+    }
+
+    public enums getEnumNickAddress() {
         return nickAddress;
     }
 
-    public void setNickAddress(String nickAddress) {
+    public void setEnumNickAddress(enums nickAddress) {
         this.nickAddress = nickAddress;
+    }
+
+    public void setNickAddress(String nickaddress) {
+        if (nickaddress.equals(enums.Facturation.toString())) {
+            this.nickAddress = enums.Facturation;
+        }
+        if (nickaddress.equals(enums.Livraison.toString())) {
+            this.nickAddress = enums.Livraison;
+        }
     }
 
     public String getNumber() {
@@ -90,7 +103,7 @@ public class Address {
     }
 
     public void modifyAddress(String nick, String number, String rue, String ville, String cp, String pays) {
-        this.nickAddress = nick;
+        ;
         this.number = number;
         this.rue = rue;
         this.ville = ville;

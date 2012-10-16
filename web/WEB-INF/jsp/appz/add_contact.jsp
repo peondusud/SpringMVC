@@ -18,7 +18,7 @@
             Email: <div class=list_mail><input type="email" name="mail" size="10" value="" required="mail" ></div>
             Telephone: <div class=list_mail><input type="tel" name="phone" size="10" value="" required="tel" ></div>
             Date de Naissance :<div class=birthday><input type="int" name="birthday" size="10" value="" required="required" ></div>
-
+            Actif : 
 
             <div class=tab_button>
                 <br>

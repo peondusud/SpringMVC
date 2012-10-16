@@ -36,7 +36,7 @@
 
                         <label class="control-label" for="inputPhone">Pays</label>
                         <div class="controls">
-                            <input type="texte" required="required" name="addr_pays"/>
+                            <input type="text" required="required" name="addr_pays"/>
                         </div>
 
                         <div class=tab_button>

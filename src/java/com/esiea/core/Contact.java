@@ -20,6 +20,15 @@ public class Contact {
         this.birthday = brithday;
     }
 
+    public Contact(String nom, String prenom, String email, String phone, String brithday, boolean actif) {
+        this.name = nom;
+        this.surname = prenom;
+        this.emails = email;
+        this.phones = phone;
+        this.birthday = brithday;
+        this.actif = actif;
+    }
+
     public String getName() {
         return name;
     }
