@@ -49,9 +49,22 @@
 
 .body{
     height: 100%;
+    background-image: url(wall1.jpg);
 }
 
 .span3Perso{
     position: absolute;
     right : 26%;
+}
+
+.tablePerso{
+    width:100%;   
+}
+
+.titrePerso{
+    font-weight: bold;
+}
+
+.hero-unit{
+    text-align: center;
 }

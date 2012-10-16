@@ -1,14 +1,23 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.esiea.controller;
 
 import com.esiea.core.Address;
+import com.esiea.core.Appz;
 import com.esiea.core.Contact;
 import com.esiea.core.User;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ContactController 
@@ -159,6 +168,12 @@ public class ContactController
             customModelAndView.addObject("str",e.getMessage());
             return customModelAndView;
         }
+        //TODO check good login
+        Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
+        Appz.getInstance().addContact(userLoginCookie, tmpCont);
+        session.setAttribute("contactOject", tmpCont);
+
+        return new ModelAndView("new_add_contact_display", "tmpCont", tmpCont);
     }
         
     @RequestMapping(value = "/modify_contact", method = RequestMethod.GET)
@@ -171,7 +186,7 @@ public class ContactController
             User user = ServerUtils.getUser(hsr, hsr1);
             Contact contact = user.getUserData().getTableContact().get(indice);
             hsr.getSession().setAttribute("MODcontactID", indice);
-            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/list_show");
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modify_contact");
             modelAndView.addObject("contact", contact);
             return modelAndView;
         } 
@@ -212,6 +227,8 @@ public class ContactController
             customModelAndView.addObject("str",e.getMessage());
             return customModelAndView;
         }
+        //TODO
+        return null;
     }
 
     @RequestMapping(value = "/modify_addrs")
@@ -304,6 +321,14 @@ public class ContactController
             int modaddrID = Integer.valueOf(hsr.getSession().getAttribute("modaddrID").toString());
             int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
 
+        //TODO
+        HttpSession session = hsr.getSession();
+        String username = session.getAttribute("username").toString();
+        String pcw = session.getAttribute("password").toString();
+        int modaddrID = Integer.valueOf(session.getAttribute("modaddrID").toString());
+        int modContactID = Integer.valueOf(session.getAttribute("MODcontactID").toString());
+        if (Appz.getInstance().testPcwHash(username, pcw)) 
+        {
             String nb = hsr.getParameter("addr_nb").toString();
             String rue = hsr.getParameter("addr_rue").toString();
             String ville = hsr.getParameter("addr_ville").toString();
@@ -323,6 +348,44 @@ public class ContactController
                     
         } 
         catch(Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+    
+        @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public CustomModelAndView search_page(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {
+            User user = ServerUtils.getUser(hsr, hsr1);         
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/search");
+            return modelAndView;
+        } 
+        catch (Exception e) 
+        {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
+            customModelAndView.addObject("str",e.getMessage());
+            return customModelAndView;
+        }
+    }
+            @RequestMapping(value = "/search_find", method = RequestMethod.POST)
+    public CustomModelAndView search_results(HttpServletRequest hsr, HttpServletResponse hsr1) 
+    {
+        try 
+        {   
+            User user = ServerUtils.getUser(hsr, hsr1);
+            String stringPattern = hsr.getParameter("stringPattern").toString();
+            ArrayList<Contact> arrContact = user.getUserData().searchContact(user.getUsername(), stringPattern, Appz.getInstance());
+            ArrayList<Address> addrs = user.getUserData().searchAddr(user.getUsername(),  stringPattern, Appz.getInstance());
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/search_found");
+            modelAndView.addObject("arrContact", arrContact);
+            modelAndView.addObject("addrs", addrs);
+            return modelAndView;
+        } 
+        catch (Exception e) 
         {
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
             customModelAndView.addObject("str",e.getMessage());

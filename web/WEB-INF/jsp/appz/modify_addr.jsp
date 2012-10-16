@@ -1,3 +1,6 @@
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="../include/PageTop.jsp"/> 
 
 <div class="container">
@@ -6,7 +9,7 @@
         <form:form METHOD="POST" ACTION="modify_addr_validator.html">
             <div class=addr>
                 nickname : <input type="text" name="addr_nick" size="10" value="${addr.nickAddress}" required="required" placeholder="Alias"></br>
-                Nb rue : <input type="int" name="addr_nb" size="10" value="${addr.number}" required="required" placeholder="n°"></br>
+                Nb rue : <input type="int" name="addr_nb" size="10" value="${addr.number}" required="required" placeholder="nÂ°"></br>
                 Rue : <input type="text" name="addr_rue" size="10" value="${addr.rue}" required="required" placeholder="Adresse"></br>
                 CP : <input type="int" name="addr_cp" size="10" value="${addr.cp}" required="required" placeholder="int"></br>
                 Ville : <input type="text" name="addr_ville" size="10" value="${addr.ville}" required="required" placeholder="Ville"> </br>
@@ -26,5 +29,10 @@
 
 <jsp:include page="../include/PageBottom.jsp"/> 
 
+        <div class=header>	
+            <jsp:include page="footer.jsp"/> 
+        </div>
 
+    </body>
+</html>
 

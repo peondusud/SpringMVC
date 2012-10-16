@@ -10,6 +10,7 @@ public class Contact {
     private String emails;
     private String phones;
     private String birthday;
+    private boolean actif;
 
     public Contact(String nom, String prenom, String email, String phone, String brithday) {
         this.name = nom;
@@ -17,6 +18,15 @@ public class Contact {
         this.emails = email;
         this.phones = phone;
         this.birthday = brithday;
+    }
+
+    public Contact(String nom, String prenom, String email, String phone, String brithday, boolean actif) {
+        this.name = nom;
+        this.surname = prenom;
+        this.emails = email;
+        this.phones = phone;
+        this.birthday = brithday;
+        this.actif = actif;
     }
 
     public String getName() {
@@ -59,6 +69,13 @@ public class Contact {
         this.birthday = birthday;
     }
 
+    public boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(boolean actif) {
+        this.actif = actif;
+    }
 
     public boolean isValideEmail(String str) {
         Pattern p = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
@@ -89,12 +106,12 @@ public class Contact {
             return false;
         }
         final Contact other = (Contact) obj;
-        boolean isSameContact=true;
-        isSameContact=isSameContact && name.equals(other.getName());
-        isSameContact=isSameContact && surname.equals(other.getSurname());
-        isSameContact=isSameContact && emails.equals(other.getEmails());
-        isSameContact=isSameContact && birthday.equals(other.getBirthday());
-        isSameContact=isSameContact && phones.equals(other.getPhones());
+        boolean isSameContact = true;
+        isSameContact = isSameContact && name.equals(other.getName());
+        isSameContact = isSameContact && surname.equals(other.getSurname());
+        isSameContact = isSameContact && emails.equals(other.getEmails());
+        isSameContact = isSameContact && birthday.equals(other.getBirthday());
+        isSameContact = isSameContact && phones.equals(other.getPhones());
         return isSameContact;
     }
 
