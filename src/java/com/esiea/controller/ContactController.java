@@ -26,12 +26,19 @@ public class ContactController {
             User user = ServerUtils.getUser(hsr, hsr1);
             Contact tmpContact = (Contact) hsr.getSession().getAttribute("contactOject");
             String nickaddress = hsr.getParameter("nickaddress").toString();
+
             String nb = hsr.getParameter("addr_nb").toString();
             String rue = hsr.getParameter("addr_rue").toString();
             String ville = hsr.getParameter("addr_ville").toString();
             String cp = hsr.getParameter("addr_cp").toString();
             String pays = hsr.getParameter("addr_pays").toString();
-
+            boolean hasFacturation = user.getUserData().hasFacturation(user, tmpContact);
+            if (nickaddress.equalsIgnoreCase("Facturation") && hasFacturation) {
+                CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+                String str = "Addresse de Facturation existe déja";
+                customModelAndView.addObject("str", str);
+                return customModelAndView;
+            }
             Address tmpAddr = new Address(nickaddress, nb, rue, ville, cp, pays);
             user.getUserData().InsertAddressAssociatedToContact(tmpContact, tmpAddr);
             return new CustomModelAndView(hsr, hsr1, "redirect:/list_show.html");
@@ -57,10 +64,10 @@ public class ContactController {
             String phone = hsr.getParameter("phone").toString();
             String mail = hsr.getParameter("mail").toString();
             String birthday = hsr.getParameter("birthday").toString();
-            
+
             boolean actif = Boolean.valueOf(hsr.getParameter("actif"));
             //Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
-            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday,actif);
+            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday, actif);
             hsr.getSession().setAttribute("contactOject", tmpCont);
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_contact_display");
             customModelAndView.addObject("tmpCont", tmpCont);
@@ -148,6 +155,7 @@ public class ContactController {
             CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modify_contact");
             modelAndView.addObject("contact", contact);
             modelAndView.addObject("MODcontactID", indice);
+            modelAndView.addObject("actif", new Boolean(contact.isActif()));
             return modelAndView;
         } catch (Exception e) {
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
@@ -168,12 +176,11 @@ public class ContactController {
             String birthday = hsr.getParameter("birthday").toString();
             boolean actif = Boolean.valueOf(hsr.getParameter("actif"));
             //Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
-            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday,actif);
+            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday, actif);
             int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
             Contact old = user.getUserData().getTableContact().get(modContactID);
             //TODO test unique contact
-            Contact modifyCtct = new Contact(nom, prenom, mail, phone, birthday);
-            user.getUserData().modifyContact(old, modifyCtct);
+            user.getUserData().modifyContact(old, tmpCont);
 
             ArrayList<Contact> arrContact = user.getUserData().getTableContact();
             CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/list_show");
@@ -265,9 +272,16 @@ public class ContactController {
                     String ville = hsr.getParameter("addr_ville").toString();
                     String cp = hsr.getParameter("addr_cp").toString();
                     String pays = hsr.getParameter("addr_pays").toString();
-                    //  String nick = hsr.getParameter("nickaddress").toString();
+                    String nick = hsr.getParameter("nickaddress").toString();
+                    boolean hasFacturation = user.getUserData().hasFacturation(user, ctct);
+                    if (nick.equalsIgnoreCase("Facturation") && hasFacturation) {
+                        CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+                        String str = "Addresse de Facturation existe déja";
+                        customModelAndView.addObject("str", str);
+                        return customModelAndView;
+                    }
 
-                    Address newAddr = new Address(nb, rue, ville, cp, pays);
+                    Address newAddr = new Address(nick, nb, rue, ville, cp, pays);
                     Address oldAddr = user.getUserData().getTableAddress().get(modAddrID);
 
                     oldAddr.update(newAddr);
@@ -324,8 +338,8 @@ public class ContactController {
 
         try {
             User user = ServerUtils.getUser(hsr, hsr1);
-          //  int modcontactID = Integer.valueOf(hsr.getParameter("modcontactID"));
-           int modcontactID =  Integer.valueOf(hsr.getSession().getAttribute("modcontactID").toString());
+            //  int modcontactID = Integer.valueOf(hsr.getParameter("modcontactID"));
+            int modcontactID = Integer.valueOf(hsr.getSession().getAttribute("modcontactID").toString());
             //hsr.getSession().setAttribute("modcontactID", modcontactID);
             CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr_from_modify");
             return modelAndView;
@@ -340,7 +354,7 @@ public class ContactController {
     public CustomModelAndView add_addr_from_modify_validator(HttpServletRequest hsr, HttpServletResponse hsr1) {
         try {
             User user = ServerUtils.getUser(hsr, hsr1);
-            
+
             int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
             Contact tmpContact = user.getUserData().getTableContact().get(modContactID);
             String nickaddress = hsr.getParameter("nickaddress").toString();
@@ -349,10 +363,17 @@ public class ContactController {
             String ville = hsr.getParameter("addr_ville").toString();
             String cp = hsr.getParameter("addr_cp").toString();
             String pays = hsr.getParameter("addr_pays").toString();
+            boolean hasFacturation = user.getUserData().hasFacturation(user, tmpContact);
+            if (nickaddress.equalsIgnoreCase("Facturation") && hasFacturation) {
+                CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+                String str = "Addresse de Facturation existe déja";
+                customModelAndView.addObject("str", str);
+                return customModelAndView;
+            }
 
             Address tmpAddr = new Address(nickaddress, nb, rue, ville, cp, pays);
             user.getUserData().InsertAddressAssociatedToContact(tmpContact, tmpAddr);
-            
+
             return new CustomModelAndView(hsr, hsr1, "redirect:/list_show.html");
         } catch (Exception e) {
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");

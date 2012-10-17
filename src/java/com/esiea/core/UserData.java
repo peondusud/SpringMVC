@@ -3,14 +3,13 @@ package com.esiea.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class UserData 
-{  
+public class UserData {
+
     private ArrayList<Contact> tableContact = new ArrayList<Contact>();
-    private ArrayList<Address> tableAddress = new ArrayList<Address>();   
+    private ArrayList<Address> tableAddress = new ArrayList<Address>();
     private ArrayList<AddressContact> tableAddressContact = new ArrayList<AddressContact>();
 
-    public UserData() 
-    {
+    public UserData() {
         tableContact = new ArrayList<Contact>();
         tableAddress = new ArrayList<Address>();
         tableAddressContact = new ArrayList<AddressContact>();
@@ -39,130 +38,102 @@ public class UserData
     public void setTableAddressContact(ArrayList<AddressContact> tableAddressContact) {
         this.tableAddressContact = tableAddressContact;
     }
-    
-    public ArrayList<Address> getAddressAssociatedToContact(Contact input)
-    {
+
+    public ArrayList<Address> getAddressAssociatedToContact(Contact input) {
         ArrayList<Address> arrayList = new ArrayList<Address>();
-        for(int i=0; i<tableAddressContact.size();i++)
-        {
-            if(input.equals(tableAddressContact.get(i).getContact()))
-            {
+        for (int i = 0; i < tableAddressContact.size(); i++) {
+            if (input.equals(tableAddressContact.get(i).getContact())) {
                 Address address = tableAddressContact.get(i).getAddress();
                 arrayList.add(address);
             }
         }
         return arrayList;
     }
-    
-    public void removeAddressAssociatedToContact(Address address,Contact contact)
-    {
-        for(int i=0; i<tableAddressContact.size();i++)
-        {
+
+    public void removeAddressAssociatedToContact(Address address, Contact contact) {
+        for (int i = 0; i < tableAddressContact.size(); i++) {
             boolean bool = tableAddressContact.get(i).getAddress().equals(address) && tableAddressContact.get(i).getContact().equals(contact);
-            if(bool)
-            {
+            if (bool) {
                 tableAddressContact.remove(i);
             }
         }
-        for(int i=0; i<tableAddress.size();i++)
-        {
+        for (int i = 0; i < tableAddress.size(); i++) {
             Address get = tableAddress.get(i);
-            if(get.equals(address))
-            {
+            if (get.equals(address)) {
                 tableAddress.remove(i);
             }
         }
-        
+
     }
-    
-    public void removeContact(Contact contact)
-    {
+
+    public void removeContact(Contact contact) {
         ArrayList<Address> arrayList = new ArrayList<Address>();
-        for(int i=0; i<tableAddressContact.size();i++)
-        {
+        for (int i = 0; i < tableAddressContact.size(); i++) {
             boolean bool = tableAddressContact.get(i).getContact().equals(contact);
-            if(bool)
-            {
+            if (bool) {
                 arrayList.add(tableAddressContact.get(i).getAddress());
             }
         }
-        for(int i=0; i<arrayList.size();i++)
-        {
+        for (int i = 0; i < arrayList.size(); i++) {
             removeAddressAssociatedToContact(arrayList.get(i), contact);
         }
-        for(int i=0; i<tableContact.size();i++)
-        {
+        for (int i = 0; i < tableContact.size(); i++) {
             Contact get = tableContact.get(i);
-            if(get.equals(contact))
-            {
+            if (get.equals(contact)) {
                 tableContact.remove(i);
             }
         }
     }
-    
-    public void InsertContact(Contact contact) throws Exception
-    {
-        boolean bool=false;
-        for(int i=0; i<tableAddressContact.size() &&!bool ;i++)
-        {
+
+    public void InsertContact(Contact contact) throws Exception {
+        boolean bool = false;
+        for (int i = 0; i < tableAddressContact.size() && !bool; i++) {
             bool = tableAddressContact.get(i).getContact().equals(contact) || bool;
         }
-        if(!bool)
-        {
+        if (!bool) {
             tableContact.add(contact);
-        }
-        else
-        {
+        } else {
             throw new Exception("Contact already presents in Database");
         }
     }
-    
-    public void InsertAddressAssociatedToContact(Contact contact,Address address) throws Exception
-    {
-        boolean bool=false;
+
+    public void InsertAddressAssociatedToContact(Contact contact, Address address) throws Exception {
+        boolean bool = false;
         boolean AddressAlReadyInDataBase = false;
         boolean ContactAlReadyInDataBase = false;
-        for(int i=0; i<tableAddressContact.size() &&!bool ;i++)
-        {
+        for (int i = 0; i < tableAddressContact.size() && !bool; i++) {
             AddressAlReadyInDataBase = AddressAlReadyInDataBase || tableAddressContact.get(i).getAddress().equals(address);
             ContactAlReadyInDataBase = ContactAlReadyInDataBase || tableAddressContact.get(i).getContact().equals(contact);
             boolean temp = tableAddressContact.get(i).getContact().equals(contact);
             temp = temp && tableAddressContact.get(i).getAddress().equals(address);
-            bool =  temp || bool;
+            bool = temp || bool;
         }
-        if(!bool)
-        {
-            if (!AddressAlReadyInDataBase)
-            {
+        if (!bool) {
+            if (!AddressAlReadyInDataBase) {
                 tableAddress.add(address);
             }
-            if (!ContactAlReadyInDataBase)
-            {
+            if (!ContactAlReadyInDataBase) {
                 tableContact.add(contact);
             }
             tableAddressContact.add(new AddressContact(contact, address));
-        }
-        else
-        {
+        } else {
             throw new Exception("Contact already presents in Database");
         }
     }
-    
-    public void modifyContact(Contact contactToUpdate, Contact newUpdate) 
-    {
+
+    public void modifyContact(Contact contactToUpdate, Contact newUpdate) {
         contactToUpdate.setBirthday(newUpdate.getBirthday());
         contactToUpdate.setEmails(newUpdate.getEmails());
         contactToUpdate.setName(newUpdate.getName());
         contactToUpdate.setPhones(newUpdate.getPhones());
         contactToUpdate.setSurname(newUpdate.getSurname());
+        contactToUpdate.setActif(newUpdate.isActif());
     }
 
-    
     ////////////////////////
     // Warning
     ///////////////////////
     // TODO check
-
     public ArrayList<Contact> searchContact(String user, String str, Appz appz) {
         ArrayList<Contact> arrCct = new ArrayList<Contact>();
         int userIndice = appz.indexPresentLogin(user);
@@ -200,5 +171,22 @@ public class UserData
         }
         return arrAddr;
     }
-  
+
+    public boolean hasFacturation(User usr,Contact ctc) {
+
+        int userIndice = Appz.getInstance().indexPresentLogin(usr.getUsername());
+        UserData userData = Appz.getInstance().getDataBase().get(userIndice).getUserData();
+        ArrayList<Address> arrAdd =userData.getAddressAssociatedToContact(ctc);
+        boolean empty = arrAdd.isEmpty();
+        if (!arrAdd.isEmpty()) {
+            Iterator<Address> itr2 = arrAdd.iterator();
+            while (itr2.hasNext()) {
+                Address addr = itr2.next();
+                if (addr.getNickAddress().equalsIgnoreCase("Facturation")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

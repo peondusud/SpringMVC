@@ -41,7 +41,7 @@
 
                 <table>
                     <tr> 
-                        <td><button  class="btn  btn-success" type="submit">Valider</button> 
+                        <td><button  class="btn  btn-success" type="submit">Ajouter adresse</button> 
                     </tr>
                 </table>
             </div>

@@ -22,6 +22,7 @@ public class Contact {
         this.surname = prenom;
         this.emails = email;
         this.phones = phone;
+        this.actif = true;
         try {
             this.birthday = new SimpleDateFormat("dd-MM-YYYY").parse(brithday);
         } catch (ParseException ex) {

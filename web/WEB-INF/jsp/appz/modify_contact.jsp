@@ -4,7 +4,7 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="hero-unit centerPerso" style="width: 60%">
+<div class="hero-unit centerPerso" style="width: 40%">
     <div class="row">
         <div class="span4">
             <div class=status>		
@@ -19,7 +19,7 @@
     <form:form METHOD="POST" ACTION="modify_contact_v.html">
         <div class="row-fluid">
             <div class=table>
-                <table>
+                <table style="width:100%">
                     <tr> <div class=titres>  
                         <td>Nom</td>
                         <td>Prenom</td>
@@ -45,9 +45,20 @@
                             <td><div class=list_mail><input type="email" name="mail" value="<c:out value="${contact.emails}"/>" required="mail" placeholder="Email"></div></td>
                             <td><div class=list_mail><input type="tel" name="phone" value="<c:out value="${contact.phones}"/>" required="tel" placeholder="Telephone"></div></td>
                             <td> <div class="btn-group" data-toggle="buttons-radio">
+                                    
+                                    <% Boolean boolActif = (Boolean) request.getAttribute("actif");%> 
+                                    <% if (boolActif == false) {%>
+                                    <button type="button" class="btn "  onclick="JavaScript:setActif()">Actif</button>
+                                    <button type="button" class="btn active" onclick="JavaScript:setPassif()">Passif</button>
+                                    <% } else {%>
                                     <button type="button" class="btn active"  onclick="JavaScript:setActif()">Actif</button>
                                     <button type="button" class="btn" onclick="JavaScript:setPassif()">Passif</button>
-                                    <input type='hidden' id='actif' name='actif'  value='1'>
+
+
+
+                                    <%}%>
+
+                                    <input type="hidden" id="actif" name="actif"  value="${contact.actif}">
                                 </div></td> 
                         </tr>      
                 </table>
@@ -59,20 +70,20 @@
                 <tr> 
                     <td>
                         <button class="btn btn-success" type="submit">Valider Modification</button>
-              
+
                     </form:form>
                 </td>
                 <td> 
                     <form:form METHOD="POST" ACTION="modify_addrs.html">
-                          <button class="btn btn-warning" type="submit">Modifier Adresse(s)</button>
-                    
+                        <button class="btn btn-warning" type="submit">Modifier Adresse(s)</button>
+
                     </form:form>
                 </td>
                 <td>
                     <form:form METHOD="POST" ACTION="add_addr_from_modify.html">
                         <input type="hidden"  name="MODcontactID" value="<%request.getParameter("MODcontactID");%>">
                         <%request.getParameter("MODcontactID");%>
-                          <button class="btn btn-info" type="submit">Ajouter une Adresse</button>
+                        <button class="btn btn-info" type="submit">Ajouter une Adresse</button>
                     </form:form>
                 </td>
             </tr>
@@ -88,10 +99,12 @@
 <script>
         
     function setActif(){ 
-        document.getElementsByName("actif").value = '1';
+        $("input#actif").val("1");
+        // document.getElementsByName("actif").value = '1';
     }
     function setPassif(){ 
-        document.getElementsByName("actif").value = '0';
+        $("input#actif").val("0");
+       // document.getElementsByName("actif").value = '0';
     }
     
     

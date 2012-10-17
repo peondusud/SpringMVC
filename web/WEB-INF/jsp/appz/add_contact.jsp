@@ -32,11 +32,13 @@
             </div>
             <input type='hidden' id='actif' name='actif'  value='1'>
 
-            <div class=tab_button>
-                <br>
-                <input type="submit" value="Envoyer">
 
+            <br>
+            <div class="controls">
+
+                <button  class="btn  btn-success" type="submit">Valider</button>
             </div>
+
         </form:form>
 
     </div>
