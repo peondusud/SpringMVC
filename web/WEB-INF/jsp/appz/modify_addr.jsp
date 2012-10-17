@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <jsp:include page="../include/PageTop.jsp"/> 
 
 <div class="container">
@@ -10,26 +11,41 @@
         <form:form METHOD="POST" ACTION="modify_addr_v.html">
             <div class=addr>
 
-                nickname :
-                <% Address add = (Address) request.getAttribute("addr");%> 
-                <% add.getNickAddress();%> 
-                <% if (add.getNickAddress().equals("Facturation")) {%>
-                ${addr.nickAddress}
-                <% } else {%>
-                ${addr.nickAddress}                               
-                <% }%>
+
                 <div class="table">
                     <table style="width:100%">
-                        <tr><td>
+                        <tr><td> Type d'adresse
                                 <div class="controls">
                                     <div class="btn-group">
                                         <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-                                            Type d'adresse
+                                            <% Address add = (Address) request.getAttribute("addr");%> 
+                                           
+                                            <% add.getNickAddress();%> 
+                                            <% if (add.getNickAddress().equals("Facturation")) {%>
+                                            ${addr.nickAddress}
+                                            <% } else {%>
+                                            ${addr.nickAddress}                               
+                                            <% }%>
+
+
                                             <span class="caret"></span>
                                         </a>
                                         <ul class="dropdown-menu">
+                                             <% Boolean hasFacturation = (Boolean) request.getAttribute("hasFacturation");%> 
+                                             <% Boolean isFacturationAddress = (Boolean) request.getAttribute("isFacturationAddress");%>
+                                              
+                                            <% if (hasFacturation && !isFacturationAddress) {%>
+                                            
                                             <li><a  class=".livraison" onclick="Javascript:livraison();" >Livraison</a></li>
-                                            <li><a  class=".facturation" onclick="Javascript:facturation();">Facturation</a></li>
+                                            
+                                            <% } else {%>
+                                            
+                                            <li><a  class=".livraison" onclick="Javascript:livraison();" >Livraison</a></li>
+                                            <li><a  class=".facturation" onclick="Javascript:facturation();">Facturation</a></li>      
+                                            
+                                            <% }%>
+                                            
+                                            
                                         </ul>
                                     </div>
                                 </div>

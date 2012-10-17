@@ -17,7 +17,31 @@ public class ContactController {
 
     @RequestMapping(value = "/add_addr")
     public CustomModelAndView add_addr_page(HttpServletRequest hsr, HttpServletResponse hsr1) {
-        return new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
+
+        try {
+            User user = ServerUtils.getUser(hsr, hsr1);
+            Contact tmpContact = (Contact) hsr.getSession().getAttribute("contactOject");
+
+            boolean hasFacturation = user.getUserData().hasFacturation(user, tmpContact);
+            Address facturationAddress = user.getUserData().FacturationAddress(user, tmpContact);
+            int modAddrID = Integer.valueOf(hsr.getSession().getAttribute("modaddrID").toString());
+            Address modifyAddr = user.getUserData().getTableAddress().get(modAddrID);
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
+
+            if (facturationAddress.equals(modifyAddr)) {
+                boolean isFacturationAddress = true;
+                customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+            } else {
+                boolean isFacturationAddress = false;
+                customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+            }
+            customModelAndView.addObject("hasFacturation", hasFacturation);
+            return customModelAndView;
+        } catch (Exception e) {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+            customModelAndView.addObject("str", e.getMessage());
+            return customModelAndView;
+        }
     }
 
     @RequestMapping(value = "/add_addr_validator")
@@ -237,6 +261,26 @@ public class ContactController {
                 Address addr = user.getUserData().getAddressAssociatedToContact(ctct).get(modAddrID);
                 if (addr != null) {
                     CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modify_addr");
+
+///////////////////////////////////// probleme IDDDDDDDDDDDDDDDD
+
+                    boolean hasFacturation = user.getUserData().hasFacturation(user, ctct);
+                    Address facturationAddress = user.getUserData().FacturationAddress(user, ctct);
+
+                    Address modifyAddr = user.getUserData().getTableAddress().get(modAddrID);
+                    boolean isFacturationAddress = false;
+                    if (facturationAddress.equals(modifyAddr)) {
+                        isFacturationAddress = true;
+                        modelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                    } else {
+                        isFacturationAddress = false;
+                        modelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                    }
+                    modelAndView.addObject("hasFacturation", hasFacturation);
+
+
+
+
                     modelAndView.addObject("addr", addr);
                     return modelAndView;
                 } else {
@@ -338,9 +382,9 @@ public class ContactController {
 
         try {
             User user = ServerUtils.getUser(hsr, hsr1);
-            //  int modcontactID = Integer.valueOf(hsr.getParameter("modcontactID"));
+            // int modcontactID = Integer.valueOf(hsr.getParameter("modcontactID"));
             int modcontactID = Integer.valueOf(hsr.getSession().getAttribute("modcontactID").toString());
-            //hsr.getSession().setAttribute("modcontactID", modcontactID);
+            hsr.getSession().setAttribute("modcontactID", modcontactID);
             CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr_from_modify");
             return modelAndView;
         } catch (Exception e) {

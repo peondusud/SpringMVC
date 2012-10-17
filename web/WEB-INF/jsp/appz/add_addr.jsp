@@ -4,7 +4,7 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="hero-unit">
+<div class="hero-unit centerPerso">
     <form:form METHOD="POST" name="text_form" ACTION="add_addr_validator.html">
         <h3>Ajout d'une adresse</h3>
         <br>

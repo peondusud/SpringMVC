@@ -172,11 +172,11 @@ public class UserData {
         return arrAddr;
     }
 
-    public boolean hasFacturation(User usr,Contact ctc) {
+    public boolean hasFacturation(User usr, Contact ctc) {
 
         int userIndice = Appz.getInstance().indexPresentLogin(usr.getUsername());
         UserData userData = Appz.getInstance().getDataBase().get(userIndice).getUserData();
-        ArrayList<Address> arrAdd =userData.getAddressAssociatedToContact(ctc);
+        ArrayList<Address> arrAdd = userData.getAddressAssociatedToContact(ctc);
         boolean empty = arrAdd.isEmpty();
         if (!arrAdd.isEmpty()) {
             Iterator<Address> itr2 = arrAdd.iterator();
@@ -188,5 +188,23 @@ public class UserData {
             }
         }
         return false;
+    }
+
+    public Address FacturationAddress(User usr, Contact ctc) {
+
+        int userIndice = Appz.getInstance().indexPresentLogin(usr.getUsername());
+        UserData userData = Appz.getInstance().getDataBase().get(userIndice).getUserData();
+        ArrayList<Address> arrAdd = userData.getAddressAssociatedToContact(ctc);
+        boolean empty = arrAdd.isEmpty();
+        if (!arrAdd.isEmpty()) {
+            Iterator<Address> itr2 = arrAdd.iterator();
+            while (itr2.hasNext()) {
+                Address addr = itr2.next();
+                if (addr.getNickAddress().equalsIgnoreCase("Facturation")) {
+                    return addr;
+                }
+            }
+        }
+        return null;
     }
 }
