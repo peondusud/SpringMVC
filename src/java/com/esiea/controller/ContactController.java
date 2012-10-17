@@ -57,7 +57,10 @@ public class ContactController {
             String phone = hsr.getParameter("phone").toString();
             String mail = hsr.getParameter("mail").toString();
             String birthday = hsr.getParameter("birthday").toString();
-            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
+            
+            boolean actif = Boolean.valueOf(hsr.getParameter("actif"));
+            //Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
+            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday,actif);
             hsr.getSession().setAttribute("contactOject", tmpCont);
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_contact_display");
             customModelAndView.addObject("tmpCont", tmpCont);
@@ -163,7 +166,9 @@ public class ContactController {
             String phone = hsr.getParameter("phone").toString();
             String mail = hsr.getParameter("mail").toString();
             String birthday = hsr.getParameter("birthday").toString();
-
+            boolean actif = Boolean.valueOf(hsr.getParameter("actif"));
+            //Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday);
+            Contact tmpCont = new Contact(nom, prenom, mail, phone, birthday,actif);
             int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
             Contact old = user.getUserData().getTableContact().get(modContactID);
             //TODO test unique contact

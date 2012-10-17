@@ -57,12 +57,13 @@
 
 <script src="js/jquery.js"></script>
 <script>
+   
     function facturation(){ 
-        document.getElementsByName("nickaddress").value = "Facturation";
+        $("input#nickaddress").val("Facturation");
     }
     function livraison(){ 
-        document.getElementsByName("nickaddress").value = "Livraison";
-     
+        
+        $("input#nickaddress").val("Livraison");
     }
 </script>
 

@@ -25,6 +25,7 @@
                     <i class="icon-calendar"></i>
                 </span>
             </div>
+            <br>
             <div class="btn-group" data-toggle="buttons-radio">
                 <button type="button" class="btn active"  onclick="JavaScript:setActif()">Actif</button>
                 <button type="button" class="btn" onclick="JavaScript:setPassif()">Passif</button>
@@ -45,7 +46,7 @@
 <script src="js/bootstrap-datepicker.js"></script>
 <script>
     
-        function setActif(){ 
+    function setActif(){ 
         document.getElementsByName("actif").value = '1';
     }
     function setPassif(){ 

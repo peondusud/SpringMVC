@@ -26,7 +26,7 @@
                     </div>
 
 
-                    <input type='hidden' id='nickaddress' name='nickaddress'  value=''>
+                    <input type="hidden" id="nickaddress" name="nickaddress"  value="">
 
 
 
@@ -70,12 +70,13 @@
 
 <script src="js/jquery.js"></script>
 <script>
+   
     function facturation(){ 
-        document.getElementsByName("nickaddress").value = "Facturation";
+        $("input#nickaddress").val("Facturation");
     }
     function livraison(){ 
-        document.getElementsByName("nickaddress").value = "Livraison";
-     
+        
+        $("input#nickaddress").val("Livraison");
     }
 </script>
 <jsp:include page="../include/PageBottom.jsp"/> 

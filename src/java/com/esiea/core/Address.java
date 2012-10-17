@@ -2,7 +2,10 @@ package com.esiea.core;
 
 public class Address {
 
-    private enum enums { Facturation, Livraison };
+    private enum enums {
+
+        Facturation, Livraison
+    };
     private String number;
     private String rue;
     private String ville;
@@ -20,7 +23,12 @@ public class Address {
     }
 
     public Address(String nickaddress, String number, String rue, String ville, String cp, String pays) {
-        this.nickAddress = enums.Facturation;
+        if (nickaddress.equals("Facturation")) {
+            this.nickAddress = enums.Facturation;
+        }
+        if (nickaddress.equals("Livraison")) {
+            this.nickAddress = enums.Livraison;
+        }
         this.number = number;
         this.rue = rue;
         this.ville = ville;
