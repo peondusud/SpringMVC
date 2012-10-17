@@ -129,7 +129,7 @@ public class Address {
         }
         final Address other = (Address) obj;
         boolean isSameAddress = true;
-        isSameAddress = isSameAddress && nickAddress.equals(other.getNickAddress());
+        isSameAddress = isSameAddress && nickAddress.equals(other.getEnumNickAddress());
         isSameAddress = isSameAddress && number.equals(other.getNumber());
         isSameAddress = isSameAddress && rue.equals(other.getRue());
         isSameAddress = isSameAddress && ville.equals(other.getVille());

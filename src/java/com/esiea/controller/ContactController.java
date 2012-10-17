@@ -25,18 +25,31 @@ public class ContactController {
             boolean hasFacturation = user.getUserData().hasFacturation(user, tmpContact);
             Address facturationAddress = user.getUserData().FacturationAddress(user, tmpContact);
             int modAddrID = Integer.valueOf(hsr.getSession().getAttribute("modaddrID").toString());
-            Address modifyAddr = user.getUserData().getTableAddress().get(modAddrID);
-            CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
+            ///////////        // BUG
+            ArrayList<Address> arrAddr = user.getUserData().getAddressAssociatedToContact(tmpContact);
+            if (!arrAddr.isEmpty()) {
+                Address modifyAddr = arrAddr.get(modAddrID);
+                CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
 
-            if (facturationAddress.equals(modifyAddr)) {
-                boolean isFacturationAddress = true;
-                customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                if (facturationAddress.equals(modifyAddr)) {
+                    boolean isFacturationAddress = true;
+                    customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                } else {
+                    boolean isFacturationAddress = false;
+                    customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                }
+                customModelAndView.addObject("hasFacturation", hasFacturation);
+                return customModelAndView;
+
+
             } else {
+                CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
                 boolean isFacturationAddress = false;
+                hasFacturation = false;
                 customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                customModelAndView.addObject("hasFacturation", hasFacturation);
+                return customModelAndView;
             }
-            customModelAndView.addObject("hasFacturation", hasFacturation);
-            return customModelAndView;
         } catch (Exception e) {
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
             customModelAndView.addObject("str", e.getMessage());
@@ -262,12 +275,13 @@ public class ContactController {
                 if (addr != null) {
                     CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/modify_addr");
 
-///////////////////////////////////// probleme IDDDDDDDDDDDDDDDD
 
                     boolean hasFacturation = user.getUserData().hasFacturation(user, ctct);
+
+
                     Address facturationAddress = user.getUserData().FacturationAddress(user, ctct);
 
-                    Address modifyAddr = user.getUserData().getTableAddress().get(modAddrID);
+                    Address modifyAddr = user.getUserData().getAddressAssociatedToContact(ctct).get(modAddrID);
                     boolean isFacturationAddress = false;
                     if (facturationAddress.equals(modifyAddr)) {
                         isFacturationAddress = true;
