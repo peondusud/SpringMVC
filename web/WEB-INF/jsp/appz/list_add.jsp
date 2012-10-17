@@ -4,13 +4,10 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="container">
-    <div class="hero-unit">
-
+    <div class="hero-unit centerPerso" style="width:60%">
         <h4>
-            Adresse(s)
+            Liste d'Adresse(s)
         </h4>
-
         <div class=table >
             <table class="tablePerso">
                 <tr> <div class=titres>
@@ -39,12 +36,10 @@
 
                             <td>${addrs.pays}</td>
                         </tr>
-
                         <c:set var="count" value="${count + 1}" scope="page"/>
                     </c:forEach> 
             </table>
         </div>
     </div>
-</div>
 
 <jsp:include page="../include/PageBottom.jsp"/> 

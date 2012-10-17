@@ -5,7 +5,7 @@
 
 <jsp:include page="../include/PageTop.jsp"/>
 
-<div class="container" style="width: 95%">
+<div class="container" >
     <div class="hero-unit centered">
 
         <div class="row-fluid centered">
@@ -23,18 +23,15 @@
             <div class="span2 ">
 
             </div>
-            <div class="span2 ">
+            <div class="span1 ">
 
             </div>
-            <div class="span2" style="padding: 5px">
-                <img src="contacts.png" width="100px" height="100px"> 
+            <div class="span3" style="padding-right: 3%">
+                <img src="contacts.png" width="70%" height="70%">
             </div>
-
-
-            <br>
             <div class="table centered">
                 <table>
-                    <tr> <div class=titres>
+                    <tr style="text-align: center"> <div class=titres>
                         <td>Nom</td>
                         <td>Prenom</td>
                         <td>Emails</td>
@@ -44,7 +41,7 @@
                         <td>Modifier</td>
                         <td>Supprimer</td>
                     </div>
-
+                    </tr>
                     <br>
                     <c:set var="count" value="0" scope="page" />
                     <c:forEach items="${arrContact}" var="tableContact" varStatus="status">
@@ -77,6 +74,6 @@
 
         </div>
     </div>
-                
+</div>
 <jsp:include page="../include/PageBottom.jsp"/> 
-                        
+

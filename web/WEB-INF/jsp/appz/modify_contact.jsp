@@ -4,75 +4,82 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="container">
-    <div class="hero-unit">
+<div class="hero-unit centerPerso" style="width: 60%">
+    <div class="row">
+        <div class="span4">
+            <div class=status>		
+                <p style="padding-top: 9%">Modify Contact</p>
+            </div>	
+        </div>
+        <div class="span2">
+            <div class=Image><img src="http://www.nouvelles-persos.fr/auteurs/inconnu.gif" style="padding-bottom: 10%"height="80" width="80"></div>
+        </div>
+    </div>
 
-        <div class=status>		
-            <p>Modify Contact</p>
-        </div>		
-        <form:form METHOD="POST" ACTION="modify_contact_v.html">
+    <form:form METHOD="POST" ACTION="modify_contact_v.html">
+        <div class="row-fluid">
             <div class=table>
                 <table>
-                    <tr> <div class=titres>
-                        <td>   </td>   
+                    <tr> <div class=titres>  
                         <td>Nom</td>
                         <td>Prenom</td>
-                        <td>eMail</td>
-                        <td>Phone</td>
                         <td>Birthday</td>
-                        </tr>
+                        </tr>                              
                         <tr>
-
-                            <td><div class=Image><img src="http://www.nouvelles-persos.fr/auteurs/inconnu.gif" height="70" width="70"></div></td>
-                            <td><div class=nom><input type="text" name="nom" size="10" value="<c:out value="${contact.name}"/>" required="required" placeholder="Nom"></div></td>
-                            <td><div class=prenom><input type="text" name="prenom" size="10" value="<c:out value="${contact.surname}"/>" required="required" placeholder="Prenom"></div></td>
-                            <td><div class=list_mail><input type="email" name="mail" size="10" value="<c:out value="${contact.emails}"/>" required="required" placeholder="Email"></div></td>
-                            <td><div class=list_mail><input type="tel" name="phone" size="10" value="<c:out value="${contact.phones}"/>" required="required" placeholder="Telephone"></div></td>
+                            <td><div class=nom><input type="text" name="nom" value="<c:out value="${contact.name}"/>" required="required" placeholder="Nom"></div></td>
+                            <td><div class=prenom><input type="text" name="prenom" value="<c:out value="${contact.surname}"/>" required="required" placeholder="Prenom"></div></td>
                             <td> 
                                 <div id="dpYears" class="input-append date" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="${contact.birthday}">
-                                    <input class="span2" type="text" name="birthday" readonly="" value="${contact.birthday}" size="16">
+                                    <input class="span2" style="width:50%" type="text" name="birthday" readonly="" value="${contact.birthday}" size="16">
                                     <span class="add-on">
                                         <i class="icon-calendar"></i>
                                     </span>
                                 </div>
-
-                                <div class="btn-group" data-toggle="buttons-radio">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>eMail</td>
+                            <td>Phone</td>
+                        </tr>
+                        <tr>
+                            <td><div class=list_mail><input type="email" name="mail" value="<c:out value="${contact.emails}"/>" required="mail" placeholder="Email"></div></td>
+                            <td><div class=list_mail><input type="tel" name="phone" value="<c:out value="${contact.phones}"/>" required="tel" placeholder="Telephone"></div></td>
+                            <td> <div class="btn-group" data-toggle="buttons-radio">
                                     <button type="button" class="btn active"  onclick="JavaScript:setActif()">Actif</button>
                                     <button type="button" class="btn" onclick="JavaScript:setPassif()">Passif</button>
                                     <input type='hidden' id='actif' name='actif'  value='1'>
-                                </div>
-
-
-                            </td>
-                        </tr>
-
+                                </div></td> 
+                        </tr>      
                 </table>
             </div>
-
-            <div class=tab_button>
-                <table>
-                    <tr> 
-                        <td>
-                            <input type="submit" value="Valider Modification" name="valid">
-                        </form:form>
-                        </td>
-                    <td> 
-                        <form:form METHOD="POST" ACTION="modify_addrs.html">
-                            <input type="submit" value="Modify address">
-                        </form:form>
-                    </td>
-                    <td>
-                        <form:form METHOD="POST" ACTION="add_addr_from_modify.html">
-                            <input type="hidden"  name="MODcontactID" value="<%request.getParameter( "MODcontactID" );%>">
-                            <%request.getParameter( "MODcontactID" );%>
-                            <input type="submit" value="Ajouter address">
-                        </form:form>
-                    </td>
-                </tr>
-            </table>
         </div>
 
+        <div class=tab_button>
+            <table>
+                <tr> 
+                    <td>
+                        <button class="btn btn-success" type="submit">Valider Modification</button>
+              
+                    </form:form>
+                </td>
+                <td> 
+                    <form:form METHOD="POST" ACTION="modify_addrs.html">
+                          <button class="btn btn-warning" type="submit">Modifier Adresse(s)</button>
+                    
+                    </form:form>
+                </td>
+                <td>
+                    <form:form METHOD="POST" ACTION="add_addr_from_modify.html">
+                        <input type="hidden"  name="MODcontactID" value="<%request.getParameter("MODcontactID");%>">
+                        <%request.getParameter("MODcontactID");%>
+                          <button class="btn btn-info" type="submit">Ajouter une Adresse</button>
+                    </form:form>
+                </td>
+            </tr>
+        </table>
     </div>
+
+</div>
 </div>
 
 <script src="js/prettify.js"></script>
