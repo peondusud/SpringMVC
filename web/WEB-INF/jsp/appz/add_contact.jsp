@@ -4,8 +4,7 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="container">
-    <div class="hero-unit">
+    <div class="hero-unit centerPerso" style="width: 30%">
 
         <div class=status>		
             <p>Ajouter un Contact</p>
@@ -44,7 +43,7 @@
         </form:form>
 
     </div>
-</div>
+
 <script src="js/prettify.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>

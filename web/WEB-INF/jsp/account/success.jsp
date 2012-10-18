@@ -3,7 +3,7 @@
 <div class="container">
     <div class="hero-unit">
 
-        <h3>Votre compte a ete cree avec succes !</h3>
+        <h3>Votre compte a été créé avec succes !</h3>
         <br>
         <p>
             <a

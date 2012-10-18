@@ -14,12 +14,12 @@
 
                 <div class="table">
                     <table style="width:100%">
-                        <tr><td> Type d'adresse
+                        <tr><td>Type d'adresse
                                 <div class="controls">
                                     <div class="btn-group">
                                         <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#">
                                             <% Address add = (Address) request.getAttribute("addr");%> 
-                                           
+
                                             <% add.getNickAddress();%> 
                                             <% if (add.getNickAddress().equals("Facturation")) {%>
                                             ${addr.nickAddress}
@@ -30,22 +30,20 @@
 
                                             <span class="caret"></span>
                                         </a>
-                                        <ul class="dropdown-menu">
-                                             <% Boolean hasFacturation = (Boolean) request.getAttribute("hasFacturation");%> 
-                                             <% Boolean isFacturationAddress = (Boolean) request.getAttribute("isFacturationAddress");%>
-                                              
+                                            <ul class="dropdown-menu">
+                                            <% Boolean hasFacturation = (Boolean) request.getAttribute("hasFacturation");%> 
+                                            <% Boolean isFacturationAddress = (Boolean) request.getAttribute("isFacturationAddress");%>
+
                                             <% if (hasFacturation && !isFacturationAddress) {%>
-                                            
+
                                             <li><a  class=".livraison" onclick="Javascript:livraison();" >Livraison</a></li>
-                                            
+
                                             <% } else {%>
-                                            
+
                                             <li><a  class=".livraison" onclick="Javascript:livraison();" >Livraison</a></li>
                                             <li><a  class=".facturation" onclick="Javascript:facturation();">Facturation</a></li>      
-                                            
+
                                             <% }%>
-                                            
-                                            
                                         </ul>
                                     </div>
                                 </div>
@@ -69,27 +67,19 @@
                         <tr><td>
                                 Pays : <input type="text" name="addr_pays" size="10" value="${addr.pays}" required="required" placeholder="Pays">
                             </td></tr>
+                        <tr><td>
 
-                    </table>
-                    <div class=tab_button>
-                        <table style="text-align: right">
-                            <tr>                     
-                                <form:form METHOD="POST" ACTION="add_addr_from_modify.html">
-                                    <td> 
+                                <div class=tab_button>
 
-                                    </td>
-                                    <td> 
+                                    <button  class="btn btn-info" type="submit">Valider Modification</button>
 
-                                    </td>
-                                    <td> 
-                                        <button  class="btn btn-info" type="submit">Valider Modification</button>
-                                    </td>
                                 </form:form>
-                            </tr>
-                        </table>
-                    </div>
-                </form:form>
-                <br>
+
+                            </div>
+                        </td></tr> 
+                </table>
+
+
 
             </div>
         </div>
