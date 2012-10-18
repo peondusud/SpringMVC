@@ -1,49 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="-deploy-ant" basedir=".">
-    <target name="-init" if="deploy.ant.enabled">
-        <property file="${deploy.ant.properties.file}"/>
-        <tempfile property="temp.module.folder" prefix="tomcat" destdir="${java.io.tmpdir}"/>
-        <unwar src="${deploy.ant.archive}" dest="${temp.module.folder}">
-            <patternset includes="META-INF/context.xml"/>
-        </unwar>
-        <xmlproperty file="${temp.module.folder}/META-INF/context.xml"/>
-        <delete dir="${temp.module.folder}"/>
+
+    <!-- Google App Engine Properties -->
+    <property name="appengine.location" value="/home/camille/Documents/appengine-java-sdk-1.7.2.1"/>
+    <property name="appengine.http.port" value="8080"/>
+    <property name="appengine.debug.port" value="8765"/>
+    <property name="jvmargs" value=""/>
+
+    <!-- Import Google App Engine Macros -->
+    <import file="${appengine.location}/config/user/ant-macros.xml" />
+
+    <!-- Copy Google App Engine Runtime JARs -->
+    <target name="copyjars" description="Copies the App Engine JARs to the WAR." depends="init, dist">
+        <copy todir="${build.web.dir}/WEB-INF/lib" flatten="true">
+            <fileset dir="${appengine.location}/lib/user">
+                <include name="**/*.jar" />
+            </fileset>
+        </copy>
     </target>
-    <target name="-check-credentials" if="deploy.ant.enabled" depends="-init">
-        <fail message="Tomcat password has to be passed as tomcat.password property.">
-            <condition>
-                <not>
-                    <isset property="tomcat.password"/>
-                </not>
-            </condition>
-        </fail>    
+
+    <!-- Data Nucleus JPA Enhancer -->
+    <target name="datanucleusenhance" description="Performs JDO enhancement on compiled data classes." depends="copyjars">
+        <enhance_war war="${build.web.dir}" />
     </target>
-    <target name="-deploy-ant" if="deploy.ant.enabled" depends="-init,-check-credentials">
-        <echo message="Deploying ${deploy.ant.archive} to ${Context(path)}"/>
-        <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
-            <classpath>
-                <pathelement path="${tomcat.home}/lib/catalina-ant.jar"/>
-                <pathelement path="${tomcat.home}/lib/tomcat-coyote.jar"/>
-                <pathelement path="${tomcat.home}/lib/tomcat-util.jar"/>
-                <pathelement path="${tomcat.home}/bin/tomcat-juli.jar"/>
-            </classpath>
-        </taskdef>
-        <deploy url="${tomcat.url}/manager/text" username="${tomcat.username}"
-                password="${tomcat.password}" path="${Context(path)}"
-                war="${deploy.ant.archive}"/>
-        <property name="deploy.ant.client.url" value="${tomcat.url}${Context(path)}"/>
+
+    <!-- Start Google App Engine Development Server -->
+    <target name="runserver" depends="datanucleusenhance"
+      description="Starts the development server.">
+        <dev_appserver war="${build.web.dir}" port="${appengine.http.port}" >
+            <options>
+                <arg line="${jvmargs}"/>
+            </options>
+        </dev_appserver>
     </target>
-    <target name="-undeploy-ant" if="deploy.ant.enabled" depends="-init,-check-credentials">
-        <echo message="Undeploying ${Context(path)}"/>
-        <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask">
-            <classpath>
-                <pathelement path="${tomcat.home}/lib/catalina-ant.jar"/>
-                <pathelement path="${tomcat.home}/lib/tomcat-coyote.jar"/>
-                <pathelement path="${tomcat.home}/lib/tomcat-util.jar"/>
-                <pathelement path="${tomcat.home}/bin/tomcat-juli.jar"/>
-            </classpath>
-        </taskdef>
-        <undeploy url="${tomcat.url}/manager/text" username="${tomcat.username}" 
-                  password="${tomcat.password}" path="${Context(path)}"/>
+
+    <!-- Start Google App Engine Development Server In Debug Mode -->
+    <target name="runserver-debug" depends="datanucleusenhance"
+      description="Starts the development server.">
+        <dev_appserver war="${build.web.dir}" port="${appengine.http.port}" >
+            <options>
+                <arg value="--jvm_flag=-Xdebug"/>
+                <arg value="--jvm_flag=-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=${appengine.debug.port}"/>
+                <arg line="${jvmargs}"/>
+            </options>
+        </dev_appserver>
+    </target>
+
+    <!-- Start Google App Engine Development Server In Profile Mode -->
+    <target name="runserver-profile" depends="datanucleusenhance"
+      description="Starts the development server.">
+        <dev_appserver war="${build.web.dir}" port="${appengine.http.port}" >            
+            <options>
+                <arg line="${jvmargs}"/>
+            </options>
+        </dev_appserver>
+    </target>
+
+    <target name="-deploy-ant" if="deploy.ant.enabled">
+        <fail message="Undeploy is not supported for the current target server"/>
+    </target>
+
+    <target name="-undeploy-ant" if="deploy.ant.enabled">
+        <fail message="Undeploy is not supported for the current target server"/>
     </target>
 </project>

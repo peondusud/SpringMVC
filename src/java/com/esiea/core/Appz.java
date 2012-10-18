@@ -139,4 +139,50 @@ public final class Appz {
             }
         }
     }
+
+    public ArrayList<Address> getArrAddress(String user, Contact ctct) 
+    {
+        return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getAddressAssociatedToContact(ctct);
+    }
+
+    public ArrayList<Contact> getArrContact(String user) 
+    {
+        return Appz.getInstance().getDataBase().get(Appz.getInstance().indexPresentLogin(user)).getUserData().getTableContact();
+    }
+
+    public void removeContact(String user, int ctctIndice) 
+    {
+        //TODO
+        int userIndice = indexPresentLogin(user);
+        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
+        if (size != 0) 
+        {
+            Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
+            if (ctct != null) 
+            {
+                Appz.getInstance().getDataBase().get(userIndice).getUserData().removeContact(ctct);
+            }
+        }
+    }
+
+    public void removeAddr(String user, int ctctIndice, int addrIndice) 
+    {
+        //TODO
+        int userIndice = indexPresentLogin(user);
+        int size = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().size();
+        if (size != 0) 
+        {
+            Contact ctct = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableContact().get(ctctIndice);
+            int size2 = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().size();
+            if (size2 != 0) 
+            {
+                Address addrs = Appz.getInstance().getDataBase().get(userIndice).getUserData().getTableAddress().get(addrIndice);
+                if (addrs != null) 
+                {
+                    Appz.getInstance().getDataBase().get(userIndice).getUserData().removeAddressAssociatedToContact(addrs, ctct);
+                }
+            }
+        }
+    }
+
 }
