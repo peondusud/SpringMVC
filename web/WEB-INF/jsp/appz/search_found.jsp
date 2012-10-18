@@ -11,6 +11,11 @@
     <div class="hero-unit centered">
 <% ArrayList<Contact> intTtableContact = ((ArrayList<Contact>) request.getAttribute("arrContact")); %> 
 <% ArrayList<Address> intAddrs = ((ArrayList<Address>) request.getAttribute("addrs")); %> 
+
+  <% if(intTtableContact.size()==0 && intAddrs.size()==0){ %>
+     <h6> No contact & no Address found</h6> 
+      <% } 
+        else { %>
         <% if(intTtableContact.size()==0){ %>
        <h6> No contact found</h6> 
         <% } 
@@ -71,7 +76,7 @@
                 </c:forEach> 
             </table>
         </div>
-                <% } %>
+                <% } }%>
         
 </div>
 </div>

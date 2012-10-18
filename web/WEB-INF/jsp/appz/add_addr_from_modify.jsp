@@ -4,8 +4,8 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="hero-unit centerPerso">
-    <form:form METHOD="POST" name="text_form" ACTION="add_addr_validator.html">
+<div class="hero-unit">
+    <form:form METHOD="POST" name="text_form" ACTION="add_addr_from_modify_v.html">
         <h3>Ajout d'une adresse</h3>
         <br>
         <form class="form-horizontal">
@@ -26,7 +26,7 @@
                     </div>
 
 
-                    <input type="hidden" id="nickaddress" name="nickaddress"  value="">
+                    <input type='hidden' id='nickaddress' name='nickaddress'  value=''>
 
 
 

@@ -4,18 +4,11 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="container">
-    <div class="centered">
-        <div class="hero-unit">
-            
-            <div class="centered">
+        <div class="hero-unit centerPerso">
                 <form:form method="post" action="login_v.html">
-                    <h1>Formulaire d'identification</h1>
-                    <div class="centered">
+                    <h3>Formulaire d'identification</h3>
                         <form class="form-horizontal">
-
                             <div class="control-group">
-                                <div class="centered">
                                     <label class="control-label" for="inputUsername">Nom d'Utilisateur</label>
                                     <div class="controls">
                                         <input type="text" name="username" value=""  required="required"/>
@@ -27,16 +20,11 @@
                                     <div class="controls">
                                         <button type="submit" class="btn">OK</button>
                                     </div>
-                                </div>
                             </div>
                         </form>
-                    </div> 
                 </form:form> 
             </div>
-            
-        </div>
-    </div>
-</div>
+
 
 
 <jsp:include page="../include/PageBottom.jsp"/> 

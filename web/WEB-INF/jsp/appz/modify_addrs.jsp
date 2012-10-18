@@ -4,21 +4,65 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="container">
-    <div class="hero-unit">
+<div class="hero-unit centerPerso" style="width: 65%">
+    <c:forEach items="${addrs}" var="addrs" varStatus="status">
 
-        
-             <c:forEach items="${addrs}" var="addrs" varStatus="status">
-                <table><tr><td>
-                     Address_nickname : ${addrs.nickAddress} </br> ${addrs.number}, ${addrs.rue}</br> ${addrs.cp}, ${addrs.ville} </br> ${addrs.pays}
-                        </td>
-                        <td><A HREF="modify_addr.html?modaddrID=${status.count-1}">Modifier Adresse</A></td>          
-                    </tr></table>
-            </c:forEach> 
-   
-        <br>
+        <div class="table ">
+            <table style="width: 100%">
+                <tr style="text-align: center">
+                    <td>Nickname</td>
+                    <td>Adresse</td>
+                    <td>CP</td>
+                    <td>Ville</td>
+                    <td>Pays</td>                    
+                </tr>
+                <tr><td>
+                        ${addrs.nickAddress}  
+                    </td>
+                    <td>
+                        ${addrs.number}, ${addrs.rue}
+                    </td>
 
+                    <td>
+                        ${addrs.cp}
+
+                    <td>
+                        ${addrs.ville}
+                    </td>
+                    <td>
+                        ${addrs.pays}
+                    </td>
+                    <td style="text-align: right">
+                       <a <button HREF="modify_addr.html?modaddrID=${status.count-1}" class="btn btn-small btn-warning" type="button">Modifier Adresse</button>
+          
+                       </a>
+                    </td>          
+                </tr>
+            </table>
+        </div>
+
+    </c:forEach> 
+
+
+    <div class=tab_button>
+        <table style="text-align: right">
+            <tr>                     
+                <form:form METHOD="POST" ACTION="add_addr_from_modify.html">
+                    <td> 
+                       
+                    </td>
+                    <td> 
+                      
+                    </td>
+                    <td> 
+                        <button  class="btn btn-info" type="submit">Ajouter address</button>
+                    </td>
+                </form:form>
+            </tr>
+        </table>
     </div>
+
+
 </div>
 
 <jsp:include page="../include/PageBottom.jsp"/> 

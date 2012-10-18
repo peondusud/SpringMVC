@@ -115,13 +115,6 @@ public class ContactController {
             return customModelAndView;
 
         }
-        catch (Exception e) 
-        {
-            CustomModelAndView customModelAndView = new CustomModelAndView(hsr,hsr1,"/error");
-            customModelAndView.addObject("str",e.getMessage());
-            return customModelAndView;
-                    
-        }       
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
@@ -316,7 +309,6 @@ public class ContactController {
             return customModelAndView;
         }
     }
-    
 
     @RequestMapping(value = "/modify_addr_v", method = RequestMethod.POST)
     public CustomModelAndView modify_adrr_validator(HttpServletRequest hsr, HttpServletResponse hsr1) {
@@ -324,9 +316,6 @@ public class ContactController {
             int modAddrID = Integer.valueOf(hsr.getSession().getAttribute("modaddrID").toString());
             int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
             User user = ServerUtils.getUser(hsr, hsr1);
-            
-            int modaddrID = Integer.valueOf(hsr.getSession().getAttribute("modaddrID").toString());
-            int modContactID = Integer.valueOf(hsr.getSession().getAttribute("MODcontactID").toString());
 
             ArrayList<Contact> arrContact = user.getUserData().getTableContact();
             // on teste si l'adresse existe pour le contact selectionner 
@@ -450,4 +439,9 @@ public class ContactController {
             return customModelAndView;
         }
     }
+<<<<<<< HEAD
+    
 }
+=======
+}
+>>>>>>> upstream/master

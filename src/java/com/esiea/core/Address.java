@@ -2,7 +2,10 @@ package com.esiea.core;
 
 public class Address {
 
-    private enum enums { Facturation, Livraison };
+    private enum enums {
+
+        Facturation, Livraison
+    };
     private String number;
     private String rue;
     private String ville;
@@ -20,7 +23,12 @@ public class Address {
     }
 
     public Address(String nickaddress, String number, String rue, String ville, String cp, String pays) {
-        this.nickAddress = enums.Facturation;
+        if (nickaddress.equals("Facturation")) {
+            this.nickAddress = enums.Facturation;
+        }
+        if (nickaddress.equals("Livraison")) {
+            this.nickAddress = enums.Livraison;
+        }
         this.number = number;
         this.rue = rue;
         this.ville = ville;
@@ -122,7 +130,7 @@ public class Address {
         }
         final Address other = (Address) obj;
         boolean isSameAddress = true;
-        isSameAddress = isSameAddress && nickAddress.equals(other.getNickAddress());
+        isSameAddress = isSameAddress && nickAddress.equals(other.getEnumNickAddress());
         isSameAddress = isSameAddress && number.equals(other.getNumber());
         isSameAddress = isSameAddress && rue.equals(other.getRue());
         isSameAddress = isSameAddress && ville.equals(other.getVille());

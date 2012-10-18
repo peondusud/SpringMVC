@@ -35,13 +35,13 @@ public final class Appz {
     private void populate() {
         User usr = new User("peon", "111");
         UserData usrData = new UserData();
-        Contact ctct = new Contact("nomContact1", "prenomContact1", "EmailContact1@gmail.com", "TelephoneContact1", "DateDeNaissanceContact1");
-        Contact ctct2 = new Contact("nomContact2", "prenomContact2", "EmailContact2@gmail.com", "TelephoneContact2", "DateDeNaissanceContact2");
-        Contact ctct3 = new Contact("nomContact3", "prenomContact3", "EmailContact3@gmail.com", "TelephoneContact3", "DateDeNaissanceContact3");
-        Address addr11 = new Address("11", "rue du quai ", "Marseille", "13000", "MAROC");
-        Address addr12 = new Address("12", "rue de la paie", "lille", "80", "LENORD");
-        Address addr21 = new Address("21", "rue de Stalin", "Saint-Petersbourg", "+7 812", "URSS");
-        Address addr22 = new Address("22", "rue Vesale", "PARIS", "75000", "FRANCE");
+        Contact ctct = new Contact("nomContact1", "prenomContact1", "EmailContact1@gmail.com", "TelephoneContact1", "17-02-1985");
+        Contact ctct2 = new Contact("nomContact2", "prenomContact2", "EmailContact2@gmail.com", "TelephoneContact2", "12-08-1986");
+        Contact ctct3 = new Contact("nomContact3", "prenomContact3", "EmailContact3@gmail.com", "TelephoneContact3", "26-12-1989");
+        Address addr11 = new Address("Livraison","11", "rue du quai ", "Marseille", "13000", "MAROC");
+        Address addr12 = new Address("Facturation","12", "rue de la paie", "lille", "80", "LENORD");
+        Address addr21 = new Address("Livraison","21", "rue de Stalin", "Saint-Petersbourg", "+7 812", "URSS");
+        Address addr22 = new Address("Facturation","22", "rue Vesale", "PARIS", "75000", "FRANCE");
         try {
             usrData.InsertAddressAssociatedToContact(ctct, addr11);
             usrData.InsertAddressAssociatedToContact(ctct, addr12);
@@ -97,14 +97,7 @@ public final class Appz {
         return -1;
     }
 
-//        public static boolean partialMatching(String testString, String pattern) {
-//        String[] split = testString.split(pattern);
-//        if (split.toString().equals(testString)) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
+
     public static boolean partialMatching(String testString, String pattern) {
         boolean matches = testString.toUpperCase().matches(".*"+pattern.toUpperCase()+".*");
                  return matches;
