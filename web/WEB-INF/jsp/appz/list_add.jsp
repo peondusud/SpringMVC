@@ -11,7 +11,7 @@
         <div class=table >
             <table class="tablePerso">
                 <tr> <div class=titres>
-                    <td class="titrePerso">nickAdress</td>
+                    <td class="titrePerso">Type d'adresse</td>
                     <td class="titrePerso">N°</td>
                     <td class="titrePerso">Rue</td>
                     <td class="titrePerso">Code postal</td>

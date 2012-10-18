@@ -24,7 +24,7 @@ public class Contact {
         this.phones = phone;
         this.actif = true;
         try {
-            this.birthday = new SimpleDateFormat("dd-MM-YYYY").parse(brithday);
+            this.birthday = new SimpleDateFormat("dd-MM-yyyy").parse(brithday);
         } catch (ParseException ex) {
             Logger.getLogger(Contact.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -37,7 +37,7 @@ public class Contact {
         this.phones = phone;
         this.actif = actif;
         try {
-            this.birthday = new SimpleDateFormat("dd-MM-YYYY").parse(brithday);
+            this.birthday = new SimpleDateFormat("dd-MM-yyyy").parse(brithday);
         } catch (ParseException ex) {
             Logger.getLogger(Contact.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,7 +77,7 @@ public class Contact {
     }
 
     public String getBirthday() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = formatter.format(birthday);
         return formattedDate;
     }
@@ -87,7 +87,7 @@ public class Contact {
 
     public void setBirthday(String birthday) {
         try {
-            Date date = new SimpleDateFormat("dd-MM-YYYY").parse(birthday);
+            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(birthday);
             this.birthday = date;
         } catch (ParseException ex) {
             Logger.getLogger(Contact.class.getName()).log(Level.SEVERE, null, ex);

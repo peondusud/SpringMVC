@@ -7,31 +7,28 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="container" style="width: 95%">
-    <div class="hero-unit centered">
+    <div class="hero-unit centerPerso" style="width: 50%">
 <% ArrayList<Contact> intTtableContact = ((ArrayList<Contact>) request.getAttribute("arrContact")); %> 
 <% ArrayList<Address> intAddrs = ((ArrayList<Address>) request.getAttribute("addrs")); %> 
 
   <% if(intTtableContact.size()==0 && intAddrs.size()==0){ %>
-     <h6> No contact & no Address found</h6> 
+     <h5> Aucun contact & Aucune adresse trouvé</h5> 
       <% } 
         else { %>
         <% if(intTtableContact.size()==0){ %>
-       <h6> No contact found</h6> 
+       <h5> Aucun contact trouvé</h5> 
         <% } 
         else { %>
             <div>
-                <h6>Contact</h6>    
+                <h4>Contact</h4>    
             <table>
-                <tr> <div class=titres>
+                <table class=table>
+                <tr class="titrePerso">
                     <td>Nom</td>
                     <td>Prenom</td>
                     <td>Emails</td>
                     <td>Telephone</td>                    
-                    <td>Date de Naissance</td>
-                </div>
-
-                <br>
+                    <td>Date de Naissance</td></tr>
                 <c:forEach items="${arrContact}" var="tableContact" varStatus="status">
                     <tr>
                         <td><div class=nom> ${tableContact.name}</div></td>
@@ -45,20 +42,18 @@
         </div>
             <% } 
           if(intAddrs.size()==0){ %>
-                <h6> No adresses found</h6> 
+                <h5> Aucune adresse trouvée</h5> 
         <% }
         else { %>
        <div class=table >
-           <h6>Addresses</h6>
+           <h4>Addresses</h4>
             <table class="tablePerso">
-                  <tr> <div class=titres>
-                    <td class="titrePerso">N°</td>
-                    <td class="titrePerso">Rue</td>
-                    <td class="titrePerso">Code postal</td>
-                    <td class="titrePerso">Ville</td>
-                    <td class="titrePerso">Pays</td>
-                </div>       
-                <br>
+                  <tr class="titrePerso">
+                    <td>N°</td>
+                    <td>Rue</td>
+                    <td>Code postal</td>
+                    <td>Ville</td>
+                    <td>Pays</td>      
                 <c:forEach items="${addrs}" var="addrs" varStatus="status4">
                     
                         <div class=addr>
@@ -76,9 +71,7 @@
                 </c:forEach> 
             </table>
         </div>
-                <% } }%>
-        
-</div>
+                <% } }%> 
 </div>
 
 

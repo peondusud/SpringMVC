@@ -8,7 +8,7 @@
     <div class="row">
         <div class="span4">
             <div class=status>		
-                <p style="padding-top: 9%">Modify Contact</p>
+                <p style="padding-top: 9%">Modifier Contact</p>
             </div>	
         </div>
         <div class="span2">
@@ -23,7 +23,7 @@
                     <tr> <div class=titres>  
                         <td>Nom</td>
                         <td>Prenom</td>
-                        <td>Birthday</td>
+                        <td>Date de naissance</td>
                         </tr>                              
                         <tr>
                             <td><div class=nom><input type="text" name="nom" value="<c:out value="${contact.name}"/>" required="required" placeholder="Nom"></div></td>
@@ -39,7 +39,8 @@
                         </tr>
                         <tr>
                             <td>eMail</td>
-                            <td>Phone</td>
+                            <td>Téléphone</td>
+                            <td>Etat</td>
                         </tr>
                         <tr>
                             <td><div class=list_mail><input type="email" name="mail" value="<c:out value="${contact.emails}"/>" required="mail" placeholder="Email"></div></td>
