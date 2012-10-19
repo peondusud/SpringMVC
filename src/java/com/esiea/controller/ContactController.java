@@ -291,7 +291,7 @@ public class ContactController {
 
                     Address modifyAddr = user.getUserData().getAddressAssociatedToContact(ctct).get(modAddrID);
                     boolean isFacturationAddress = false;
-                    if (modifyAddr.equals(facturationAddress))        {
+                    if (modifyAddr.equals(facturationAddress)) {
                         isFacturationAddress = true;
                         modelAndView.addObject("isFacturationAddress", isFacturationAddress);
                     } else {
@@ -418,6 +418,14 @@ public class ContactController {
                 ArrayList<Contact> arrContact = user.getUserData().searchContact(user.getUsername(), stringPattern, Appz.getInstance());
                 modelAndView.addObject("addrs", new ArrayList<Address>());
                 modelAndView.addObject("arrContact", arrContact);
+            } else if (address == null && contact == null) {
+                modelAndView.addObject("addrs", new ArrayList<Address>());
+                modelAndView.addObject("arrContact", new ArrayList<Contact>());
+                 CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+                 String str = "Selectionner au moins un critère";
+                customModelAndView.addObject("str", str);
+                    return customModelAndView;
+
             }
 
             return modelAndView;
