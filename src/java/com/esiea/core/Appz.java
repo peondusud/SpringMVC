@@ -35,9 +35,9 @@ public final class Appz {
     private void populate() {
         User usr = new User("peon", "111");
         UserData usrData = new UserData();
-        Contact ctct = new Contact("nomContact1", "prenomContact1", "EmailContact1@gmail.com", "TelephoneContact1", "17-02-1985");
-        Contact ctct2 = new Contact("nomContact2", "prenomContact2", "EmailContact2@gmail.com", "TelephoneContact2", "12-08-1986");
-        Contact ctct3 = new Contact("nomContact3", "prenomContact3", "EmailContact3@gmail.com", "TelephoneContact3", "26-12-1989");
+        Contact ctct = new Contact("dupont", "michel", "EmailContact1@gmail.com", "056219599", "17-02-1985");
+        Contact ctct2 = new Contact("martin", "jean", "EmailContact2@gmail.com", "23564595", "12-08-1986");
+        Contact ctct3 = new Contact("crosner", "franz", "EmailContact3@gmail.com", "69464994", "26-12-1989");
         Address addr11 = new Address("Livraison","11", "rue du quai ", "Marseille", "13000", "MAROC");
         Address addr12 = new Address("Facturation","12", "rue de la paie", "lille", "80", "LENORD");
         Address addr21 = new Address("Livraison","21", "rue de Stalin", "Saint-Petersbourg", "+7 812", "URSS");

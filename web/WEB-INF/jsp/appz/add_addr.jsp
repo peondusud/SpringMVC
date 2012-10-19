@@ -26,7 +26,7 @@
                     </div>
 
 
-                    <input type="hidden" id="nickaddress" name="nickaddress"  value="">
+                    <input type="hidden" id="nickaddress" name="nickaddress"  value="Livraison">
 
 
 

@@ -1,3 +1,4 @@
+<%@page import="com.esiea.core.Address"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -15,18 +16,30 @@
                     <div class="controls">
                         <div class="btn-group centerPerso">
                             <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-                                Type d'adresse
+                                Livraison
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
+                                <% Boolean hasFacturation = (Boolean) request.getAttribute("hasFacturation");%> 
+                                <% Boolean isFacturationAddress = (Boolean) request.getAttribute("isFacturationAddress");%>
+
+
+                                <% if (hasFacturation && !isFacturationAddress) {%>
+
                                 <li><a  class=".livraison" onclick="Javascript:livraison();" >Livraison</a></li>
-                                <li><a  class=".facturation" onclick="Javascript:facturation();">Facturation</a></li>
+
+                                <% } else {%>
+
+                                <li><a  class=".livraison" onclick="Javascript:livraison();" >Livraison</a></li>
+                                <li><a  class=".facturation" onclick="Javascript:facturation();">Facturation</a></li>      
+
+                                <% }%>
                             </ul>
                         </div>
                     </div>
 
 
-                    <input type='hidden' id='nickaddress' name='nickaddress'  value=''>
+                    <input type='hidden' id='nickaddress' name='nickaddress'  value="Livraison">
 
 
 
