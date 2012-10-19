@@ -24,24 +24,27 @@ public class ContactController {
 
             boolean hasFacturation = user.getUserData().hasFacturation(user, tmpContact);
             Address facturationAddress = user.getUserData().FacturationAddress(user, tmpContact);
-            int modAddrID = Integer.valueOf(hsr.getSession().getAttribute("modaddrID").toString());
-            ///////////        // BUG
-            ArrayList<Address> arrAddr = user.getUserData().getAddressAssociatedToContact(tmpContact);
-            if (!arrAddr.isEmpty()) {
-                Address modifyAddr = arrAddr.get(modAddrID);
-                CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
+            Object attribute = hsr.getSession().getAttribute("modaddrID");
+            if (attribute != null) {
+                int modAddrID = Integer.valueOf(attribute.toString());
+                ///////////        // BUG
+                ArrayList<Address> arrAddr = user.getUserData().getAddressAssociatedToContact(tmpContact);
+                if (!arrAddr.isEmpty()) {
+                    Address modifyAddr = arrAddr.get(modAddrID);
+                    CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
 
-                if (facturationAddress.equals(modifyAddr)) {
-                    boolean isFacturationAddress = true;
-                    customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
-                } else {
-                    boolean isFacturationAddress = false;
-                    customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                    if (facturationAddress.equals(modifyAddr)) {
+                        boolean isFacturationAddress = true;
+                        customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                    } else {
+                        boolean isFacturationAddress = false;
+                        customModelAndView.addObject("isFacturationAddress", isFacturationAddress);
+                    }
+                    customModelAndView.addObject("hasFacturation", hasFacturation);
+                    return customModelAndView;
+
+
                 }
-                customModelAndView.addObject("hasFacturation", hasFacturation);
-                return customModelAndView;
-
-
             } else {
                 CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/appz/add_addr");
                 boolean isFacturationAddress = false;
@@ -55,6 +58,8 @@ public class ContactController {
             customModelAndView.addObject("str", e.getMessage());
             return customModelAndView;
         }
+        CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+        return customModelAndView;
     }
 
     @RequestMapping(value = "/add_addr_validator")
@@ -246,7 +251,10 @@ public class ContactController {
                     modelAndView.addObject("addrs", addrs);
                     return modelAndView;
                 } else {
-                    return new CustomModelAndView(hsr, hsr1, "/index");
+                    CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+                    String str = "aucune adresses";
+                    customModelAndView.addObject("str", str);
+                    return customModelAndView;
                 }
             } else {
                 return new CustomModelAndView(hsr, hsr1, "/index");
@@ -383,6 +391,39 @@ public class ContactController {
             CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/search_found");
             modelAndView.addObject("arrContact", arrContact);
             modelAndView.addObject("addrs", addrs);
+            return modelAndView;
+        } catch (Exception e) {
+            CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");
+            customModelAndView.addObject("str", e.getMessage());
+            return customModelAndView;
+        }
+    }
+
+    @RequestMapping(value = "/search_found", method = RequestMethod.POST)
+    public CustomModelAndView selected_search_result(HttpServletRequest hsr, HttpServletResponse hsr1) {
+        try {
+            User user = ServerUtils.getUser(hsr, hsr1);
+            String stringPattern = hsr.getParameter("stringPattern").toString();
+            CustomModelAndView modelAndView = new CustomModelAndView(hsr, hsr1, "/appz/search_found");
+            Object contact = hsr.getParameter("contact");
+            Object address = hsr.getParameter("address");
+            if (address != null && contact != null) {
+                ArrayList<Contact> arrContact = user.getUserData().searchContact(user.getUsername(), stringPattern, Appz.getInstance());
+                ArrayList<Address> addrs = user.getUserData().searchAddr(user.getUsername(), stringPattern, Appz.getInstance());
+                modelAndView.addObject("addrs", addrs);
+                modelAndView.addObject("arrContact", arrContact);
+            }
+           else if (address != null) {
+                ArrayList<Address> addrs = user.getUserData().searchAddr(user.getUsername(), stringPattern, Appz.getInstance());
+                modelAndView.addObject("addrs", addrs);
+                modelAndView.addObject("arrContact", new ArrayList<Contact>());
+            }
+           else if (contact != null) {
+                ArrayList<Contact> arrContact = user.getUserData().searchContact(user.getUsername(), stringPattern, Appz.getInstance());
+                modelAndView.addObject("addrs", new ArrayList<Address>());
+                modelAndView.addObject("arrContact", arrContact);
+            }
+
             return modelAndView;
         } catch (Exception e) {
             CustomModelAndView customModelAndView = new CustomModelAndView(hsr, hsr1, "/error");

@@ -4,7 +4,7 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="hero-unit">
+<div class="hero-unit centerPerso" style="width:40%">
     <form:form METHOD="POST" name="text_form" ACTION="add_addr_from_modify_v.html">
         <h3>Ajout d'une adresse</h3>
         <br>
@@ -13,7 +13,7 @@
                 <div class="row-fluid">
 
                     <div class="controls">
-                        <div class="btn-group">
+                        <div class="btn-group centerPerso">
                             <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#">
                                 Type d'adresse
                                 <span class="caret"></span>
@@ -35,27 +35,27 @@
                     <br>
                     <label class="control-label" >Numero</label>
                     <div class="controls">
-                        <input type="text" required="required" name="addr_nb"/>
+                        <input type="text" required="required" pattern="[0-9]*" name="addr_nb"/>
                     </div>
 
                     <label class="control-label" >Rue</label>
                     <div class="controls">
-                        <input type="text" required="required" name="addr_rue"/>
+                        <input type="text" required="required" pattern="[A-Za-z\s]*" name="addr_rue"/>
                     </div>
 
                     <label class="control-label" >Ville</label>
                     <div class="controls">
-                        <input type="text" required="required" name="addr_ville"/>
+                        <input type="text" required="required" pattern="[A-Za-z\s]*" name="addr_ville"/>
                     </div>
 
                     <label class="control-label" >Code Postal</label>
                     <div class="controls">
-                        <input type="text" required="required" name="addr_cp"/>
+                        <input type="text" required="required" pattern="[0-9]*" name="addr_cp"/>
                     </div>
 
                     <label class="control-label" >Pays</label>
                     <div class="controls">
-                        <input type="text" required="required" name="addr_pays"/>
+                        <input type="text" required="required" pattern="[A-Za-z\s]*" name="addr_pays"/>
                     </div>
                     <label class="control-label" ></label>
                     <div class="controls">

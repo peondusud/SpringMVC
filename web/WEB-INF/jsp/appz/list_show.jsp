@@ -6,9 +6,9 @@
 <jsp:include page="../include/PageTop.jsp"/>
 
 <div class="container" >
-    <div class="hero-unit centered">
+    <div class="hero-unit centered" style="margin-left: 5%; margin-right: 5%">
 
-        <div class="row-fluid centered">
+        <div class="row-fluid">
             <div class="span4 centered" style="padding: 23px">
                 <h3>		
                     Liste de contact(s)
@@ -29,7 +29,7 @@
             <div class="span3" style="padding-right: 3%">
                 <img src="contacts.png" width="70%" height="70%">
             </div>
-            <div class="table centered">
+            <div class="table">
                 <table>
                     <tr style="text-align: center"> <div class=titres>
                         <td>Nom</td>

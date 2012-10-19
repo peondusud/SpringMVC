@@ -12,10 +12,10 @@
 
         <form:form METHOD="POST" ACTION="add_contact_validator.html">
 
-            Nom : <div class=nom><input type="text" name="nom" size="10" value="" required="required" ></div>
-            Prenom: <div class=prenom><input type="text" name="prenom" size="10" value="" required="required" ></div>
+            Nom : <div class=nom><input type="text" name="nom" size="10" value="" pattern="[A-Za-z\s]*" required="required" ></div>
+            Prenom: <div class=prenom><input type="text" name="prenom" size="10" value="" pattern="[A-Za-z\s]*" required="required" ></div>
             Email: <div class=list_mail><input type="email" name="mail" size="10" value="" required="required"></div>
-            Telephone: <div class=list_mail><input type="tel" name="phone" size="10" value="" required="required"></div>
+            Telephone: <div class=list_mail><input type="tel" name="phone" size="10" value="" pattern="[0-9]*" required="required"></div>
             Date de Naissance :    
 
             <div id="dpYears" class="input-append date" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="12-02-1998">
@@ -31,8 +31,6 @@
             </div>
             <input type='hidden' id='actif' name='actif'  value='1'>
 
-            <div class=tab_button>
-                <br>
 
             <br>
             <div class="controls">

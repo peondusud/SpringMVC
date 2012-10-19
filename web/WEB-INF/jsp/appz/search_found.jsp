@@ -7,7 +7,7 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-    <div class="hero-unit centerPerso" style="width: 50%">
+    <div class="hero-unit centerPerso" style="width: 60%">
 <% ArrayList<Contact> intTtableContact = ((ArrayList<Contact>) request.getAttribute("arrContact")); %> 
 <% ArrayList<Address> intAddrs = ((ArrayList<Address>) request.getAttribute("addrs")); %> 
 
@@ -20,7 +20,7 @@
         <% } 
         else { %>
             <div>
-                <h4>Contact</h4>    
+                <h4>Contact(s) correspondant à la recherche</h4>    
             <table>
                 <table class=table>
                 <tr class="titrePerso">
@@ -46,7 +46,7 @@
         <% }
         else { %>
        <div class=table >
-           <h4>Addresses</h4>
+           <h4>Adresse(s) correspondant à la recherche</h4>
             <table class="tablePerso">
                   <tr class="titrePerso">
                     <td>N°</td>

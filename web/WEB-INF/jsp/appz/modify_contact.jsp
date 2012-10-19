@@ -4,7 +4,7 @@
 
 <jsp:include page="../include/PageTop.jsp"/> 
 
-<div class="hero-unit centerPerso" style="width: 40%">
+<div class="hero-unit centerPerso" style="width: 60%">
     <div class="row">
         <div class="span4">
             <div class=status>		
@@ -12,7 +12,7 @@
             </div>	
         </div>
         <div class="span2">
-            <div class=Image><img src="http://www.nouvelles-persos.fr/auteurs/inconnu.gif" style="padding-bottom: 10%"height="80" width="80"></div>
+            <div class=Image><img src="http://www.nouvelles-persos.fr/auteurs/inconnu.gif" style="padding-bottom: 10%" height="80" width="80"></div>
         </div>
     </div>
 
@@ -26,8 +26,8 @@
                         <td>Date de naissance</td>
                         </tr>                              
                         <tr>
-                            <td><div class=nom><input type="text" name="nom" value="<c:out value="${contact.name}"/>" required="required" placeholder="Nom"></div></td>
-                            <td><div class=prenom><input type="text" name="prenom" value="<c:out value="${contact.surname}"/>" required="required" placeholder="Prenom"></div></td>
+                            <td><div class=nom><input type="text" name="nom" value="<c:out value="${contact.name}"/>" required="required" pattern="[A-Za-z\s]*" placeholder="Nom"></div></td>
+                            <td><div class=prenom><input type="text" name="prenom" value="<c:out value="${contact.surname}"/>" required="required" pattern="[A-Za-z\s]*" placeholder="Prenom"></div></td>
                             <td> 
                                 <div id="dpYears" class="input-append date" data-date-viewmode="years" data-date-format="dd-mm-yyyy" data-date="${contact.birthday}">
                                     <input class="span2" style="width:50%" type="text" name="birthday" readonly="" value="${contact.birthday}" size="16">
@@ -43,8 +43,8 @@
                             <td>Etat</td>
                         </tr>
                         <tr>
-                            <td><div class=list_mail><input type="email" name="mail" value="<c:out value="${contact.emails}"/>" required="mail" placeholder="Email"></div></td>
-                            <td><div class=list_mail><input type="tel" name="phone" value="<c:out value="${contact.phones}"/>" required="tel" placeholder="Telephone"></div></td>
+                            <td><div class=list_mail><input type="email" name="mail" value="<c:out value="${contact.emails}"/>" required="required" placeholder="Email"></div></td>
+                            <td><div class=list_mail><input type="text" name="phone" value="<c:out value="${contact.phones}"/>" required="required"  pattern="[0-9]*" placeholder="Telephone"></div></td>
                             <td> <div class="btn-group" data-toggle="buttons-radio">
                                     
                                     <% Boolean boolActif = (Boolean) request.getAttribute("actif");%> 

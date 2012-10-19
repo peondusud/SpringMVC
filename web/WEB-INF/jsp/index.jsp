@@ -1,6 +1,7 @@
+
 <jsp:include page="include/PageTop.jsp"/> 
 
-<div class="container centerPerso" style="width: 35%">
+<div class="container centerPerso" style="width: 55%">
     <div class="hero-unit">
 
         <h2>Gestionnaire de contacts</h2>
@@ -11,10 +12,10 @@
             <div class="row-fluid centerPerso" style="width: 100%">
                 <div class="span2 offset2" style="text-align: left">
                     <li style="margin-bottom: 10%">
-                        Se loggant
+                        S'identifiant
                     </li>
                     <li>
-                        S'identifiant
+                        S'enregistrant
                     </li>
                 </div>
 
@@ -40,13 +41,24 @@
         <div class="row-fluid centerPerso" style="width: 100%; margin-top: 4%">
             <div class="span12 centerPerso">
                 <p>
+<% Boolean isLogged = (Boolean) request.getAttribute("isLogged"); %> 
+                    <% if (!isLogged) { %>
+                    <a
+                        <button HREF="login.html" class="btn btn-large btn-primary" type="button">Connexion</button>
+                    </a>
+
+                    <% } else {%>
                     <a
                         <button HREF="list_show.html" class="btn btn-large btn-primary" type="button">Voir ma liste de contacts</button>
                     </a>
+
+                    <% }%>
+
+
                 </p>
             </div>
-    </div>
-</div>  
+        </div>
+    </div>  
 
-<jsp:include page="include/PageBottom.jsp"/> 
+    <jsp:include page="include/PageBottom.jsp"/> 
 

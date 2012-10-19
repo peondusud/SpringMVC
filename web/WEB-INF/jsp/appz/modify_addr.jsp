@@ -16,7 +16,7 @@
                     <table style="width:100%">
                         <tr><td>Type d'adresse
                                 <div class="controls">
-                                    <div class="btn-group">
+                                    <div class="btn-group centerPerso">
                                         <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#">
                                             <% Address add = (Address) request.getAttribute("addr");%> 
 
@@ -53,19 +53,19 @@
                             </td></tr>    
 
                         <tr><td>
-                                Nb rue : <input type="text" name="addr_nb" size="10" value="${addr.number}" required="required" placeholder="n°">                
+                                Nb rue : <input type="text" name="addr_nb" size="10" value="${addr.number}" pattern="[0-9]*" required="required" placeholder="n°">                
                             </td></tr>
                         <tr><td>
-                                Rue : <input type="text" name="addr_rue" size="10" value="${addr.rue}" required="required" placeholder="Adresse">
+                                Rue : <input type="text" name="addr_rue" size="10" value="${addr.rue}" pattern="[A-Za-z\s]*" required="required" placeholder="Adresse">
                             </td></tr>
                         <tr><td>
-                                CP : <input type="text" name="addr_cp" size="10" value="${addr.cp}" required="required" placeholder="int">
+                                CP : <input type="text" name="addr_cp" size="10" value="${addr.cp}" pattern="[0-9]*" required="required" placeholder="int">
                             </td></tr>
                         <tr><td>
-                                Ville : <input type="text" name="addr_ville" size="10" value="${addr.ville}" required="required" placeholder="Ville"> 
+                                Ville : <input type="text" name="addr_ville" size="10" value="${addr.ville}" pattern="[A-Za-z\s]*" required="required" placeholder="Ville"> 
                             </td></tr>
                         <tr><td>
-                                Pays : <input type="text" name="addr_pays" size="10" value="${addr.pays}" required="required" placeholder="Pays">
+                                Pays : <input type="text" name="addr_pays" size="10" value="${addr.pays}" pattern="[A-Za-z\s]*" required="required" placeholder="Pays">
                             </td></tr>
                         <tr><td>
 

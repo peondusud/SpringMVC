@@ -97,7 +97,6 @@ public class Address {
         this.pays = pays;
     }
 
-
     @Override
     public String toString() {
         return "Address{" + " number=" + number + ", rue=" + rue + ", Ville=" + ville + ", cp=" + cp + ", pays=" + pays + '}';
@@ -152,11 +151,11 @@ public class Address {
     }
 
     public void update(Address tmpAddr) {
+        this.nickAddress=tmpAddr.nickAddress;
         this.number = tmpAddr.number;
         this.rue = tmpAddr.rue;
         this.pays = tmpAddr.pays;
         this.ville = tmpAddr.ville;
         this.cp = tmpAddr.cp;
     }
-
 }

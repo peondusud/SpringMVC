@@ -16,6 +16,9 @@
             <li class="">
                 <A HREF="add_contact.html">Ajouter Contact</A>
             </li>
+            <li class="">
+                <A HREF="search.html">Recherche avancée</A>
+            </li>
 
         </ul>
         <ul class="nav pull-right">
